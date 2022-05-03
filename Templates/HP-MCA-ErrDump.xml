@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP MCA/CMC/CPE ErrDump [1]">
+  <!-- A helper for investigation into HP OA MCA/CPE/CMC ia64 Superdome 2 dumps -->
+  <File KeepUnsectionedSource="1">
+  <Detect Match="(MCA|CMC|CPE) .* Error Log .* on OA"/>
+  <Pre_Clean Find="^=+\s*\n([^\n]*)\n\s*=+\s*" Replacement="=== $1&#xA;" AsSingleLine="1" RO="3"/>
+  <SplitAt Match="^=== Record 0x"/>
+  <Section Match="^===" Rename="{Section}" KeepUnsectionedSource="1">
+    <SplitAt Match="Section Header"/>
+    <Section Match="Record 0x" Hide="1">
+      <ValueSeparator Key="Section" Match="Record\s*0x" Separator="^=== " Level="-1"/>
+      <TreeLink Composite="{Section}"/>
+    </Section>
+    <Section Exclude="Record 0x" KeepUnsectionedSource="1">
+      <TreeLink Composite="{Section}\\{Sub}\\{Type}"/>
+      <TreeLink Composite="{Sub}"/>
+      <TreeLink Composite="By Type\\{Type}"/>
+
+      <ValueSeparator Key="Sub"  Match="^=== "                                            Separator="^=== " Value_Find="Section.*"/>
+      <ValueSeparator            Match="data\d"                                           Separator="\s{5,}"/>
+      <ValueSeparator            Match="0x"              Exclude="data\d|0x[0-9a-f]{17,}" Separator="\s"/>
+      <ValueSeparator            Match="0x[0-9a-f]{17,}"                                  Separator="\s"    Value_Find="0x0+" Value_Replacement="0x0"/>
+      <ValuePattern   Key="Type" Match="^=== HP.*data" PatternValue="(?&lt;=HP ).*(?= data)"/>
+    </Section>
+  </Section>
+  </File>
+</Template>

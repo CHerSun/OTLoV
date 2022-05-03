@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP 3par - Insplore - Eventlog [1]" ScanDepth="0" DetectPercent="60">
+  <!-- ScanDepth=0 - we expect all files used for detection to be in directory -->
+  <!-- Directory detection by 3 files that are expected in the logs package. 60% must match  = 2 out of 3 -->
+  <Detect Match="checkhealth_-svc_"/>
+  <Detect Match="showcpg"/>
+  <Detect Match="showeventlog_-d"/>
+
+  <!-- 3par Eventlog parsing of multiline format, ignore oneliner files -->
+  <File Match="showeventlog" Exclude="oneline">
+    <SplitAt Match="^Time\s*:"/>
+    <Section Match="." Rename="{Time} ({Severity}) {Type} - {Message}">
+      <!-- Values -->
+      <ValueSeparator Exclude="^Seq"/>
+      <ValueSeparator Match="^Component" Key="Comp1" Value_Find=":.*"/>
+
+      <!-- Highlights -->
+      <Highlight Priority="200" Background="LightCoral" Pattern="Error|Critical|Degraded|Failed|Disabled" Comment="Keyword match"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="Warning|Major|Disappear"                 Comment="Keyword match"/>
+
+      <!-- Create trees values -->
+      <TreeLink Composite="By class\\{Class}"/>
+      <TreeLink Composite="By severity\\{Severity}"/>
+      <TreeLink Composite="By type\\{Type}"/>
+      <TreeLink Composite="By component\\{Comp1}\\{Component}"/>
+    </Section>
+  </File>
+
+</Template>

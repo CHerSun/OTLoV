@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="NetApp FAS [1]" ScanDepth="0">
+  <!-- Setting scan depth to 0 - all files to be used for detection are expected to be in root directory -->
+  <Detect Match="cluster_ring.xml|motherboard-info.xml"/>
+
+  <File Match="EMS-LOG-FILE">
+    <!-- Parsing of EMS-LOG-FILE -->
+
+    <!-- Split into individual messages by "<LR " and "</LR>" -->
+    <SplitAt Match="&lt;LR "/>
+    <SplitAt Match="&lt;/LR&gt;" Offset="1"/>
+
+    <!-- Sample highlights -->
+    <Highlight Priority="200" Background="LightCoral" Match="^\s*&lt;|Keyword" Pattern="Error"/>
+    <Highlight Priority="150" Background="#F2D463"                             Pattern="Failed to "/>
+    <Highlight Priority="150" Background="#F2D463"    Match="errors"           Pattern="(?&lt;=^|&quot;)\d*[1-9]\d*(?=$|&quot;)" Comment="Non-0 counters"/>
+    <Highlight Priority="100" Background="#90D58D"    Match="errors"           Pattern="(?&lt;=^|&quot;)0(?=$|&quot;)"/>
+
+    <!-- Processing of each message -->
+    <Section Match="&lt;LR " Rename="#{Seq#}  {Timestamp}  {Node} {Object} - {Keyword}[ - {Description}]">
+      <!-- Non-matching value definitions to specify order of columns in resulting table -->
+      <ValueSeparator Exclude="^" Key="Seq#"/>
+      <ValueSeparator Exclude="^" Key="Timestamp"/>
+      <ValueSeparator Exclude="^" Key="Node"/>
+      <ValueSeparator Exclude="^" Key="Object"/>
+      <ValueSeparator Exclude="^" Key="Keyword"/>
+      <ValueSeparator Exclude="^" Key="Errors"/>
+      <ValueSeparator Exclude="^" Key="Description"/>
+      <ValueSeparator Exclude="^" Key="Completion"/>
+
+      <!-- Extract "Keyword" value from "<LR " header -->
+      <ValueSeparator Exclude="&lt;LR |&lt;/LR&gt;" Separator="^\s*&lt;" Key="Keyword" Value_Find="/&gt;\s*$"/>
+      <!-- Extract all XML Attributes as values, expected format is `name="some value"` -->
+      <!-- Additional cleaning is done to beautify keys & values a bit -->
+      <ValueSeparator 
+                        Pattern="(?&lt;=\s)[^ =]+\s*=\s*&quot;[^&quot;]+&quot;" 
+                        Separator="=" Value_Find="^&quot;|&quot;$"
+                        Key_Match="^(Seq#|Timestamp|Node|Object|Errors|Description|Completion)$"
+                        >
+        <Value_Clean Find="^&quot;|&quot;"/>
+        <Value_Clean Find="\Squot;" Replacement="&quot;"/>
+        <Key_Clean Find="^seq$" Replacement="Seq#"/>
+        <Key_Clean Find="^d$" Replacement="Timestamp"/>
+        <Key_Clean Find="^n$" Replacement="Node"/>
+        <Key_Clean Find="^o$" Replacement="Object"/>
+        <Key_Clean Find="^errors$" Replacement="Errors"/>
+        <Key_Clean Find="^description$" Replacement="Description"/>
+        <Key_Clean Find="^completion$" Replacement="Completion"/>
+      </ValueSeparator>
+      <!-- Extract "Keyword" again, but this time hidden & replace "_" with "\\" so that we can make a tree -->
+      <ValueSeparator Exclude="&lt;LR |&lt;/LR&gt;" Separator="^\s*&lt;" Key="KeywordTree" Hide="1">
+        <Value_Clean Find="/&gt;\s*$"/>
+        <Value_Clean Find="_" Replacement="\\"/>
+      </ValueSeparator>
+      <!-- Tree links -->
+      <TreeLink Composite="By Object\\{Object}"/>
+      <TreeLink Composite="By Keyword\\{KeywordTree}"/>
+    </Section>
+  </File>
+
+  <File Match="\.xml">
+    <!-- Processing of all .XML files that contain "<asup:row " -->
+    <Detect Match="&lt;asup:row "/>
+
+    <!-- Sample highlights -->
+    <Highlight Priority="200" Background="LightCoral" Pattern="(\b|_)(Degraded|Critical)\b" Exclude="-reason|-file|-threshold|autosupport-message|\s\* |\b(desc|name)(?= = |$)|messagename|instance(-uuid)?(?= = |$)"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="(\b|_)(Fault)\b"             Exclude="-reason|-file|-threshold|autosupport-message|\s\* |\b(desc|name)(?= = |$)|messagename|instance(-uuid)?(?= = |$)|loglevel|only collected|fault = |^0$"/>
+
+    <Highlight Priority="150" Background="#F2D463"    Match="(Fault) = "              Pattern="(?&lt;= = )\d*[1-9]\d*" Comment="Non-0 fault counter."/>
+    <Highlight Priority="150" Background="#F2D463"    Match="(Fault)$"                Pattern="^\d*[1-9]\d*" Comment="Non-0 fault counter."/>
+    <Highlight Priority="150" Background="#F2D463"    Match="(Reason) = "             Pattern="(?&lt;= = )\S.*"/>
+    <Highlight Priority="150" Background="#F2D463"    Match="(Reason)$"               Pattern="^\S.*"/>
+    <Highlight Priority="150" Background="#F2D463"    Match="(state|status)(?= = |$)" Pattern="not connected"/>
+    <Highlight Priority="150" Background="#F2D463"    Match="(link)(?= = |$)"         Pattern="\b(down)\b"/>
+    <Highlight Priority="100" Background="#90D58D"    Match="(state|status)(?= = |$)" Pattern="\b(up|normal|OK|online|healthy|active|enabled?|established)\b" Exclude="Desired"/>
+    <Highlight Priority="100" Background="#90D58D"    Match="(link)(?= = |$)"         Pattern="\b(up)\b"/>
+    <Highlight Priority="50"  Background="#C9C8CF"    Match="(state|status) = "  Pattern="(?&lt;= = )\S.*" Exclude="\b(up|normal|OK|online|healthy|active|enabled?|established|not connected)\b|name_of_|callhome\.|\bdesc = |_name|\bname = " Comment="Undefined state"/>
+    <Highlight Priority="50"  Background="#C9C8CF"    Match="(state|status)$"    Pattern="^\S.*"           Exclude="\b(up|normal|OK|online|healthy|active|enabled?|established|not connected)\b|name_of_|callhome\.|\bdesc$|_name|\bname$" Comment="Undefined state"/>
+
+
+    <!-- First part is description of column fields - can't use that currently = IGNORE -->
+    <!-- Split into individual items by "<asup:row " -->
+    <SplitAt Match="&lt;asup:row "/>
+    <SplitAt Match="&lt;/asup:row&gt;" Offset="1"/>
+
+    <Section Match="asup:row" KeepUnsectionedSource="1">
+      <!-- Individual items processing -->
+      
+      <!-- Remove all XML formatting to view this as text in Tree: -->
+      <!-- Replace "<asup:row " with "Row: " -->
+      <Pre_Clean Find="^\s*&lt;asup:row\s+" Replacement="Row:   "/>
+      <!-- Remove line with "</asup:row>" -->
+      <Pre_Clean Find="\n\s*&lt;\/asup:row&gt;" AsSingleLine="1" RO="3"/>
+      <!-- Remove line with "<asup:list>" -->
+      <Pre_Clean Find="^\s*&lt;asup:list&gt;\s*\n" AsSingleLine="1" RO="3"/>
+      <!-- Replace "</asup:list>" with "~~~ List end ~~~" for further processing -->
+      <Pre_Clean Find="&lt;\/asup:list&gt;" Replacement="~~~ List end ~~~"/>
+      <!-- Remove lines with all other XML element closing tags, i.e. things like "</tag_name>" -->
+      <Pre_Clean Find="\n\s*&lt;\/[^&gt; ]+&gt;\s*(?=\n|$)" AsSingleLine="1" RO="3"/>
+
+      <!-- Reformat XML Elements from "<tag>value</tag>" to "tag = value" -->
+      <Pre_Clean Find="&lt;(?&lt;tag&gt;[^&gt;]+)&gt;(?&lt;value&gt;[^&lt;]*)\&lt;\/\k&lt;tag&gt;\&gt;" Replacement="$1 = $2"/>
+      <!-- Reformat XML Elements with no value from "<tag />" to "tag = " -->
+      <Pre_Clean Find="&lt;([^&gt; ]+)\s*\/\&gt;" Replacement="$1 = "/>
+      <!-- Reformat XML Elements openings from "<tag>" to "tag:" -->
+      <Pre_Clean Find="&lt;([^&gt; ]+)\s*\&gt;" Replacement="$1:"/>
+
+      <!-- The very first attribute col_time_ms is not formatted with above. Bring it to same formatting of "tag = value" -->
+      <Pre_Clean Find="(?&lt;=\w)=&quot;(.*)&quot;&gt;" Replacement=" = $1"/>
+      <!-- Reformat list items from "asup:li = list_item" to "* list_item" -->
+      <Pre_Clean Find="asup:li = " Replacement="* "/>
+
+      <!-- Fetch all values, expected format "name = value". The very first value has "Row: " prefix - clean it -->
+      <ValueSeparator Separator=" = " Key_Find="Row:"/>
+
+      <!-- Move lists into hidden sub-sections. Can't process it properly currently. -->
+      <SplitAt Match="\S:\s*$"/>
+      <SplitAt Match="~~~ List end ~~~" Offset="1"/>
+      <Section Match="\S:\s*$" Hide="1" InheritValues="0">
+        <!-- Remove "~~~ List end ~~~" lines - no longer need them. -->
+        <Pre_Clean Find="\n\s*~~~ List end ~~~" AsSingleLine="1"/>
+      </Section>
+    </Section>
+  </File>
+
+</Template>

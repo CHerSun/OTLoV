@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP GSP [1]">
+  <!-- GSP file processing. 
+       GSP logs are often cited inside e-mail, with full text citation in replies and forwards - 
+       that's dozens of wrong useless triggers. So Excluding files with names containing "mail." -->
+  <File Exclude="^mail\.">
+    <Detect Match="GSP(:CM)?&gt;\s*(SL|sysrev|date|ps|ss|pwrgrd|cp|io|cl|SEL|FPL|activity|error|boot|df)(\b|$)|GSP:VW&gt;"/>
+    <!-- Keep only ASCII characters. GSP is collected by ppl using terminal, which often produces strange results. Try to clean that up a bit -->
+    <Pre_Clean Find="[^\x20-\x7F]+"/>
+
+    <SplitAt Match="GSP(:CM)?&gt;|\bGSP MAIN MENU:|\bGSP Login:"/>
+    <!-- Processing for configuration sections (all but DF) -->
+    <Section Match="GSP(:CM)?&gt;\s*(PS|SS|PWRGRD|CP|IO|DATE|SYSREV|VFP)(\b|$)">
+      <ValuePattern Key="LogType" PatternValue="GSP(:CM)?&gt;.*$" Hide="1"/>
+      <TreeLink Composite="{LogType}"/>
+
+      <Highlight Priority="200" Background="LightCoral" Exclude="are latched|warning\/fault|\|" 
+                  Pattern="(?&lt;!NO )fault"/>
+      <Highlight Priority="200" Background="LightCoral"                       
+                  Pattern="(?&lt;!NO )(FAILURE|FAULT) (DETECTED|found)"/>
+      <Highlight Priority="200" Background="LightCoral" Match="Fail|fault|warning" 
+                  Pattern="\s?\*\s?"/>
+      <Highlight Priority="200" Background="LightCoral"                       
+                  Pattern="\bFatal\b|flash red"/>
+      <Highlight Priority="150" Background="#F2D463"   Match="\b(state|speed|fan|power|status)\b"  
+                  Pattern="\bA.?C Disconnected|Out of range"/>
+      <Highlight Priority="100" Background="#90D58D"                          
+                  Pattern="Installed and configured"/>
+      <Highlight Priority="100" Background="#90D58D"   Match="Redundancy"     
+                  Pattern="(?&lt;!NOT )REDUNDANT"/>
+      <Highlight Priority="100" Background="#90D58D"                          
+                  Pattern="NO (FAILURE|FAULT) (DETECTED|found)"/>
+      <Highlight Priority="100" Background="#90D58D"   Match="\b(state|speed|fan|power|status)\b"  
+                  Pattern="\bNORMAL\b"/>
+      <Highlight Priority="100" Background="#90D58D"                          
+                  Pattern="\b(normal|green)\b"/>
+      <Highlight Priority="100" Background="#90D58D"   Match="state:"         
+                  Pattern="\b(ON)\b"/>
+      <Highlight Priority="50"  Background="LightBlue"                        
+                  Pattern="(?&lt;=\bFW\s*:\s*)\S.*"/>
+      <Highlight Priority="50"  Background="LightBlue" Match="Power state"    
+                  Pattern="\boff\b"/>
+    </Section>
+
+    <!-- Processing for event logs -->
+    <Section Match="GSP&gt;\s*(SL|SEL|FPL|activity|error|boot)(\b|$)" KeepUnsectionedSource="1">
+      <Pre_Clean Find="(?&lt;=\n)\n+(?=\d)" AsSingleLine="1"/>
+
+      <Highlight Priority="200" Background="LightCoral" Match="\*\d+" Exclude="\*[3-4]" Pattern="\S+\s*$|\*\d+"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="\*[3-4]"                 Pattern="\S+\s*$|\*\d+"/>
+
+      <SplitAt Match="GSP:VW&gt;|Enter menu item"/>
+      <Section Match="GSP:VW&gt;|Enter menu item" KeepUnsectionedSource="1" Hide="1">
+        <ValueSeparator Key="LogType" Match=":VW&gt;" Separator="&gt;\s+" Hide="1"/>
+        <ValueSeparator Key="LogType" Match="Enter menu item" Separator=":\s+" Hide="1">
+          <Value_Clean Find="^F$" Replacement="FPL"/>
+          <Value_Clean Find="^E$" Replacement="SEL"/>
+          <Value_Clean Find="^d$"/>
+        </ValueSeparator>
+        <TreeLink Composite="[GSP:SL&gt; {LogType}|-]"/>
+        <SplitAt Match="([0-9a-f]{16}\s+){2}|^\s*$"/>
+        <Section Match="([0-9a-f]{16}\s+){2}" Hide="1">
+          <ValueSeparator Key="EventPath" Separator="[0-9a-f]{16}" SeparatorPosition="1" Hide="1">
+            <Value_Clean Find="_" Replacement="\\"/>
+            <Value_Clean Find=" .*$"/>
+          </ValueSeparator>
+          <ValuePattern Key="SevDesc"                   Exclude="\d:\d|\*\d"    PatternValue="\d" Value_Find="." Value_Replacement="0..2 Info" Hide="1"/>
+          <ValuePattern Key="SevDesc"   Match="\*[3-4]" Exclude="\d:\d"         PatternValue="\d" Value_Find="." Value_Replacement="3..4 Warning" Hide="1"/>
+          <ValuePattern Key="SevDesc"   Match="\*\d+"   Exclude="\d:\d|\*[3-4]" PatternValue="\d" Value_Find="." Value_Replacement="5..  Error" Hide="1"/>
+          <TreeLink Composite="_By Message_\\{EventPath}"/>
+          <TreeLink Composite="{SevDesc}\\{EventPath}"/>
+        </Section>
+      </Section>
+    </Section>
+
+    <!-- Console logs and console works -->
+    <Section Match="GSP(:CM)?&gt;\s*(CL|CO)(\b|$)">
+      <ValuePattern Key="LogType" PatternValue="GSP(:CM)?&gt;.*$" Hide="1"/>
+      <TreeLink Composite="{LogType}"/>
+    </Section>
+    
+    <!-- Processing for DF section -->
+    <Section Match="GSP(:CM)?&gt;\s*(DF)(\b|$)" KeepUnsectionedSource="1">
+      <ValuePattern Key="LogType" PatternValue="GSP(:CM)?&gt;.*$" Hide="1"/>
+      <TreeLink Composite="{LogType}"/>
+
+      <SplitAt Match="FRU Entry #.*:\s*$"/>
+      <Section Match="FRU Entry #.*:\s*$" Rename="FRU Entry #{#} - {Name}">
+        <ValueSeparator Key="#"       Match="FRU Entry #" Separator="#" Value_Find=":.*"/>
+        <ValueSeparator Key="Name"    Match="FRU NAME"/>
+        <ValueSeparator Key="Product" Match="PRODUCT NAME"/>
+        <ValueSeparator Key="PN"      Match="Part number"/>
+        <ValueSeparator Key="SN"      Match="Serial number|\bS\/N\b|mfg serial"/>
+        <ValueSeparator Key="Mfg"     Match="Manufacturer"/>
+        <ValueSeparator Key="Mfg PN"  Match="Mfg Part"/>
+      </Section>
+    </Section>
+    
+    <!-- Keep other sections that don't need links -->
+    <Section Match="GSP(:CM)?&gt;" Exclude="GSP(:CM)?&gt;\s*(SL|sysrev|date|ps|df|ss|pwrgrd|cp|io|cl|co|SEL|FPL|activity|error|boot)(\b|$)"/>
+  </File>
+</Template>

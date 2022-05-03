@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="Store.logs (XML) [4]">
+  <File>
+    <!-- File detection patterns -->
+    <Detect Match="RESPONSE VERSION="/>
+    <Detect Match="basetype=.log-header-table"/>
+
+    <!-- Unfold single-line PROPERTY XML element as "Name"="Property" + other attributes -->
+    <Pre_Clean Find="\s*&lt;PROPERTY name=&quot;([^&quot;]*?)&quot;(.*?)&gt;([^&lt;]*?)&lt;/PROPERTY&gt;" Replacement="$1=&quot;$3&quot;$2"/>
+    <!-- Unfold top-level RESPONSE element - we don't need it - keeping any attributes -->
+    <Pre_Clean Find="^\s*&lt;RESPONSE (\S+).*|&lt;/RESPONSE&gt;" Replacement="$1"/>
+    <!-- Unfold LOG_CONTENT element -->
+    <Pre_Clean Find="^\s*&lt;LOG_CONTENT.*" Replacement="~ Event logs"/>
+    <Pre_Clean Find="^.*&lt;/LOG_CONTENT.*" Replacement="~end~"/>
+    <!-- Find same-level <OBJECT.. and </OBJECT> element start/end and unfold it marking start and end -->
+    <Pre_Clean Find="^(?&lt;spaces&gt;\s*)&lt;OBJECT (?&lt;attributes&gt;[^&gt;]*)&gt;(?&lt;content&gt;[\s\S]*?)^\k&lt;spaces&gt;&lt;/OBJECT&gt;" 
+               Replacement="~ ${attributes}${content}&#xA;~end~" AsSingleLine="1" RO="3"/>
+    <!-- Remove type="type_string" things -->
+    <Pre_Clean Find="\s+type\s*=\s*&quot;[^&quot;]+&quot;"/>
+
+    <SplitAt Match="^~ "/>
+    <SplitAt Offset="1" Match="^~end~"/>
+
+    <!-- Text highlights -->
+    <Highlight              Priority="200" Background="#F08080" Match="(status|health)=" Exclude="-numeric|Enabled-Degraded" Pattern="(?&lt;=(status|health)=&quot;|^)([^\s^&quot;]*Degraded|fault)(?=&quot;|$)"/>
+    <Highlight              Priority="150" Background="#F2D463" Match="(status|health)"                                      Pattern="Enabled-Degraded" Comment="Could be Normal for Egress ports of last enclosure on a chain."/>
+    <Highlight              Priority="100" Background="#90D58D" Match="(status|health)=" Exclude="-numeric" Pattern="(?&lt;=(status|health)=&quot;|^)(Up|OK|Redundant|Enabled-Healthy|FTOL|Operational|Online|Installed)(?=&quot;|$)"/>
+    <Highlight              Priority="50"  Background="#C9C8CF" Match="(status|health)=" Exclude="-numeric" Pattern="Disconnected"/>
+    <Highlight              Priority="0"   Background="#C9C8CF" Match="(status|health)=" Exclude="-numeric" Pattern="(?&lt;=(status|health)=&quot;)[^&quot;]*(?=&quot;)|(?&lt;=(status|health)=)&quot;&quot;" Comment="State with no definition in template"/>
+    <Highlight              Priority="0"   Background="#C9C8CF" Match="health-re"        Exclude="-numeric" Pattern="(?&lt;=health-re[^&quot;]*=&quot;)[^&quot;]*"/>
+
+    <!-- Value highlights -->
+    <Highlight Priority="200" Background="#F08080"   Match="(status|health)" Pattern="^(Degraded|fault\w*)$"/>
+    <Highlight Priority="200" Background="#F08080"   Match="discovered"      Pattern="^No$"/>
+    <Highlight Priority="200" Background="#F08080"   Match="state"           Pattern="LEFTOVE?R" Comment="Disk is not in use. It has data leftovers either from previous system or from pulling the drive incorrectly."/>
+    <Highlight Priority="200" Background="#F08080"   Match="state"           Pattern="^UNKN$" Comment="Disk state is unknown."/>
+    <Highlight Priority="150" Background="#F2D463"   Match="(status|health)" Pattern="^Enabled-Degraded$" Comment="Could be Normal for Egress ports of last enclosure on a chain."/>
+    <Highlight Priority="100" Background="#90D58D"   Match="(status|health)" Pattern="^(Up|OK|Redundant|Enabled-Healthy|FTOL|Operational|Online|Installed)$"/>
+    <Highlight Priority="100" Background="#90D58D"   Match="discovered"      Pattern="^Yes$"/>
+    <Highlight Priority="50"  Background="#C9C8CF"   Match="(status|health)" Pattern="^Disconnected$"/>
+    <Highlight Priority="1"   Background="#C9C8CF"   Match="state"           Pattern="^AVAIL$" Comment="Disk is not in use."/>
+    <Highlight Priority="1"   Background="LightBlue" Match="state"           Pattern="^[\w ]*SP$" Comment="Disk is assigned as spare."/>
+    <Highlight Priority="1"   Background="#90D58D"   Match="state"           Pattern="^VDISK[\w ]*$" Comment="Disk is assigned to VDISK."/>
+    <Highlight Priority="0"   Background="#C9C8CF"   Match="(status|health)" Pattern="^[\w -]+$" Comment="State with no definition in template"/>
+    <Highlight Priority="0"   Background="#C9C8CF"   Match="state"           Pattern="^[^&quot;]*$" Comment="State with no definition in template" Exclude="\b(Normal|expected|INFORMATIONAL)\b"/>
+    <Highlight Priority="0"   Background="LightBlue" Match="owner|controller" Pattern="^A$"/>
+    <Highlight Priority="0"   Background="Wheat"     Match="owner|controller" Pattern="^B$"/>
+
+    <ValueSeparator                    Hide="1" Pattern="[^\s^=]+=&quot;.*?&quot;" Match="basetype=" Key_Exclude="oid|format" Value_Find="&quot;" Key_Find="^.*$" Key_Replacement="section-$+"/>
+    <ValueSeparator Key="section-name" Hide="1" Pattern="[^\s^=]+=&quot;.*?&quot;" Match="(\bname|^(type|hba-nickname|nickname|username|port))=" Exclude="basetype=" Key_Exclude="vendor-name|key" Pattern_Exclude="type=.string" Value_Find="&quot;" AddMode="2"/>
+    <ValueSeparator Key="section-name" Hide="1" Pattern="[^\s^=]+=&quot;.*?&quot;" Match="durable-id.*enclosure" Value_Find="&quot;" Key_Match="durable-id" AddMode="2"/>
+
+
+    <ValueSeparator Exclude="basetype="         Pattern="[^\s^=]+=&quot;.*?&quot;"
+                    Pattern_Exclude="type=(.string|.[su]?int)"
+                    Key_Match="username|access-|-fw|^id$|product-id|serial-?number|type|vendor|status|health|state|slot|^size$|memory-size|rpm|model|durable|enclosure|part-?n?number|description|shortname|location|^phy$|^name$|host-name|host-id|host-discovered|system-name|nickname|sensor-name|value|volume-name|disk-name|volume-name|volume-|write-policy|^access$|lun|host-profile|ports|port-wwn|-speed|^port$|controller|job-running|owner|raid|spare|diskcount|freespace|operation-mode"
+                    Key_Exclude="-numeric|vendor-id|-reason|-recommendation|-blame|blocksize|cpu-|mfg-|system-location|fc-.*-port-wwn|-serial$|backplane-type|max-|component-type" 
+                    Value_Find="&quot;" Key_Find="(?&lt;=controller|enclosure)-id"/>
+
+    <!-- parameters/tables single-level sections - aggregate under Parameters tree -->
+    <Section Match="^~ .*(awt-trigger|-parameters|-table|license|ntp-status|-protocols)" Exclude="^~ .*cache-settings" 
+             Rename="{section-basetype} - {section-name}[ ({durable-id})]" KeepUnsectionedSource="1">
+      <Pre_Clean Find="^(~ |~end~)"/>
+      <TreeLink Composite="- Parameters\\{section-basetype}"/>
+    </Section>
+    <!-- Single NavTree level sections -->
+    <Section Match="^~ .*(cache-settings|-sku|redundancy|-interconnects|sensors|-environmental|shutdown|system-information|versions)"
+             Rename="{section-basetype} - {section-name}[ ({durable-id})]" KeepUnsectionedSource="1">
+      <Pre_Clean Find="^(~ |~end~)"/>
+      <Pre_Clean Find="^(?&lt;spaces&gt; *)&lt;OBJECT (?&lt;attributes&gt;[^&gt;]*)&gt;(?&lt;content&gt;[\s\S]*?)^\k&lt;spaces&gt;&lt;/OBJECT&gt;" Replacement="~ ${attributes}${content}&#xA;~end~" AsSingleLine="1" RO="3"/>
+  
+      <SplitAt Match="^~\s"/>
+      <SplitAt Offset="1" Match="^~end~"/>
+      <TreeLink Composite="{section-basetype}"/>
+      <Section Match="^~ " Rename="{section-basetype} - {section-name}[ ({durable-id})]"><Pre_Clean Find="^(~ |~end~)"/></Section>
+    </Section>
+    <!-- all sections generic parsing with aggregation based on first level only -->
+    <Section Match="^~ " Exclude="^~ Event logs|^~ .*(awt-trigger|-parameters|-table|license|ntp-status|-protocols|-sku|redundancy|-interconnects|sensors|-environmental|shutdown|system-information|versions)|=&quot;status&quot;" 
+             Rename="{section-basetype} - {section-name}[ ({durable-id})]" KeepUnsectionedSource="1">
+      <Pre_Clean Find="^(~ |~end~)"/>
+      <Pre_Clean Find="^(?&lt;spaces&gt; *)&lt;OBJECT (?&lt;attributes&gt;[^&gt;]*)&gt;(?&lt;content&gt;[\s\S]*?)^\k&lt;spaces&gt;&lt;/OBJECT&gt;" Replacement="~ ${attributes}${content}&#xA;~end~" AsSingleLine="1" RO="3"/>
+
+      <SplitAt Match="^~\s"/>
+      <SplitAt Offset="1" Match="^~end~"/>
+
+      <TreeLink Composite="{section-basetype}\\{section-name}"/>
+
+      <Section Match="^~ " Recursive="1"
+               Rename="{section-basetype} - {section-name}[ ({durable-id})]" KeepUnsectionedSource="1">
+        <Pre_Clean Find="^(~ |~end~)"/>
+        <Pre_Clean Find="^(?&lt;spaces&gt; *)&lt;OBJECT (?&lt;attributes&gt;[^&gt;]*)&gt;(?&lt;content&gt;[\s\S]*?)^\k&lt;spaces&gt;&lt;/OBJECT&gt;" Replacement="~ ${attributes}${content}&#xA;~end~" AsSingleLine="1" RO="3"/>
+  
+        <SplitAt Match="^~\s"/>
+        <SplitAt Offset="1" Match="^~end~"/>
+      </Section>
+      <Section Match="unhealthy-component" InheritValues="0">
+            <Highlight Priority="200" Background="#F08080" Match="Component-" Exclude="numeric|unhealthy" Pattern="(?&lt;==&quot;)[^&quot;]*(?=&quot;)"/>
+      </Section>
+    </Section>
+    
+    <!-- Event logs parsing. -->
+    <Section Match="^~ Event logs">
+      <Pre_Clean Find="^(~ |~end~)"/>
+      <Pre_Clean Find="##\*+##" Replacement="~ "/>
+
+      <SplitAt Match="^~ "/>
+      <TreeLink Composite="- Event logs"/>
+      <!--  Disable all inheritance to avoid extra workload -->
+      <Section Match="^~ " InheritValues="0" InheritFiltering="0" TrimStartLines="1" TrimEndLines="1">
+        <Pre_Clean Find="^~ "/>
+        <TreeLink />
+        <Highlight Priority="200" Background="LightCoral" Match="(?-i: [CE] (?= [AB]))|\bERROR(?=\s{2})"/>
+        <Highlight Priority="200" Background="LightCoral" Match="\bNMI\b" Comment="Non-Maskable Interrupt - usually a critical hardware issue."/>
+        <Highlight Priority="200" Background="LightCoral" Match="critical error|critical|offline|\bdown|\bfault\w*|\bfail\w*|problem|errors?" Exclude="(?-i: I )|\sINFORMATIONAL\s{2}|Critical Error Log|has cleared|ErrorString|Error.Warning Log|no errors|condition.*cleared|failover|criticality"/>
+        <Highlight Priority="150" Background="#F2D463"    Match="(?-i: W (?= [AB]))|\bWARNING(?=\s{2})"/>
+        <Highlight Priority="150" Background="#F2D463"    Match="warning|invalid" Exclude="has cleared|Error.Warning Log|condition.*cleared|INFORMATIONAL"/>
+        <Highlight Priority="150" Background="#F2D463"    Match="Unwritable.*?cache data" Comment="Cache is partially filled with unwritable data.&#xA;If no volume is specified in the message - consider clearing cache with 'clear cache'.&#xA;If volume is specified - try to restore access to the volume."/>
+        <Highlight Priority="150" Background="#F2D463"    Match="restart\w*|booted up"/>
+        <Highlight Priority="50"  Background="#C9C8CF"    Match="Key,Code,Qual=.*?(?= )|\(Key,Code,Qual.*?\)|(?&lt;=(?-i: I ).*)(error|warning)" Exclude="\bno error"/>
+
+        
+        <Highlight Priority="0"   Background="LightBlue"  Match="(?-i:\b[AB][0-9]*\s{2})" Pattern="(?-i:(?&lt;= [IWEC] ) A |\bA[0-9]*(?=\s{2}))" Comment="Message is from controller A"/>
+        <Highlight Priority="0"   Background="Wheat"      Match="(?-i:\b[AB][0-9]*\s{2})" Pattern="(?-i:(?&lt;= [IWEC] ) B |\bB[0-9]*(?=\s{2}))" Comment="Message is from controller B"/>
+      </Section>
+    </Section>
+  </File>
+</Template>

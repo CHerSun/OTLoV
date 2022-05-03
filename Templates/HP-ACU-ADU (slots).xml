@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP ACU-ADU (slots) [2]">
+  <!-- ADU Template that is based on REPORT FOR pattern. Detect file by 2 patterns - both must match. -->
+  <File KeepUnsectionedSource="1">
+    <Detect Match="Array Diagnostic Utility"/>
+    <Detect Match="^SLOT SUMMARY"/>
+
+    <SplitAt Match="^SLOT\s"/>
+
+    <Highlight Priority="200" Background="LightCoral" Pattern="error|critical|fail\w*" Exclude="Predictive|:\s*$"/>
+    <Highlight Priority="150" Background="#F2D463" Pattern="predictive failure"/>
+    <Highlight Priority="100" Background="#90D58D" Pattern="No problems detected"/>
+
+    <Section Match="^SLOT SUMMARY" Hide="1"/>
+    <Section Match="^SLOT\s" Exclude="SLOT SUMMARY" KeepUnsectionedSource="1">
+      <TreeLink />
+      <SplitAt Match="^[A-Z]" Exclude="^SLOT\s|SCSI\s+CAM\s+Sense|Stat\s+Key\s+Code"/>
+
+      <!-- For logical drives - nothing special, just split up by "Logical Drive" and colon and create tree links -->
+      <Section Match="^Logical Drive" InheritFiltering="0">
+        <TreeLink />
+        <SplitAt Match="Logical Drive.+:\s*$"/>
+
+        <Highlight Priority="150" Background="#F2D463" Match="drive.failure.map.*0x" Pattern="0x[0-9a-f]*[1-9a-f][0-9a-f]*\b" Exclude="offset" Comment="Non-empty drive failure map"/>
+        <Highlight Priority="150" Background="#F2D463" Match="stat.*:\s*[a-z]" Exclude=":\s*OK\s*$" Pattern="(?&lt;=:\s*)\w.*"/>
+        <Highlight Priority="150" Background="#F2D463" Match="fail.*:\s*[a-z]" Exclude=":\s*No\s*$" Pattern="(?&lt;=:\s*)\w.*"/>
+        <Highlight Priority="100" Background="#90D58D" Match="stat.*:\s*[a-z]" Pattern="\bOK\s*$"/>
+        <Highlight Priority="100" Background="#90D58D" Match="fail.*:\s*[a-z]" Pattern="\bNo\s*$"/>
+        <Highlight Priority="50" Background="#C9C8CF" Match="(errors|fail).*:.*0x" Exclude="\bmap|0x0+\b|0xf+\b" Pattern="0x[0-9a-f]+" Comment="Non-empty error/failure counter."/>
+        <Highlight Priority="50" Background="#C9C8CF" Match="Fault Tolerance"  Pattern="None" Comment="No RAID - logical disk is not fault tolerant."/>
+
+        <Section Match="Logical Drive.+:" Exclude="^Logical">
+          <TreeLink />
+        </Section>
+      </Section>
+
+      <!-- For physical drives - a bit more specific section splitting is required and a hidden value TreeHeader to create proper tree links -->
+      <Section Match="MONITOR AND PERFORMANCE DATA|PHYSICAL DRIVE IDENTIFICATION" InheritFiltering="0">
+        <TreeLink />
+        <SplitAt Match="^\s*SCSI Port.*Drive ID|^\s*Port.*Box.*Bay"/>
+
+        <Highlight Priority="150" Background="#F2D463" Match="drive.failure.map.*0x" Pattern="0x[0-9a-f]*[1-9a-f][0-9a-f]*\b" Exclude="offset" Comment="Non-empty drive failure map"/>
+        <Highlight Priority="150" Background="#F2D463" Match="stat.*:\s*[a-z]" Exclude=":\s*OK\s*$" Pattern="(?&lt;=:\s*)\w.*"/>
+        <Highlight Priority="150" Background="#F2D463" Match="fail.*:\s*[a-z]" Exclude=":\s*No\s*$" Pattern="(?&lt;=:\s*)\w.*"/>
+        <Highlight Priority="100" Background="#90D58D" Match="stat.*:\s*[a-z]" Pattern="\bOK\s*$"/>
+        <Highlight Priority="100" Background="#90D58D" Match="fail.*:\s*[a-z]" Pattern="\bNo\s*$"/>
+        <Highlight Priority="50" Background="#C9C8CF" Match="(errors|fail).*:.*0x" Exclude="\bmap|0x0+\b|0xf+\b" Pattern="0x[0-9a-f]+" Comment="Non-empty error/failure counter."/>
+
+        <ValueSeparator Key="Box" Match="Physical Box" Value_Find="\(.*"/>
+        <ValueSeparator Key="Bay" Match="Physical Bay" Value_Find="\(.*"/>
+        <ValueSeparator Key="Port" Match="Physical Connector" Value_Find="\(.*"/>
+        <ValueSeparator Key="Vendor" Match="Vendor"/>
+        <ValueSeparator Key="Model" Match="product id|drive model"/>
+        <ValueSeparator Match="block.*:" Exclude="reserved" Value_Find="/?sector.*"/>
+        <ValueSeparator Match="type.*:" Exclude="reserved" Value_Find="0x[0-9a-f]+"/>
+        <ValuePattern Key="TreeHeader" PatternValue="(?&lt;=^\s*)Port.*Box.*Bay.*" Hide="1"/>
+        <ValuePattern Key="TreeHeader" PatternValue="SCSI Port.*?(?=,)" Hide="1"/>
+        <Section Match="Port">
+          <TreeLink Composite="{TreeHeader}"/>
+        </Section>
+      </Section>
+      
+      <!-- All other sections do not require further splitting, so just create tree links for them -->
+      <Section Match="^[A-Z]" Exclude="^SLOT\s|^Logical Drive|MONITOR AND PERFORMANCE DATA|PHYSICAL DRIVE IDENTIFICATION" InheritFiltering="0">
+        <TreeLink />
+      </Section>
+    </Section>
+  </File>
+</Template>

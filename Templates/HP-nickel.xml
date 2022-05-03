@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP Nickel [4]" ScanDepth="0">
+  <!-- Setting scan depth to 0, because all files we expect to detect are in root nickel directory -->
+  <Detect Match="ioscan2?.html|fcmsutil.html|EMS-Event.log.html"/>
+
+  <File Match="syslog.log" KeepUnsectionedSource="1">
+    <!-- Split into individual messages - required for values extraction for nav tree -->
+    <SplitAt Match=": |above message"/>
+    <!-- Highlights -->
+    <Highlight Priority="200" Background="LightCoral" Pattern="\bMCA\b" Comment="Machine Check Abort - often critical issue, usually hardware"/>
+    <Highlight Priority="200" Background="LightCoral" Pattern="Critical|overtemp\w*|\bnode.*died"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="Fail\w*" Exclude="failfast|disable|password|authentication|failover"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="error\w*" Exclude="Permission\s*denied"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="serious|unhandled\s*interrupt|Lost\s*quorum"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="\w*Warning\w*|disappear\w*|file\s*system\s*full|unsupported"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="disable\w*" Exclude="Optimization|tuneable|package"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="(SCSI\W*)?(request\s*timeout|bus\s*hang)"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="(SCSI\W*)?bus\s*reset" Comment="Indicates there are communication problems on SCSI bus and attempt is being made to recover that by resetting that bus."/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="switched from|switched to\b|(?&lt;=switched\b.*)\bTO\b" Comment="A resource was switched to another one. Could indicate a problem with original resource."/>
+    <Highlight Priority="0"   Background="LightBlue"  Pattern="(?&lt;=switched from\W*)\S*|(?&lt;=switched.*\bTO\b\W*)\S*|\b\S*(?=\W*switched to)" Comment="A resource was switched to another one. Could indicate a problem with original resource."/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="not responding"/>
+    <!-- Values -->
+    <ValuePattern Key="Source" PatternValue="\b\S+\s?(\[\S+)?(?=: )" Value_Find="\s*\[.*\]" Hide="1"/>
+    <!-- Create tree links by "Source" value for all messages but "above message" and request to hide subsections -->
+    <Section Match="." Exclude="above message" Hide="1">
+      <TreeLink Composite="{Source}"/>
+    </Section>
+  </File>
+
+  <File Match="dmesg">
+    <Pre_Clean Find="&lt;A HREF=.*|&lt;.*&gt;|^\s*$" RemoveEmptyLines="1"/>
+    <!-- Highlights -->
+    <Highlight Priority="200" Background="LightCoral" Pattern="\bMCA\b" Comment="Machine Check Abort - often critical issue, usually hardware"/>
+    <Highlight Priority="200" Background="LightCoral" Pattern="Critical|overtemp\w*"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="Fail\w*" Exclude="failfast|disable|password|authentication|failover"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="error\w*" Exclude="Permission\s*denied"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="serious|unhandled\s*interrupt|Lost\s*quorum|mismatch\w*"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="\w*Warning\w*|disappear\w*|file\s*system\s*full|unsupported"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="disable\w*" Exclude="Optimization|tuneable|package"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="(SCSI\W*)?(request\s*timeout|bus\s*hang)"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="(SCSI\W*)?bus\s*reset" Comment="Indicates there are communication problems on SCSI bus and attempt is being made to recover that by resetting that bus."/>
+  </File>
+
+  <File Match="rc.log" KeepUnsectionedSource="1">
+    <Detect Match="/etc/rc.log"/>
+    <Pre_Clean Find="^.*&lt;HEAD&gt;.*$" Replacement="NOTE: This log file contains results of HP-UX startup sequence of THIS or PREVIOUS boot."/>
+    <Pre_Clean Find="^\s*&lt;/?\w.*"/>
+    <Pre_Clean Find="\n(\s*\n){2,}" Replacement="&#xA;&#xA;" AsSingleLine="1"/>
+    <SplitAt Match="^Output from" Offset="-1"/>
+    <Highlight Priority="0"   Background="LightBlue"  Pattern="^NOTE: This log.*"/>
+    <Section Match="^" Exclude="^NOTE:">
+      <ValuePattern Key="Status" PatternValue="Output" Value_Find="Output" Value_Replacement="OK"/>
+      <ValuePattern Key="Status" PatternValue="\bsuccessful\b" AddMode="2" Value_Find="successful" Value_Replacement="OK"/>
+      <ValuePattern Key="Status" PatternValue="\b(FAILED|SKIPPED|NOTICE|WARNING)\b" AddMode="2"/>
+      <ValueSeparator Key="Script" Separator="Output from" Value_Find="&quot;:?"/>
+      <ValueSeparator Key="Description" Separator="^" Value_Find="(?&lt;=.{70}).*$"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="\bFAILED\b"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="\bWARNING\b"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="NOTE: .*"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Status" Pattern="^OK$"/>
+      <Highlight Priority="50"  Background="#C9C8CF"    Pattern="\b(SKIPPED|NOTICE)\b"/>
+    </Section>
+  </File>
+
+
+  <File Match="event\.log">
+    <Detect Match="^&gt;-{10,} Event Monitor"/>
+    <SplitAt Match="^&gt;-{10,} Event Monitor"/>
+    <!-- Highlights -->
+    <Highlight Priority="200" Background="LightCoral" Match="^\s*Severity" Pattern="Critical|Serious" />
+    <Highlight Priority="150" Background="#F2D463"    Match="^\s*Severity" Pattern="(MAJOR)?Warning\w*"/>
+
+    <Section Match="Event Monitoring" KeepUnsectionedSource="1" Rename="{Time} ({Severity}) - {Summary}">
+      <Pre_Clean Find="^&gt;-{2,}.+-{2,}&lt;"/>
+      <SplitAt Match="^Summary|^Description of"/>
+
+      <!-- Values -->
+      <ValueSeparator Key="Time"     Match="Notification time|Event time" AddMode="2"/>
+      <ValueSeparator Key="Severity" Match="Severity"/>
+      <ValueSeparator Key="Event #"  Match="Event #"/>
+      <ValueSeparator Key="Monitor"  Match="Monitor(\.|\s)*:"/>
+      <ValueSeparator Key="PN"       Match="Part number(\.|\s)*:"/>
+      <ValuePattern Key="Summary" PatternValue="Event Monitor Restart"/>
+      
+      <TreeLink Composite="By Severity\\{Severity}"/>
+      <TreeLink Composite="By Monitor\\{Monitor}"/>
+      <!-- Hidden subsection processing to get multi-line event summary.  -->
+      <Section Match="Summary" Hide="1">
+        <ValueSeparator Key="Summary" Exclude="^Summary" Separator="^" AddMode="3" Level="-1"/>
+      </Section>
+    </Section>
+  </File>
+
+
+  <File Match="SFM-Event">
+    <Detect Match="------------\s*Start Event"/>
+    <SplitAt Match="------------\s*Start Event"/>
+    <!-- Highlights -->
+    <Highlight Priority="200" Background="LightCoral" Match="^\s*Severity" Pattern="\b[5-9]\b" />
+    <Highlight Priority="150" Background="#F2D463"    Match="^\s*Severity" Pattern="\b[3-4]\b"/>
+
+    <Section Match="Start Event" KeepUnsectionedSource="1" Rename="{Time} ({Severity}) - {Summary}">
+      <Pre_Clean Find="^\s*-{5,}.+-{5,}"/>
+      <SplitAt Match="^Summary|^Description of"/>
+
+      <!-- Values -->
+      <ValueSeparator Key="Time"     Match="Notification time|Event time"  Exclude="Window" AddMode="2"/>
+      <ValueSeparator Key="Severity" Match="Severity"/>
+      <ValueSeparator Key="Event #"  Match="Event #"/>
+      <ValueSeparator Key="Provider" Match="Provider(\.|\s)*:"/>
+      <ValuePattern Key="Summary" PatternValue="Event Monitor Restart"/>
+
+      <TreeLink Composite="By Severity\\{Severity}"/>
+      <TreeLink Composite="By Provider\\{Provider}"/>
+      <!-- Hidden subsection processing to get multi-line event summary.  -->
+      <Section Match="Summary" Hide="1">
+        <ValueSeparator Key="Summary" Exclude="^Summary" Separator="^" AddMode="3" Level="-1"/>
+      </Section>
+    </Section>
+  </File>
+
+
+  <File Match="cprop.html" DetectPercent="60" KeepUnsectionedSource="1">
+    <Detect Match="#LI_System"/>
+    <Detect Match="#LI_Software"/>
+    <Detect Match="#LI_Network"/>
+    <Detect Match="\[COMPONENT\]: "/>
+
+    <!-- Pre-clean HTML stuff -->
+    <Pre_Clean Find="^\s*&lt;\/?(?!.*title)\w.*$"/>
+    <Pre_Clean Find="^.*&lt;TITLE&gt;([^&lt;]+)&lt;.*$" Replacement="$1"/>
+    <!-- Currently OTLoV doesn't like value keys with square brackets - remove them as part of pre-cleaning -->
+    <Pre_Clean Find="^\s*\["/>
+    <Pre_Clean Find="\]: " Replacement=": "/>
+    <!-- Remove extra empty lines and separator-lines -->
+    <Pre_Clean Find="^\s*(-{5,}|\*{5,}).*"/>
+    <Pre_Clean Find="\n(\s*\n){2,}" Replacement="&#xA;&#xA;" AsSingleLine="1"/>
+
+    <SplitAt Match="^COMPONENT: "/>
+    <Section Match="^COMPONENT: " KeepUnsectionedSource="1" Rename="{COMPONENT}">
+      <ValueSeparator Separator=": " Match="^Component: " Hide="1"/>
+      <TreeLink Composite="{COMPONENT}"/>
+
+      <SplitAt Match="^TABLE: "/>
+      <Section Match="^TABLE: " KeepUnsectionedSource="1">
+        <ValueSeparator Key="Table"    Separator=": "       Match="^Table: " IsTag="1"/>
+        <ValueSeparator Key="Location" Separator=": "       Match="^Location: " Value_Find="This is .*?details\s*: |\.$"/>
+        <ValueSeparator Key="Type"     Separator="this is " Match="^Location: " Value_Find="^an |, with the following.*$| with following.*$"/>
+        <ValueSeparator                Separator=": "        Exclude="^(INSTANCE|TABLE|Hash ID|Location Identifiers|Location): "/>
+        <!-- Status highlights -->
+        <Highlight Priority="200" Background="LightCoral" Match="STATUS(: |$)" Pattern="(?&lt;=:\s+|^)\w.*$" Exclude="\b(OK|Active)\b" Comment="Status is not OK or Active"/>
+        <Highlight Priority="100" Background="#90D58D"    Match="STATUS(: |$)" Pattern="\b(OK|Active)\b"/>
+        <!-- Error type highlights -->
+        <Highlight Priority="200" Background="LightCoral" Match="Error type(: |$)" Pattern="(?&lt;=:\s+|^)\w.*$" Exclude="Single-bit" Comment="Error of not Single-bit type"/>
+        <Highlight Priority="150" Background="#F2D463"    Match="Error type(: |$)" Pattern="Single-bit.*"/>
+        <SplitAt Match="^INSTANCE: "/>
+      </Section>
+    </Section>
+  </File>
+
+
+  <!-- IOSCAN parsing with objects creation -->
+  <File Match="ioscan">
+    <!-- Clean HTML formatting -->
+    <Pre_Clean Find="&lt;A HREF=.*"/>
+    <Pre_Clean Find="&lt;.*?&gt;"/>
+    <!-- Split into individual ioscan outputs -->
+    <SplitAt Match="(^|/)ioscan -f"/>
+    <!-- Highlights -->
+    <Highlight Priority="200" Background="LightCoral" Pattern="NO_HW" Comment="Device is not accessible currently, but it was available previously. Could be normal for some devices like virtual consoles."/>
+    <Highlight Priority="150" Background="#F2D463" Pattern="UNCLAIMED" Comment="No device driver is loaded. Could be normal for some devices, like tape libraries."/>
+    <Section Match="(^|/)ioscan -f" Exclude="outputs| -fenk" KeepUnsectionedSource="1">
+      <!-- Split by each device record -->
+      <SplitAt Match="^\w"/>
+      <TreeLink />
+      <Section Match="." Exclude="h/w path|ioscan" Hide="1">
+        <TreeLink Composite="By HW Type[\\{HW Type}]"/>
+        <TreeLink Composite="{State}"/>
+        <!-- Values -->
+        <ValueSeparator Key="Class" Separator="(UN)?CLAIMED|NO_HW" Order="1" Value_Find="\s.*"/>
+        <ValueSeparator Key="Driver" Separator="(UN)?CLAIMED|NO_HW" Order="1" Value_Find="^.*\s"/>
+        <ValuePattern Key="State" PatternValue="(UN)?CLAIMED|NO_HW"/>
+        <ValueSeparator Key="HW Type" Separator="(UN)?CLAIMED|NO_HW" Value_Find="\s.*"/>
+        <ValueSeparator Key="Description" Separator="(UN)?CLAIMED|NO_HW" Value_Find="^\s*\S+\s*"/>
+        <ValuePattern Key="Device File" PatternValue="\/dev\/\S+" AddMode="0"/>
+        <ValueSeparator Key="HW Path" Separator="(UN)?CLAIMED|NO_HW" Order="1">
+          <Value_Clean Find="^\S+\s*\d+\s*"/>
+          <Value_Clean Find="\s*[a-z].*"/>
+        </ValueSeparator>
+        <!-- Override "HW Type" for SAN/FC devices -->
+        <ValuePattern Key="HW Type" PatternValue="(\d+\.){5,}" Value_Find="^.*$" Value_Replacement="FC DEVICE" AddMode="2"/>
+        <ValuePattern Key="HW Type" PatternValue="\bfcp" Value_Find="^.*$" Value_Replacement="FC INTERFACE" AddMode="2"/>
+      </Section>
+    </Section>
+  </File>
+
+  <File Match="fcmsutil">
+    <!-- Clean HTML formatting -->
+    <Pre_Clean Find="&lt;A HREF=.*"/>
+    <Pre_Clean Find="&lt;.*?&gt;"/>
+    <!-- split into individual fcmsutil outputs -->
+    <SplitAt Match="fcmsutil for"/>
+    <Section Match="fcmsutil for" KeepUnsectionedSource="1">
+      <SplitAt Match="^fcmsutil \/"/>
+      <Clean Find=" is\s+=\s" Replacement=" = "/>
+      <Highlight Priority="150" Background="#F2D463" Match="Driver state" Exclude="ONLINE" Pattern="\w+$" Comment="FC port state is NOT online."/>
+      <Highlight Priority="100" Background="#90D58D" Match="Driver state" Pattern="ONLINE"/>
+      <!-- Values -->
+      <ValuePattern Key="Device file" PatternValue="/dev/\S$"/>
+      <ValueSeparator Separator="\s=\s" Exclude="\b(ID|dump|code|chip|pci|Driver version|number of|sum)\b" Value_Find="&quot;|&apos;"/>
+      <ValueSeparator Separator="\s:\s" Exclude="\b(ID|dump|code|chip|pci|Driver version|number of|sum)\b" Value_Find="&quot;|&apos;" Level="-1"/>
+      <TreeLink Composite="{Device file} at {Hardware Path}"/>
+      <Section Match="^fcmsutil .* stat$"/>
+      <Section Match="^fcmsutil .* vpd$" Hide="1">
+        <Pre_Clean Find="\n(\s{0,5}\w.*)\n(?=\n\s{0,5}\w.*)" Replacement="&#xa;$1" AsSingleLine="1"/>
+      </Section>
+    </Section>
+  </File>
+
+  <File Match="vgdisplay">
+    <!-- Clean HTML formatting -->
+    <Pre_Clean Find="&lt;A HREF=.*"/>
+    <Pre_Clean Find="&lt;.*?&gt;"/>
+    <SplitAt Match="^VG Name"/>
+    <!-- split into ioscan outputs -->
+    <Section Match="^VG Name" KeepUnsectionedSource="1" Rename="{Device file}">
+      <!-- Values -->
+      <ValuePattern  Key="Device file" PatternValue="\/dev\/\S+" AddMode="0"/>
+      <ValuePattern  Key="Type" PatternValue="^\s*\S+ (?=name)"/>
+      <ValuePattern  Key="Type" PatternValue="^\s*\S+ (?=name)" IsTag="1"/>
+      <ValueSeparator Key="Status" Match="Status"  Separator="Status"/>
+      <ValueSeparator              Match="Used PV" Separator="\s{5,}"/>
+      <!-- Highlights -->
+      <Highlight Priority="200" Background="LightCoral" Pattern="stale|unavailable"/>
+      <Highlight Priority="100" Background="#90D58D" Match="Status" Pattern="\bavailable(?=,|\s*$)|\bavailable.syncd\b" />
+      <Highlight Priority="0"   Background="LightBlue" Match="Type" Pattern="\bPV\b" Comment="Physical volume"/>
+      <Highlight Priority="0"   Background="Wheat" Match="Type" Pattern="\bLV\b" Comment="Logical volume (lvol)"/>
+      <TreeLink />
+      <SplitAt Match="---"/>
+      <Section Match="---" Exclude="group">
+        <SplitAt Match="^\s+\S+ Name" Exclude="Alternate"/>
+        <Section Match="Name" Rename="{Device file}"/>
+      </Section>
+      <Section Match="group">
+        <ValueSeparator Key="Status" Match="PVG " Separator="Name"/>
+      </Section>
+    </Section>
+  </File>
+
+  <File Match="ccerrlog">
+    <SplitAt Match="^[0-9]+\s+[A-Z]"/>
+    <!-- split into separate detail messages -->
+    <Section Match="^[0-9]+\s+[A-Z]" KeepUnsectionedSource="1" Rename="#{Number}&#x9;{Level}&#x9;[{Date}|                   ] {Source}&#x9;{Path}&#x9; - [{Keyword}: ]{Message}">
+      <SplitAt Match="^"/>
+      <TreeLink Composite="By Source\\{Source}"/>
+      <!-- Values -->
+      <ValueSeparator Key="Number" Exclude="^"/>
+      <ValuePattern   Key="Number"   Match="^\d" PatternValue="^\d+"/>
+      <ValueSeparator Key="Level"    Match="^[0-9]+\s" Separator="\s+" SeparatorPosition="2" Value_Find="\s.*"/>
+      <ValueSeparator Key="Level"    Match="Alert Level\s\d{1,2}:" Separator="level" Value_Find="(?&lt;=\d):.*"/>
+      <ValueSeparator Key="Date"     Match="Log entry" Separator=": "/>
+      <ValueSeparator Key="Date"     Match="Alert Level .* [0-9]{2}(:[0-9]{2}){2}" Separator="\s[0-9]+:\s"/>
+      <ValueSeparator Key="Source"   Match="^[0-9]+\s" Separator="^(\S+\s+){1}" Value_Find="\s.*"/>
+      <ValueSeparator Key="Path"     Match="^[0-9]+\s" Separator="^(\S+\s+){2}" Value_Find="\s.*"/>
+      <ValueSeparator Key="Keyword"  Match="Keyword" Separator="Keyword:"/>
+      <ValueSeparator Key="Message" Exclude="^"/>
+      <ValueSeparator Key="Source desc" Separator="Logged by" Value_Find="during.*$|encoded.*"/>
+      <ValueSeparator Key="Activity" Match="Logged by" Separator = "during" Value_Find="encoded.*"/>
+      <!-- Take all data fields, if present -->
+      <ValuePattern Key="Data" PatternValue="^0x.*" AddMode="0" Value_Find="encoded.*"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="\*([6-9]|1[0-9])"/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="\*[2-5]"/>
+      <Section Exclude="^([0-9]|Log entry|Alert level|Logged by)|arguments|encoded field" Hide="1">
+        <ValueSeparator Key="Message" Separator="^" Level="-1"/>
+        <Highlight Priority="0" Background="#C9C8CF" Pattern="^.*$"/>
+      </Section>
+    </Section>
+    <Section Match="\*([5-9]|1[0-9])\b"> <TreeLink Composite="5-  Errors"/></Section>
+    <Section Match="\*[2-4]\b"> <TreeLink Composite="2-4 Warnings"/></Section>
+    <Section Match="^\d" Exclude="\*([2-9]|1[0-9])\b"> <TreeLink Composite="0-1 Debug"/></Section>
+  </File>
+
+  <File Match="bdf" KeepUnsectionedSource="1">
+    <Pre_Clean Find="&lt;A HREF=.*|&lt;.*?&gt;|^\s*$" RemoveEmptyLines="1"/>
+    <SplitAt Match="^\S"/>
+    <Section Match="^/" Hide="1">
+      <Highlight Priority="200" Background="LightCoral" Pattern="(99|100)%" Comment="No free space. This might cause problems, especially if on VG00"/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="9[0-8]%" Comment="Low free space."/>
+      <ValuePattern Key="Device file" PatternValue="/dev/\S+"/>
+      <ValuePattern Key="Used space %" PatternValue="\d+%"/>
+      <ValueSeparator Key="Mount point" Separator="\d%"/>
+    </Section>
+  </File>
+
+  <File Match="diskinfo">
+    <Pre_Clean Find="&lt;A HREF=.*|&lt;.*?&gt;"/>
+    <SplitAt Match="/dev/"/>
+    <Section Match="/dev/" Rename="{Device file} - {Vendor} {Product} ({Size})">
+      <ValueSeparator Key="Vendor" Match="vendor"/>
+      <ValueSeparator Key="Product" Match="Product id"/>
+      <ValueSeparator Key="Size" Match="size" Value_Find="^0\s.+" Value_Replacement="n/a"/>
+      <ValuePattern Key="Device file" PatternValue="/dev/\S+" Value_Find=":"/>
+    </Section>
+  </File>
+
+  <File Match="shutdown">
+    <Pre_Clean Find="^.*/TITLE.*" Replacement="NOTE: " />
+    <Pre_Clean Find="&lt;A HREF=.*|^\s*&lt;.*&gt;|^\s*$" RemoveEmptyLines="1"/>
+    <Pre_Clean Find="NOTE: " Replacement=" &#xa;NOTE: If server crash is involved - check if there's corresponding entry in this log. &#xa;NOTE: If there's no entry in the log - most likely a hardware or power crash occured.&#xa; " />
+    <Highlight Priority="35"  Background="LightBlue"  Pattern="^NOTE: If .*"/>
+    <Highlight Priority="200" Background="LightCoral" Pattern="Panic|crash" Exclude="NOTE:|Most"/>
+  </File>
+
+  <File Match="sasinfo">
+    <Detect Match="sasmgr info "/>
+    <Pre_Clean Find="^$" Replacement=" "/>
+    <Pre_Clean Find="&lt;A HREF=.*|&lt;.*?&gt;"/>
+    <SplitAt Match="^(sasmgr info for|saslist info)"/>
+    <Section Match="sasmgr">
+      <SplitAt Match="^sasmgr "/>
+      <ValuePattern Key="Device file" PatternValue="/dev/\S+" AddMode="0"/>
+      <ValuePattern Key="Disk SAS address" PatternValue="0x5[0-9a-f]{15}\b" AddMode="0"/>
+      <ValueSeparator Separator=" : " Key_Exclude="^PCI |\bdump\b" />
+      <Highlight Priority="200" Background="LightCoral" Match="\b(state|status|health)\b" Pattern="DEGRADED"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="\b(state|status|health)\b" Pattern="\b(READY|ONLINE|UP|ENABLED)\b"/>
+      <Highlight Priority="0"   Background="#90D58D"                                      Pattern="\bONLINE\b"/>
+      <Highlight Priority="0"   Background="#C9C8CF"    Match="\b(state|status|health)\b" Pattern="(?&lt;=:\s*)[\w\d].*?(?=\s*$)"  Comment="State not defined in template"/>
+      <Section Match="sasmgr get" KeepUnsectionedSource="1">
+        <SplitAt Match="Info for PHY|---.*DRIVE.*---"/>
+        <TreeLink Composite="{Device file}"/>
+        <Section Match="Info for Phy" Exclude="sasmgr get"> 
+          <TreeLink Composite="- PHY channels"/>
+        </Section>
+        <Section Match="---.*physical" KeepUnsectionedSource="1">
+          <SplitAt Match="/dev/r?dsk"/>
+          <TreeLink Composite="Physical drives (standalone)"/>
+          <Section Match="/dev/r?dsk" Hide="1">
+            <ValueSeparator Key="Enclosure" Separator=" {2,}" SeparatorPosition="1" Value_Find="\s.*"/>
+            <ValueSeparator Key="Bay"       Separator=" {2,}" SeparatorPosition="2" Value_Find="\s.*"/>
+            <ValueSeparator Key="Size"      Separator=" {2,}" SeparatorPosition="3" Value_Find="\s.*"/>
+          </Section>
+        </Section>
+        <Section Match="---.*logical" KeepUnsectionedSource="1">
+          <TreeLink Composite="Logical drives (RAIDs)"/>
+        </Section>
+      </Section>
+    </Section>
+    <Section Match="saslist" Hide="1">
+      <SplitAt Match="^saslist get"/>
+      <TreeLink Composite="- all"/>
+      <Section Match="saslist get" Hide="1"/>
+    </Section>
+  </File>
+
+  <File Match="netfmt">
+    <Detect Match="/sbin/netfmt"/>
+    <SplitAt Match="^[\*=-]{2,}|&lt;/\w"/>
+    <Section Match="^[\*=-]{2,}" Rename="{Timestamp} - {Subsystem}[ ({Log Class})][ - {Message}]">
+      <ValueSeparator Key="Timestamp" Match="Timestamp"                     Separator=" : "/>
+      <ValueSeparator Key="Subsystem" Match="Subsystem"                     Separator=" : " SeparatorPosition="1"/>
+      <ValueSeparator Key="Log Class" Match="Log class"                     Separator=" : " SeparatorPosition="1"/>
+      <ValueSeparator Key="Message"   Match="\w" Exclude="^[\*=-]{2,}|  : " Separator="^" AddMode="3"/>
+      <ValueSeparator Key="Source"    Match="^[\*=-]{2,}"                   Separator="^" Value_Find="^[\*=-]+|[\*=-]+\W+$"/>
+      <Highlight Priority="150" Background="#F2D463" Match="Log Class" Pattern="ERROR"/>
+    </Section>
+  </File>
+
+  <File Match="partitions|parstatus" KeepUnsectionedSource="1">
+    <Detect Match="\&gt;parstatus\s*\&lt;"/>
+
+    <Pre_Clean Find="^\s*&lt;\/?(?!(.*color=red|title))\w.*$"/>
+    <Pre_Clean Find="^.*&lt;TITLE&gt;.*$" Replacement="Partitions status"/>
+    <Pre_Clean Find="\n(\s*\n){2,}" Replacement="&#xA;&#xA;" AsSingleLine="1"/>
+
+    <SplitAt Match="color=red.*(details|parstatus\s*&lt;)"/>
+    <!-- Highlights of N state -->
+    <Highlight Priority="200" Background="LightCoral" Pattern="(?&lt;= \d+)/\d+(?&lt;!/0)(?=/[0-9N+]+ )" Comment="Non-0 number of failed elements."/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="(?&lt;= \d+/\d+)/N-?(?= )" Comment="Non-redundant state."/>
+    <Highlight Priority="100" Background="#90D58D"    Pattern="N\+" Exclude="Notes:" Comment="N+1 redundant state."/>
+    <Highlight Priority="50"  Background="#C9C8CF"    Pattern="(?&lt;= \d+/\d+)/NA(?= )" Comment="Not applicable redundancy status."/>
+    <!-- Highlights -->
+    <Highlight Priority="200" Background="LightCoral" Pattern="\bdeconfigured\b"/>
+    <Highlight Priority="200" Background="LightCoral" Pattern="\bfailed\b" Exclude="\bfail.*fail"/>
+    <Highlight Priority="200" Background="LightCoral" Pattern="(?&lt;=Deconf.*)\s?\d*[1-9][0-9.]*\s?"/>
+    <Highlight Priority="200" Background="LightCoral" Pattern="HwDeconf\w*"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="(?&lt;= \d+\.\d+/)\d+\.\d+(?= )(?&lt;=[1-9][0-9.]*)" Comment="Non-0 deconfigured counter."/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="inactive|powering on"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="unknown" Exclude="adequacy"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="\s\?\s" Exclude="adequacy"/>
+    <Highlight Priority="100" Background="#90D58D"    Pattern="\bOK(?=\s*$)"/>
+    <Highlight Priority="100" Background="#90D58D"    Pattern="\bactive( core)?" Exclude="location"/>
+    <Highlight Priority="50"  Background="#C9C8CF"    Pattern="Absent" Match="Usage"/>
+    <Highlight Priority="0"   Background="LightBlue"  Pattern="\[[A-Z].*?\]"/>
+    <Highlight Priority="0"   Background="LightBlue"  Pattern="Partitions status"/>
+    <Section Match="parstatus">
+      <TreeLink Composite="-"/>
+      <Pre_Clean Find="&lt;/?\w.*?&gt;"/>
+    </Section>
+    <Section Match="details">
+      <TreeLink />
+      <Pre_Clean Find="^.*color=red&gt;([^&lt;]+details)\s*&lt;.*$" Replacement="$1"/>
+      <SplitAt Match="color=red"/>
+      <Section Exclude="details\s*$">
+        <Pre_Clean Find="^.*color=red&gt;([^&lt;]+)&lt;.*$" Replacement="$1"/>
+      </Section>
+    </Section>
+  </File>
+
+  <File Match="index.html" KeepUnsectionedSource="1">
+    <Detect Match="Collected System Information|system information for"/>
+    <Detect Match="EMS-event|tombstones-ts|nickel"/>
+
+    <!-- Replace BR html tag with new line to preserve formatting -->
+    <Pre_Clean Find="&lt;BR&gt;" Replacement="&#xA;"/>
+    <!-- Some A HREF lines are not indented - indent them with 7 spaces -->
+    <Pre_Clean Find="^&lt;A HREF" Replacement="        &lt;A HREF"/>
+    <!-- Remove unneeded html tags and .nbsp; things - all but FONT opening tag -->
+    <Pre_Clean Find="&lt;(?!FONT)\/?\w.*?&gt;|.nbsp;"/>
+    <!-- Replace FONT COLOR=GREEN as a mark for new subsection -->
+    <Pre_Clean Find="^\s*&lt;FONT.*FACE=.*COLOR=GREEN&gt;(?=\s*\w)" Replacement="# "/>
+    <!-- Remove all leftover html tags -->
+    <Pre_Clean Find="&lt;\/?\w.*?&gt;"/>
+    <!-- Clean excessive empty lines -->
+    <Pre_Clean Find="\n(\s*\n){2,}" Replacement="&#xA;&#xA;" AsSingleLine="1"/>
+    <!-- Ensure uptime is on single line with it's value -->
+    <Pre_Clean Find="(?&lt;=Uptime:)\s*\n\s*(?=\S)" Replacement=" " AsSingleLine="1"/>
+    <!-- Ensure RAM is on single line with it's value -->
+    <Pre_Clean Find="(?&lt;=RAM:)\s*\n\s*(?=\S)" Replacement=" " AsSingleLine="1"/>
+    <!-- Ensure server name is on single line with header -->
+    <Pre_Clean Find="(?&lt;=Collected System Information for)\s*\n\s*(?=\S)" Replacement=" " AsSingleLine="1"/>
+    <!-- Ensure server CPU is on single line -->
+    <Pre_Clean Find="(?&lt;=CPU:[^\n]*)\n\s*(?=\S)" Replacement=" " AsSingleLine="1"/>
+    <!-- Replace TABS with spaces -->
+    <Pre_Clean Find="\t" Replacement="        "/>
+
+
+    <!-- Nickel version highlights -->
+    <Highlight Priority="200" Background="LightCoral" Match="Nickel rev"               Pattern="(?&lt;=Rev:\s*)\S+" Comment="Not IBM nickel version is used!"/>
+    <Highlight Priority="150" Background="#F2D463"    Match="nickel \d" Exclude="2.14" Pattern="\d+\.\d+" Comment="Old or unknown version of nickel was used. Current latest is 2.14"/>
+    <Highlight Priority="100" Background="#90D58D"    Match="nickel \d"                Pattern="2.14" Comment="nickel 2.14 was used - current latest."/>
+    <!-- Uptime highlights -->
+    <Highlight Priority="200" Background="LightCoral" Match="Uptime:" Exclude="day|month|year"         Pattern="(?&lt;=Uptime:\s*)\S.*" Comment="Uptime is less than 1 day."/>
+    <Highlight Priority="150" Background="#F2D463"    Match="Uptime:" Exclude="\d{2}\s*day|month|year" Pattern="(?&lt;=Uptime:\s*)\S.*" Comment="Uptime is less than 10 days."/>
+    <Highlight Priority="100" Background="#90D58D"    Match="Uptime:.*(\d{2}\s*day|month|year)"        Pattern="(?&lt;=Uptime:\s*)\S.*" Comment="Uptime is greater than 10 days."/>
+
+    <SplitAt Match="^# "/>
+
+    <Section Match="Collected" Hide="1">
+      <Pre_Clean Find="^\s+"/>
+      <Pre_Clean Find="^System Information Collected for[^\n]*\n\s*\n" AsSingleLine="1"/>
+      <Highlight Priority="0"   Background="LightBlue"  Match="collect.* for" Pattern="(?&lt;= for )\S+" Comment="Server name"/>
+      <Highlight Priority="0"   Background="LightBlue"  Match="Serial: "      Pattern="(?&lt;=Serial:\s*)\S+"/>
+      <Highlight Priority="0"   Background="LightBlue"  Match="\d:\d+:\d"    Pattern="\S.*" Comment="Date/time of logs collection"/>
+    </Section>
+    <Section Match="Support Tool Manager">
+      <!-- I'm not sure how missing STM logs are visible here, so doing 1 extra step in case of empty subsection - add any text so that highlight could trigger -->
+      <Pre_Clean Find="^(# [^\n]*)(\s|\n)*$" Replacement="$1&#xA;       No STM logs were collected.&#xA;" AsSingleLine="1"/>
+
+      <Highlight Priority="150" Background="#F2D463" Exclude="^# |STM Info|Memory Log Details" Pattern="\S.*" Comment="No STM information collected?"/>
+    </Section>
+
+    <!-- Ensure we keep all subsections -->
+    <Section Match="^# "/>
+  </File>
+
+
+  <File Match="cstm.html">
+    <Detect Match="\bcstm&gt;"/>
+
+    <!-- Header values -->
+    <ValueSeparator Key="Type" Separator=" for "     Match="^\s*-- Info" Value_Find=" on path .*" Hide="1"/>
+    <ValueSeparator Key="Path" Separator=" on path " Match="^\s*-- Info" Value_Find="--$" Hide="1"/>
+    <!-- Double value per line -->
+    <ValueSeparator            Separator=": "        Match=": .*\S.*: " Value_Find="\s{2,}.*$" Value_Exclude="\bN.A\b"/>
+    <ValueSeparator            Separator=": "        Match=": .*\S.*: " Key_Find="^.*\s{2,}" Value_Exclude="\bN.A\b" SeparatorPosition="-1"/>
+    <!-- Single value per line -->
+    <ValueSeparator            Separator=": "        Exclude=": .*\S.*: "
+        Key_Exclude="Log creation|bit \d" Key_Find="/" Key_Replacement="-"
+        Value_Exclude="\bN.A\b|---"          Value_Find="(?&lt;=( |\())\s+|\s+(?=\))"/>
+
+    <SplitAt Match="^\s*-- Info"/>
+
+    <Section Match=" for system" KeepUnsectionedSource="1" InheritValues="0">
+      <Pre_Clean Find="=-\+-[^\n]*(\n|\s)*(?=$|Field repl)" AsSingleLine="1"/>
+      <TreeLink Composite="- System -"/>
+
+      <SplitAt Match="\(FRUID\)"/>
+      <SplitAt Match="=-\+-" Offset="3"/>
+      <Clean Find="=-\+-.*"/>
+
+      <Section Match="\(FRUID\)">
+        <SplitAt Match="^\s*-----" Offset="1"/>
+        <ValueSeparator Key="FRUType"  Separator="FRU name:" Hide="1" Value_Find="\d"/>
+        <ValueSeparator Key="FRU name" Separator="FRU name:"/>
+        <ValueSeparator                Separator=": "        Exclude=": .*: " Key_Find="/"/>
+
+        <Section Match="ID:">
+          <TreeLink Composite="FRUs\\{FRUType}"/>
+        </Section>
+      </Section>
+
+      <Section Match=" for cell" TrimEndLines="1" KeepUnsectionedSource="1">
+        <Pre_Clean Find="=-\+-.*"/>
+        <SplitAt Match="^I\/O Slot\b" Exclude="="/>
+      </Section>
+      <Section Exclude="\(FRUID\)| for system| for cell" TrimEndLines="1">
+        <Pre_Clean Find="=-\+-.*"/>
+        <Pre_Clean Find="(?&lt;=-{5})(\s|\n)+(?=^\s*\|)" Replacement="&#xA;" AsSingleLine="1" RO="3"/>
+      </Section>
+
+
+      <Section Match="Complex info" InheritValues="0">
+        <Highlight Priority="150" Background="#F2D463"    Match="\|\s*\S+\s*\|" Pattern="p|r"/>
+        <Highlight Priority="100" Background="#90D58D"    Match="\|\s*\S+\s*\|" Pattern="o|\*"/>
+      </Section>
+      <Section Match="CPU info" InheritValues="0">
+        <Highlight Priority="200" Background="LightCoral" Match="\|\s*\S+\s*\|" Pattern="\bD\S?\b"/>
+        <Highlight Priority="150" Background="#F2D463"    Match="\|\s*\S+\s*\|" Pattern="\bc\S" Exclude="\bcaM?\b"/>
+        <Highlight Priority="100" Background="#90D58D"    Match="\|\s*\S+\s*\|" Pattern="\bcaM?\b"/>
+      </Section>
+      <Section Match="Cabinet" InheritValues="0">
+        <Highlight Priority="200" Background="LightCoral" Match="\|\s*\S+\s*\|" Pattern="F(?=\s*\|)"/>
+        <Highlight Priority="200" Background="LightCoral"                       Pattern="\bN-"      Comment="Failing state N-."/>
+        <Highlight Priority="150" Background="#F2D463"                          Pattern="\bN(\s|$)" Comment="Non-redundant N state."/>
+        <Highlight Priority="100" Background="#90D58D"                          Pattern="\bN\+"     Comment="Redundant N+1 state."/>
+        <Highlight Priority="100" Background="#90D58D"    Match="\|\s*\S+\s*\|" Pattern="p(?=\s*\|)"/>
+      </Section>
+      <Section Match="for Cell" InheritValues="0">
+        <Highlight Priority="200" Background="LightCoral" Match="\|\s*\S+\s*\|" Pattern="\bD\b"/>
+        <Highlight Priority="100" Background="#90D58D"    Match="\|\s*\S+\s*\|" Pattern="\bC\b"/>
+
+        <Highlight Priority="200" Background="LightCoral" Match="Cell present|cell has power|cell info data|cell to SB| rendezvous " Pattern="\bNo\b"/>
+        <Highlight Priority="100" Background="#90D58D"    Match="Cell present|cell has power|cell info data|cell to SB| rendezvous " Pattern="\bYes\b"/>
+
+        <Highlight Priority="200" Background="LightCoral" Match="SINC_BIB|cell boot inhibit" Pattern="\bYes\b"/>
+        <Highlight Priority="100" Background="#90D58D"    Match="SINC_BIB|cell boot inhibit" Pattern="\bNo\b"/>
+      </Section>
+    </Section>
+
+    <Section Match=" for memory| for IPF_MEMORY" KeepUnsectionedSource="1" InheritValues="0">
+      <TreeLink Composite="Memory"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="Double.bit|Multi.bit" Comment="Double-bit memory error is critical and normally causes a reboot."/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="\bdeconf\b"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="\b\d+\s*\wB\b" Match="Deconfigured memory" Exclude="\b0\s*\wB\b"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="\b\d{4,}\b"    Match="single.bit" Comment="&gt;1000 errors. If ongoing issue - most likely page cannot be deallocated live. A reboot might be required to add page to PDT offline."/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="\b\d+\b"       Match="PDT\b.*used" Exclude="\b0\b"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\b0\b"         Match="PDT\b.*used"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\b0\s*\wB\b"   Match="Deconfigured memory"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="is empty"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\bconfig\b"/>
+      <Highlight Priority="50"  Background="LightBlue"  Pattern="Single.bit(.error)?" Comment="ATTN! A few memory single-bit errors is NOT a reason to replace DIMM.&#xa;Ask for help of HP T2 engineer if unsure.&#xa;Action is required only if one of:&#xa;&#x9;* PDT is significantly populated;&#xa;&#x9;* Many (100s) different pages are affected on single DIMM&#xa;&#x9;* Ongoing errors with high rate"/>
+    </Section>
+
+    <Section Match=" for CPU" KeepUnsectionedSource="1">
+      <TreeLink Composite="CPU"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="\bdeconf\w*"                  Match="\bstate\b" Exclude="Not deconf"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="0x[0-9a-f]*[1-9a-f][0-9a-f]*"                   Exclude="[=:g-wyz]"     Comment="Non-empty fields. Did HPMC error occur? Check timestamp, tombstones and MP logs."/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="(?&lt;=Active:\s*)No"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="Present|not deconf\w*"        Match="\bstate\b" Exclude="Not present"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="(?&lt;=Active:\s*|^)Yes"      Match="Active"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\bNo .* logged"/>
+      <Highlight Priority="50"  Background="#C9C8CF"    Pattern="No CPU|not present"           Match="\bstate\b"/>
+      <Highlight Priority="0"   Background="LightBlue"  Pattern="(?&lt;=Timestamp\s*=\s*)\S.*"                                           Comment="Ensure timestamp is relevant."/>
+      <Highlight Priority="0"   Background="LightBlue"  Pattern="(?&lt;=Log creation time:\s*)\S.*"/>
+      <SplitAt Match="^\s*Processor 0x|^\s*Cab\/\s*$"/>
+      <Section Match="^\s*Processor 0x" InheritValues="0"/>
+      <Section Match=" Cab\/" Rename="Cabinet summary" InheritValues="0"/>
+    </Section>
+
+    <Section Match=" for .* disk| for .* storage">
+      <TreeLink Composite="Storage\\{Type}"/>
+    </Section>
+    <Section Match=" for " Exclude=" for each| for system| for memory| for IPF_MEMORY| for cpu | for .* disk| for .* storage">
+      <TreeLink Composite="Other\\{Type}"/>
+    </Section>
+  </File>
+
+
+  <File Match="cstm_memdtl">
+    <SplitAt Match="^={5,}"/>
+    <SplitAt Match="^={5,}" Offset="1"/>
+
+    <Section Match=":">
+      <ValueSeparator Key="DIMM"   Match="DIMM (slot|location):"/>
+      <ValueSeparator Key="Status" Match="Page status:" Value_Find=":.*" Value_Exclude="^N.?A"/>
+      <ValueSeparator Key="By"     Match="Logged by:"/>
+      <ValueSeparator Key="Type" Exclude="^"/>
+      <ValueSeparator Separator=": " Match="Error"    Key_Find="Error"/>
+      <ValueSeparator Separator=": " Match="Detected" Key_Find="Detected"/>
+
+      <Highlight Priority="200" Background="LightCoral" Match="Type"   Pattern="Double.bit|Multi.bit" Comment="Double-bit memory error is critical and normally causes a reboot."/>
+      <Highlight Priority="150" Background="#F2D463"    Match="Status" Pattern="Pending"              Comment="Page was not yet added to PDT - should be added to PDT on next reboot."/>
+      <Highlight Priority="150" Background="#F2D463"    Match="Count"  Pattern="\b\d{4,}\b"           Comment="&gt;1000 errors. If ongoing issue - most likely page cannot be deallocated live. A reboot might be required to add page to PDT offline."/>
+      <Highlight Priority="50"  Background="LightBlue"                 Pattern="Single.bit(.error)?"  Comment="ATTN! A few single-bit memory errors is NOT a reason to replace DIMM.&#xa;Ask for help of HP T2 engineer if unsure.&#xa;Action is required only if one of:&#xa;&#x9;* PDT is significantly populated;&#xa;&#x9;* Many (100s) different pages are affected on single DIMM&#xa;&#x9;* Ongoing errors with high rate"/>
+    </Section>
+  </File>
+</Template>

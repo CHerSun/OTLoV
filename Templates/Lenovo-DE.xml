@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="Lenovo DE storage [2]">
+  <File DetectPercent="100" KeepUnsectionedSource="1">
+    <!-- File detection patterns -->
+    <Detect Match="^PROFILE FOR STORAGE ARRAY:"/>
+    <Detect Match="STORAGE ARRAY-{15}"/>
+
+    <!-- Remove each line ending whitespaces to reduce processing later. -->
+    <Pre_Clean Find="\s+$"/>
+
+    <!-- Highlight storage name, just for visuals -->
+    <Highlight Priority="0"   Background="LightBlue"  Match="^PROFILE FOR STORAGE ARRAY:" Pattern="(?&lt;=:\s+)\S+" Comment="Storage system name."/>
+    <!-- Status highlights for whole log -->
+    <Highlight Priority="200" Background="LightCoral" Match="Status(:|$)" Exclude="\d" Pattern="\b(Failed)\b"/>
+    <Highlight Priority="100" Background="#90D58D"    Match="Status(:|$)" Exclude="\d" Pattern="\b(Up|Optimal|Online)\b"/>
+    <Highlight Priority="50"  Background="#C9C8CF"    Match="Status(:|$)" Exclude="\d" Pattern="\b(Down|Not Present|Not available|UNKNOWN)\b"/>
+    <!-- Status # Optimal, # Non Optimal highlights for whole log -->
+    <Highlight Priority="150" Background="#F2D463"    Match="Status(:|$)"              Pattern="\b([1-9]|\d{2,}) Non Optimal"/>
+    <Highlight Priority="100" Background="#90D58D"    Match="Status(:|$)"              Pattern="\b0 Non Optimal" Comment="There are NO Non Optimal entries." Exclude="\b0 Optimal"/>
+    <Highlight Priority="50"  Background="#C9C8CF"    Match="Status(:|$)"              Pattern="\b0 Optimal, 0 Non Optimal"/>
+    <!-- Path redundancy status -->
+    <Highlight Priority="100" Background="#90D58D"    Match="Path Redundancy"              Pattern="\bOK\b"/>
+
+    <!-- Split 1st level by 20+ "-" -->
+    <SplitAt Match="-{15,}$"/>
+
+    <!-- STORAGE ARRAY section processing -->
+    <Section Match="STORAGE ARRAY" Exclude=":" KeepUnsectionedSource="1">
+      <Pre_Clean Find="-{15,}$"/>
+      <TreeLink />
+
+      <Highlight Priority="0"   Background="LightBlue"  Exclude="STORAGE ARRAY$|:" Pattern="(?&lt;=^\s*)(?-i)[A-Z]{3,}[A-Z ]*"/>
+
+      <SplitAt Match="^\s*(?-i)[A-Z]{3,}" Exclude=":"/>
+      <!-- HARDWARE SUMMARY subsection - to highlight missing spare drives -->
+      <Section Match="HARDWARE SUMMARY" Hide="1">
+        <ValueSeparator Key="Section" Hide="1" Separator="^"/>
+        <TreeLink Composite="{Section}"/>
+        <Highlight Priority="150" Background="#F2D463" Match="Spare"                   Pattern="\s0(\s|$)"   Comment="NO spare drives are configured."/>
+        <Highlight Priority="150" Background="#F2D463" Match="Standby(:|$)"            Pattern="\s0(\s|$)"   Comment="There are NO available spare drives."/>
+        <Highlight Priority="150" Background="#F2D463" Match="In use" Exclude="\b0\b"  Pattern="\s\d+(\s|$)" Comment="Spare drive(s) used for recovery."/>
+      </Section>
+      <!-- FIRMWARE INVENTORY subsection - to extract values -->
+      <Section Match="FIRMWARE INVENTORY" Hide="1" KeepUnsectionedSource="1">
+        <ValueSeparator Key="Section" Hide="1" Separator="^"/>
+        <TreeLink Composite="{Section}"/>
+        <SplitAt Match="(?-i)[a-z]" Exclude=":|\d"/>
+        <Section Match="(?-i)[a-z]" Exclude=":|\d" Hide="1">
+          <ValueSeparator Key="SubSection" Hide="1" Separator="^"/>
+          <TreeLink Composite="{SubSection}"/>
+        </Section>
+      </Section>
+      <!-- All other subsections, but above ones -->
+      <Section Match="^\s*(?-i)[A-Z]{3,}" Exclude="STORAGE ARRAY$|HARDWARE SUMMARY|FIRMWARE INVENTORY" Hide="1">
+        <ValueSeparator Key="Section" Hide="1" Separator="^"/>
+        <TreeLink Composite="{Section}"/>
+      </Section>
+    </Section>
+
+
+    <!-- Uniform processing of sections with SUMMARY / DETAILS structure -->
+    <Section Match="DISK POOLS|VOLUME GROUPS|SNAPSHOT|SSD CACHE|HOST-TO-VOLUME|VOLUME COPIES|THIN VOLUMES" KeepUnsectionedSource="1">
+      <Pre_Clean Find="-{15,}$"/>
+      <ValueSeparator Key="Section" Hide="1" Separator="^"/>
+      <TreeLink Composite="{Section}"/>
+
+      <Highlight Priority="50"  Background="#C9C8CF"    Match="^\s*Number of " Pattern="\s0(\s|$)" Comment="Unused feature" Exclude=" missing "/>
+      <Highlight Priority="50"  Background="#C9C8CF"    Match="^\s*Total "     Pattern="\s0(\s|$)" Comment="Unused feature"/>
+      <Highlight Priority="0"   Background="LightBlue"                         Pattern="(?&lt;=^\s*)(?-i)(SUMMARY|DETAILS)"/>
+
+      <SplitAt Match="^\s*(?-i)[A-Z]{3,}" Exclude=":"/>
+      <SplitAt Match="^\s*Missing "/>
+      <!-- SUMMARY subsection - just don't hide -->
+      <Section Match="SUMMARY" Hide="1"/>
+      <!-- DETAILS subsection - values and link by name -->
+      <Section Match="DETAILS" Hide="1" KeepUnsectionedSource="1">
+        <SplitAt Match="\bName:"/>
+        <Section Match="Name:">
+          <ValueSeparator Key="Name" Separator=": " Match="Name"/>
+          <ValueSeparator            Separator=": " Exclude="Name"/>
+          <TreeLink Composite="{Name}"/>
+        </Section>
+      </Section>
+    </Section>
+
+
+    <!-- HOST-TO-VOLUME ASSIGNMENTS section - nothing yet -->
+    <Section Match="HOST-TO-VOLUME">
+      <Pre_Clean Find="-{15,}$"/>
+      <ValueSeparator Key="Section" Hide="1" Separator="^"/>
+      <TreeLink Composite="{Section}"/>
+    </Section>
+
+
+    <!-- CONTROLLERS section processing -->
+    <Section Match="CONTROLLERS" KeepUnsectionedSource="1">
+      <Pre_Clean Find="-{15,}$"/>
+      <TreeLink />
+      <SplitAt Match="controller in "/>
+
+      <!-- Individual controller subsection parsing -->
+      <Section Match="controller in " InheritValues="0" KeepUnsectionedSource="1">
+        <Pre_Clean Find="(?&lt;=Processor cache):"/>
+        <!-- Find first-level subsections by indents, skipping empty lines. Add "~end~" to subsection ending line -->
+        <Pre_Clean Find="^(?&lt;s&gt; +(?=[A-Z]))(?&lt;c&gt;[^:,\n]+$(\n +\w[^\n]+)+?(?=\n\k&lt;s&gt;[A-Z]))"
+                   Replacement="${s}${c}   ~end~" AsSingleLine="1" RO="3"/>
+
+        <ValueSeparator Match="controller in " Separator=" in " Value_Find=" - .*"/>
+        <ValueSeparator Match=":" Separator=": "/>
+
+        <Highlight Priority="150" Background="#F2D463"    Pattern="Unable to retr.*"/>
+
+        <TreeLink Composite="{Controller}"/>
+
+        <SplitAt Match="^" Exclude=":"/>
+        <SplitAt Match="~end~" Offset="1"/>
+        <SplitAt Match="Ethernet port:|Drive interface:|Host interface:"/>
+
+        <!-- Pending configuration subsection - to highlight pending changes -->
+        <Section Match="Pending configuration" InheritValues="0">
+          <Pre_Clean Find="\s+~end~"/>
+            <Highlight Priority="150" Background="#F2D463"    Match="Version:" Exclude="\bNone\b" Pattern="(?&lt;=:\s+)\w+"/>
+            <Highlight Priority="100" Background="#90D58D"    Match="Version:"                    Pattern="\bNone\b"/>
+        </Section>
+        <!-- Small subsections, excluding Pending configuration -->
+        <Section Exclude=":|Controller in |^$|Pending configuration" Hide="1" InheritValues="0">
+          <Pre_Clean Find="\s+~end~"/>
+        </Section>
+        <!-- Larger ports/interfaces subsections -->
+        <Section Match="(port|interface):" Hide="1">
+          <Pre_Clean Find="\s+~end~"/>
+          <ValueSeparator Key="Section" Separator=": " Order="1"/>
+          <TreeLink Composite="{Section}"/>
+        </Section>
+      </Section>
+    </Section>
+
+
+    <!-- DRIVES section -->
+    <Section Match="DRIVES" KeepUnsectionedSource="1">
+      <Pre_Clean Find="-{15,}$"/>
+      <ValueSeparator Key="Section" Hide="1" Separator="^"/>
+      <TreeLink Composite="{Section}"/>
+
+      <Highlight Priority="0"   Background="LightBlue"                     Pattern="(?&lt;=^\s*)(?-i)(SUMMARY|DETAILS|BASIC|DRIVE CHANNELS|HOT SPARE COVERAGE)"/>
+      <!-- Hot spare coverage status-->
+      <Highlight Priority="150" Background="#F2D463"    Match="The following volume groups are not protected:" Exclude="All volume groups are protected" Pattern="(?&lt;=:\s+)\w.+"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="The following volume groups are not protected:" Pattern="All volume groups are protected"/>
+
+      <SplitAt Match="^\s*(?-i)DETAILS$"/>
+      <Section Match="(?-i)DETAILS" KeepUnsectionedSource="1" Hide="1">
+        <SplitAt Match="Drive at "/>
+
+        <Section Match="Drive at ">
+          <ValueSeparator Key="LocationPath" Separator=" at " Match="drive at " Hide="1"  Value_Find=", " Value_Replacement="\\"/>
+          <ValueSeparator Key="Location" Separator=" at " Match="drive at "/>
+          <ValueSeparator                Separator=": " Value_Exclude="Not Applicable" Key_Find="/" Key_Replacement="-"/>
+    
+          <Highlight Priority="150" Background="#F2D463"   Match="Read.write accessible" Pattern="\bNO\b"/>
+          <Highlight Priority="0"   Background="LightBlue" Match="Mode(:|$)" Pattern="\bhot spare\b"/>
+          <Highlight Priority="0"   Background="Wheat"     Match="Mode(:|$)" Pattern="\bUnassigned\b"/>
+
+          <TreeLink Composite="By Media\\{Media Type}"/>
+          <TreeLink Composite="By Mode\\{Mode}"/>
+          <TreeLink Composite="{LocationPath}"/>
+          
+        </Section>
+      </Section>
+    </Section>
+
+
+    <!-- DRIVE CHANNELS section -->
+    <Section Match="DRIVE CHANNELS">
+      <Pre_Clean Find="-{15,}$"/>
+      <ValueSeparator Key="Section" Hide="1" Separator="^"/>
+      <TreeLink Composite="{Section}"/>
+
+      <Highlight Priority="150" Background="#F2D463"    Match="Errors:" Exclude="\s0(\s|$)" Pattern="(?&lt;=:\s*)\d+(\s|$)"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="\b(Down)\b"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\b(Up)\b"/>
+    </Section>
+
+
+    <!-- SHELVES section processing -->
+    <Section Match="SHELVES" KeepUnsectionedSource="1">
+      <Pre_Clean Find="-{15,}$"/>
+      <TreeLink />
+
+      <SplitAt Match="Overall Component Information"/>
+
+      <Section Match="Overall Component Information" KeepUnsectionedSource="1">
+        <ValueSeparator Key="Section" Hide="1" Separator="Overall Component" Order="1"/>
+        <TreeLink Composite="{Section}"/>
+
+        <SplitAt Match="Detected:"/>
+
+        <Section Match="Detected:" KeepUnsectionedSource="1">
+          <Pre_Clean Find="^\s+(?=.* detected:)"/>
+          <ValueSeparator Key="SubSection" Hide="1" Separator="detected:" Order="1"/>
+          <TreeLink Composite="{SubSection}"/>
+
+          <SplitAt Match=" status: "/>
+
+          <Section Match=" status: ">
+            <ValueSeparator Key="Type"     Separator="status:" Order="1"/>
+            <ValueSeparator Key="Status"   Separator=": " Match="status:"/>
+            <ValueSeparator Key="Location" Separator=": " Match="location:"/>
+            <ValueSeparator                Separator=": "   Exclude="status:|location:" Value_Exclude="Not (applicable|Available)"/>
+          </Section>
+        </Section>
+      </Section>
+    </Section>
+
+    <!-- Make sure we keep all subsections -->
+    <Section Match="-{15,}$"/>
+  </File>
+</Template>

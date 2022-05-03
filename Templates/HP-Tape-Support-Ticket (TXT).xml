@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP Tape Support Ticket (TXT) [2]">
+  <File KeepUnsectionedSource="1">
+    <Detect Match="^\|__\s*Device\s*$"/>
+
+    <!-- This source is indentation-based. -->
+    <!-- Remove first ("Device") level - we don't need it -->
+    <Pre_Clean Find="^((\|__\s?Device)|(\|__\s?)|(\|\s{1,4})|\s{1,4})"/>
+    <Clean Find="^((\|__\s?)|(\|\s{1,4})|\s{1,4})"/>
+
+    <!-- Split by line starting with "|__" -->
+    <SplitAt Match="^\|__"/>
+
+    <!-- Define global highlights -->
+    <Highlight Priority="200" Background="LightCoral" Match="status|priority|failed" Pattern="crit\b|critical|failed"/>
+    <Highlight Priority="150" Background="#F2D463" Pattern="(?&lt;=:\s*)warning"/>
+    <Highlight Priority="150" Background="#F2D463" Pattern="insufficient margin|problem description"/>
+    <Highlight Priority="150" Background="#F2D463" Pattern="test unit ready" Exclude="status good" Comment="Test Unit Ready (TUR), sometimes also called Polling, could cause problems with backup."/>
+    <Highlight Priority="150" Background="#F2D463" Match="error.*:\s*[0-9]*[1-9][0-9]*\s*$" Pattern="[0-9]*[1-9][0-9]*(?=\s*$)" Comment="Non-zero error counter"/>
+    <Highlight Priority="100" Background="#90D58D" Pattern="great margin"/>
+    <Highlight Priority="50"  Background="#C9C8CF" Pattern="Asc.*?\b" Exclude="Time"/>
+    <Highlight Priority="50"  Background="#C9C8CF" Pattern="public loop"/>
+    <Highlight Priority="50"  Background="#C9C8CF" Match="retries.*:\s*[0-9]*[1-9][0-9]*\s*$" Pattern="[0-9]*[1-9][0-9]*(?=\s*$)" Comment="Non-zero retries counter"/>
+
+    <Section Match="^\|__" Exclude="further|explanation| : " KeepUnsectionedSource="1">
+      <!-- Managing first-level subsections separately - want to limit tree generation -->
+
+      <!-- Move indentation of all lines by 1 step left and split by lines starting with "|__". After processing - beautify a bit -->
+      <Pre_Clean Find="^((\|__\s?)|(\|\s{1,4})|\s{1,4})"/>
+      <SplitAt Match="^\|__"/>
+      <Clean Find="^\[a-z].*"/>
+      <Clean Find="^((\|__\s?)|(\|\s{1,4})|\s{1,4})"/>
+
+      <!-- create tree links for first-level items -->
+      <TreeLink />
+
+      <Section Match="^\|__" Exclude="Power-On Count:" Recursive="1" MinLines="2" KeepUnsectionedSource="1">
+        <!-- Now we can use recursive approach for other subsections -->
+
+        <!-- Move indentation of all lines by 1 step left and split by lines starting with "|__". After processing - beautify a bit -->
+        <Pre_Clean Find="^((\|__\s?)|(\|\s{1,4})|\s{1,4})"/>
+        <SplitAt Match="^\|__"/>
+        <Clean Find="^[a-z].*" RemoveEmptyLines="1"/>
+        <Clean Find="^((\|__\s?)|(\|\s{1,4})|\s{1,4})"/>
+
+        <Section Match="Power-On Count:" MinLines="2" >
+          <!-- Parse event log separately. Drive can work only with 1 tape at a time, so it looks sane to split by tape loaded -->
+
+          <!-- Move indentation of all lines by 2 steps left -->
+          <Pre_Clean Find="^((\|__\s?)|(\|\s{1,4})|\s{1,4}){1,2}"/>
+
+          <!-- Split into subsections by tape unloaded event and by fw/hw variant message -->
+          <SplitAt Match="Tape_unloaded_ok|Firmware variant|Hardware variant"/>
+
+          <!-- Extract tape information -->
+          <ValueSeparator Key="SN1" Separator="\(SN\):" Value_Find="_"/>
+          <ValueSeparator Key="SN2" Separator="\(SN\):" AddMode="2" Value_Find="_"/>
+          <ValueSeparator Key="CartridgeSN" Separator="Cartridge SN:" AddMode="3" Value_Find="_"/>
+          <ValueSeparator Key="Barcode" Separator="\(Barcode\):" AddMode="3" Value_Find="_"/>
+
+          <!-- Link "Power-On Count" into "Event log" on navigation tree -->
+          <TreeLink Composite="Event log"/>
+
+          <!-- For subsections not related to tape operation - just hide headers -->
+          <Section Exclude="Tape_unloaded_ok|Power-On Count:" Hide="1" />
+          <!-- For subsections related to tape operation - hide headers and create additional structure by tape IDs -->
+          <Section Match="Tape_unloaded_ok" Hide="1">
+            <TreeLink Composite="[Tape: [Barcode {Barcode}, ][cSN {CartridgeSN}, ][SN {SN1}{SN2}]]"/>
+          </Section>
+        </Section>
+      </Section>
+    </Section>
+  </File>
+</Template>

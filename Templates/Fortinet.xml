@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="Fortinet diagnose output [2]">
+  <File DetectPercent="60" KeepUnsectionedSource="1">
+    <Detect Match="Serial number.*diagnose output"/>
+    <Detect Match="FortiWifi"/>
+    <Detect Match="^### get system status"/>
+
+    <SplitAt Match="^### "/>
+
+    <ValueSeparator Separator="^### " Key="Section" Hide="1"/>
+
+    <Section Match="system status">
+      <TreeLink Composite="{Section}"/>
+    </Section>
+
+    <Section Match="system performance status">
+      <TreeLink Composite="{Section}"/>
+      <Highlight Priority="200" Background="LightCoral" Match="Memory.*states:"              Pattern="\b(\d{3,}|9\d)\s*%(?=\s*used)"     Comment="Memory usage &gt;=90%"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="CPU.*states:"                 Pattern="\b(\d{3,}|[89]\d)\s*%(?!\s*idle)"  Comment="CPU usage &gt;=80%"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="CPU.*states:"                 Pattern="\b(\d|1\d)\s*%(?=\s*idle)"         Comment="Idle CPU usage &lt;20% (CPU usage &gt;=80%)"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="Memory.*states:"              Pattern="\b(8\d)\s*%(?=\s*used)"            Comment="Memory usage 80%-89%"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="Uptime:.*(\d{4,}|3\d{2})\s*days" Pattern="(?&lt;=Uptime:\s*)\S.*(?=\s*$)"    Comment="Uptime &gt;=300 days"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="CPU.*states:"                 Pattern="\b(\d{3,}|[2-9]\d)\s*%(?=\s*idle)" Comment="Idle CPU usage &gt;=20% (CPU usage &lt;80%)"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Memory.*states:"              Pattern="\b(\d|[0-7]\d)\s*%(?=\s*used)"     Comment="Memory usage &lt;80%"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Uptime:" Exclude="(\d{4,}|3\d{2})\s*days" Pattern="(?&lt;=Uptime:\s*)\S.*(?=\s*$)"    Comment="Uptime &lt;300 days"/>
+    </Section>
+
+    <Section Match="diagnose hardware sysinfo shm">
+      <TreeLink Composite="{Section}"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="conserve mode:.*\bon\b"          Pattern="(?&lt;=mode:\s*)\S.*(?=\s*$)" Comment="Conserve mode is ON"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="conserve mode:.*\boff\b"          Pattern="(?&lt;=mode:\s*)\S.*(?=\s*$)" Comment="Conserve mode is OFF"/>
+    </Section>
+
+    <Section Match="diagnose ip router" KeepUnsectionedSource="1">
+      <TreeLink Composite="{Section}"/>
+      <SplitAt Match="^\s*interface "/>
+      <Section Match="^\s*interface ">
+        <TreeLink Composite="{Interface}"/>
+        <ValueSeparator Key="Interface"                   Separator=" "    SeparatorPosition="-1" Match="^\s*interface"/>
+        <ValueSeparator Pattern="(?&lt;=^|,)[^,]+(?=$|,)" Separator=" is "                        Match=" is "/>
+        <ValueSeparator Pattern="\b[a-z].*? \d+\b"        Separator=" "                           Match="Index "/>
+        <ValuePattern Key="Flags" PatternValue="&lt;[a-z][^&gt;]*&gt;" Value_Find="[&lt;&gt;]"/>
+        <ValuePattern Key="Counters" PatternValue="(?&lt;=errors|collisions|CRC|dropped|multicast packets)\s*\d*[1-9]\d*\b" Value_Find="^.*$" Value_Replacement="Yes" AddMode="2"/>
+        <Highlight Priority="150" Background="#F2D463"     Pattern="(?&lt;=errors|collisions|CRC|dropped|multicast packets)\s*\d*[1-9]\d*\b" Comment="Non-0 counter"/>
+        <Highlight Priority="150" Background="#F2D463"     Match="Counters"  Pattern="Yes" Comment="Non-0 counters are present"/>
+        <Highlight Priority="100" Background="#90D58D"     Match="index|flags"     Pattern="\b(UP|RUNNING)\b"/>
+      </Section>
+    </Section>
+
+    <Section Match="auto-update versions" KeepUnsectionedSource="1">
+      <TreeLink Composite="{Section}"/>
+      <SplitAt Match="^\s*-{5,}" Offset="-1"/>
+      <Section Exclude="^### " InheritValues="0">
+        <ValueSeparator Separator="^" Key="Name"/>
+        <ValueSeparator Separator="^" Key="Address" Match="^\s*\d+(\.\d+){3}"/>
+        <ValueSeparator Separator=": "/>
+        <Highlight Priority="150" Background="#F2D463" Match="Result(?=:|$)" Pattern="Unauthorized"/>
+        <Highlight Priority="100" Background="#90D58D" Match="Result(?=:|$)" Pattern="Updates installed"/>
+      </Section>
+    </Section>
+
+    <Section Match="checksum show" KeepUnsectionedSource="1">
+      <TreeLink Composite="{Section}"/>
+      <Pre_Clean Find="^(### .*?)$" Replacement="$1&#xA;NOTE: Compare debugzone and checksum values - they must be the same." AsSingleLine="1" RO="3"/>
+      <Highlight Priority="35"  Background="LightBlue" Pattern="^NOTE: Comp.*"/>
+      <SplitAt Match="^\s*(debugzone|checksum)"/>
+      <Section Match="^\s*(debugzone|checksum)" Hide="1">
+        <ValueSeparator Key="Name" Separator="^"/>
+        <ValueSeparator />
+      </Section>
+    </Section>
+
+    <Section Match="get hardware nic">
+      <TreeLink Composite="get hardware nic\\{System_Device_Name}"/>
+      <ValueSeparator Separator="\s{2,}|\t"/>
+      <ValueSeparator Key="System_Device_Name" Exclude="^"/>
+      <ValueSeparator Key="State"  Exclude="^"/>
+      <ValueSeparator Key="Link"   Exclude="^"/>
+      <ValueSeparator Key="Speed"  Exclude="^"/>
+      <ValueSeparator Key="Duplex" Exclude="^"/>
+      <ValueSeparator Key="vlanid" Exclude="^"/>
+      <!-- State highlights -->
+      <Highlight Priority="200" Background="LightCoral"  Match="state|link" Pattern="\bdown\b"/>
+      <Highlight Priority="100" Background="#90D58D"     Match="state|link" Pattern="\bup\b"/>
+      <!-- Counters highlights -->
+      <Highlight Priority="150" Background="#F2D463"     Match="errors|collisions|CRC|dropped|multicast" Pattern="\b\d*[1-9]\d*\b" Comment="Non-0 counter"/>
+    </Section>
+
+    <Section Match="debug crashlog">
+      <TreeLink Composite="{Section}"/>
+      <Highlight Priority="150" Background="#F2D463"     Pattern="signal \d+"/>
+    </Section>
+
+    <!-- Ensure we keep all sections -->
+    <Section Match="^### " InheritValues="0"/>
+  </File>
+</Template>

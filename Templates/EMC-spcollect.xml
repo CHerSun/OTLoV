@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="EMC spcollect [2]" ScanDepth="0">
+  <Detect Match="^SP[AB]_(cfg_info|navi_getlog).txt"/>
+
+  <File Match="SP[AB]_cfg_info.txt">
+    <SplitAt Match="^\*{9,}$|^Information from" Offset="1"/>
+
+    <Section Match="!lustat info">
+      <TreeLink Composite="LU stat"/>
+      <Highlight Priority="200" Foreground="LightCoral" Pattern="\(DEAD\)"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="\bBRK"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\bENA\b"/>
+      <Highlight Priority="0"   Background="LightBlue"  Pattern="HotSpare"/>
+      <Highlight Priority="0"   Foreground="#C9C8CF"    Pattern="\(S:\d+\)"/>
+    </Section>
+
+
+    <Section Match="!spsinfo info" KeepUnsectionedSource="1">
+      <TreeLink Composite="SPS info"/>
+      <Highlight Priority="150" Background="#F2D463" Match="Ignore SPS" Pattern="\bYES\b"/>
+      <Highlight Priority="100" Background="#90D58D" Match="Ignore SPS" Pattern="\bNO\b"/>
+      <Highlight Priority="150" Background="#F2D463" Match="SPSSupport" Pattern="\bNO\b"/>
+      <Highlight Priority="100" Background="#90D58D" Match="SPSSupport" Pattern="\bYES\b"/>
+      <Highlight Priority="100" Background="#90D58D"                    Pattern="No problems"/>
+      <Highlight Priority="49"  Background="#C9C8CF"                    Pattern="unsupported"/>
+      <ValueSeparator Separator=" : "/>
+
+      <SplitAt Match="SPS information:"/>
+      <SplitAt Match="^\s*$" Offset="1"/>
+      <Section Match="SPS information:" Hide="1"/>
+    </Section>
+
+
+    <Section Match="!cmledinfo info" KeepUnsectionedSource="1">
+      <TreeLink Composite="LED info"/>
+      <Highlight Priority="200" Background="LightCoral"                   Pattern="\b(FAULT)\b" Exclude="status|did not turn on|fault LED"/>
+      <Highlight Priority="200" Background="LightCoral" Match="Fault LED" Pattern="\b(ON)\b"    Exclude="did not turn on"/>
+      <Highlight Priority="100" Background="#90D58D"                      Pattern="\S+ did not turn on.*fault LED"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Fault LED" Pattern="\b(OFF)\b"/>
+    </Section>
+
+
+    <Section Match="!spstat info" KeepUnsectionedSource="1">
+      <Pre_Clean Find="\s+{x\d+}"/>
+      <Pre_Clean Find="^\s*Transfering FLARE globals\s*$"/>
+      <Pre_Clean Find="(?&lt;=\n{2})\n+" AsSingleLine="1"/>
+      <TreeLink Composite="- System - SPstat"/>
+      <Highlight Priority="150" Background="#F2D463"                    Pattern="\b(REM)\b" Comment="Removed or NOT installed."/>
+      <Highlight Priority="100" Background="#90D58D"                    Pattern="\b(ENA|OK|No flt)\b"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Peer SP" Pattern="\b(Present)\b"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Cache"   Pattern="\b(Enabled)\b"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Peer SP" Pattern="is configured"/>
+      <Highlight Priority="50"  Background="LightBlue"                  Pattern="\b(HSR)\b" Comment="Hot Swap Ready"/>
+      <Highlight Priority="49"  Background="#C9C8CF"                    Pattern="\b(EMPTY)\b"/>
+      <Highlight Priority="49"  Background="#C9C8CF"                    Pattern="\b(UNB)\b" Comment="Unbound"/>
+
+      <SplitAt Match="^SP |\(Bus"/>
+      <Section Exclude="!spstat info"/>
+    </Section>
+
+
+    <Section Match="NavisecCli.exe -np getagent\s*$">
+      <TreeLink Composite="- System -"/>
+      <Highlight Priority="0"   Background="LightBlue" Match="Serial No:" Pattern="(?&lt;=:\s+)\S+"/>
+      <Highlight Priority="0"   Background="LightBlue" Match="Model:"     Pattern="(?&lt;=:\s+)\S+"/>
+    </Section>
+
+
+    <Section Match="NavisecCli.exe -np (getcache\s*$|cache -sp)">
+      <TreeLink Composite="- System - Cache"/>
+      <Highlight Priority="150" Background="#F2D463"   Match="State" Exclude="Enabled"          Pattern="(?&lt;=\s{9})\S.*" Comment="State != Enabled"/>
+      <Highlight Priority="100" Background="#90D58D"   Match="State"                            Pattern="Enabled"/>
+      <Highlight Priority="150" Background="#F2D463"   Match="Cache mirrored" Exclude="\bYES\b" Pattern="(?&lt;=\s{9})\S.*" Comment="State != YES"/>
+      <Highlight Priority="100" Background="#90D58D"   Match="Cache mirrored"                   Pattern="\bYES\b"/>
+      <Highlight Priority="0"   Background="LightBlue" Match="Buffer"                           Pattern="(?&lt;=:\s+)\S+"/>
+      <Highlight Priority="0"   Background="LightBlue" Match="SP[AB] Physical memory"           Pattern="(?&lt;=:\s+)\S+"/>
+    </Section>
+
+
+    <Section Match="NavisecCli.exe -np getrg">
+      <TreeLink Composite="RGs"/>
+      <Highlight Priority="150" Background="#F2D463"   Match="Replacing"  Pattern="\b\d+\s*$"/>
+      <Highlight Priority="100" Background="#90D58D"   Match="Replacing"  Pattern="inactive"/>
+      <Highlight Priority="50"  Background="LightBlue" Match="Type"       Pattern="hot.spare"/>
+      <ValueSeparator             Separator=":"                Exclude="naviseccli|\(" Key_Find="\/"/>
+
+      <SplitAt Match="-{9}|^\s*$" Offset="1"/>
+      <Section Match="\w" Exclude="naviseccli"/>
+    </Section>
+
+
+    <Section Match="NavisecCli.exe -np getdisk\s*$" KeepUnsectionedSource="1">
+      <TreeLink Composite="Disks"/>
+      <Highlight Priority="200" Background="LightCoral" Match="State(:|$)"        Pattern="Removed"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="(Errors|Crossing)(:|$)" Exclude="\b(0|None)\b" Pattern="(?&lt;=\s{9})\S.*" Comment="Non-0 error counter"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="State(:|$)"        Pattern="Enabled"/>
+      <Highlight Priority="50"  Background="LightBlue"  Match="State(:|$)"        Pattern="Hot.?spare.*"/>
+      <Highlight Priority="49"  Background="#C9C8CF"    Match="(State|Type)(:|$)" Pattern="Unbound"/>
+      <Highlight Priority="0"   Foreground="#C9C8CF"    Match="(State|Type)(:|$)" Pattern="Empty"/>
+      <Highlight Priority="0"   Foreground="#C9C8CF"    Exclude="(State|Type)(:|$)" Pattern="Unbound"/>
+      <Highlight Priority="0"   Background="LightBlue"  Match="Drive Type(:|$)"   Pattern="Flash" Comment="Flash drive"/>
+      <Highlight Priority="0"   Background="Wheat"      Match="Drive Type(:|$)"   Pattern="\S+(\s\S+)*$" Exclude="Flash" Comment="Hard drive"/>
+      <ValueSeparator Key="Location" Match="\w" Exclude=":" Separator="^"/>
+      <ValueSeparator Exclude="^" Key="TLA Part Number"/>
+      <ValueSeparator Exclude="^" Key="Vendor Id"/>
+      <ValueSeparator Exclude="^" Key="Product Id"/>
+      <ValueSeparator Exclude="^" Key="Serial Number"/>
+      <ValueSeparator Exclude="^" Key="Capacity"/>
+      <ValueSeparator Exclude="^" Key="Drive Type"/>
+      <ValueSeparator Exclude="^" Key="State"/>
+      <ValueSeparator Separator=":"                Exclude="NavisecCli.exe" Value_Exclude="\bN.A\b|Unbound|not belong|^(0|None)$" Key_Find="Clariion"/>
+      <ValueSeparator Separator=":" Match="State:" Exclude="NavisecCli.exe"/>
+
+      <SplitAt Match="\w" Exclude=":"/>
+      <Section Match="\w" Exclude="NavisecCli.exe" Rename="{Location}[ - {Product Id}][ ({Drive Type})]"/>
+    </Section>
+
+
+    <Section Match="NavisecCli.exe -np getcrus -all\s*$" KeepUnsectionedSource="1">
+      <TreeLink Composite="Enclosures"/>
+      <Highlight Priority="200" Background="LightCoral"                    Pattern="faulted|\*FAULT\*"/>
+      <Highlight Priority="200" Background="LightCoral" Match="Fault"      Pattern="YES"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="State(:|$)" Pattern="(?&lt;=:\s*|^)\S.*" Exclude="Present|Valid|Empty" Comment="Undefined state. Please check."/>
+      <Highlight Priority="100" Background="#90D58D"    Match="State(:|$)" Pattern="Present|Valid"/>
+      <Highlight Priority="50"  Foreground="#C9C8CF"    Match="State(:|$)" Pattern="Empty"/>
+      <ValueSeparator             Separator=":"                Exclude="naviseccli|\(" Key_Find="Bus \d+ enclosure \d+|enclosure |module |current |\/"/>
+      <ValueSeparator Key="Type"  Separator="^"     Match="\w" Exclude=":"  Value_Find="\s.*$"/>
+      <ValuePattern   Key="Fault"    PatternValue="\w" Match="\("              Value_Find="^.*$" Value_Replacement="YES"/>
+      <ValuePattern   Key="Location" PatternValue="Bus \d+ Enclosure \d+"/>
+
+      <SplitAt Match="-{9}|^\s*$" Offset="1"/>
+      <Section Match="\w" Exclude="naviseccli">
+        <TreeLink Composite="{Type}"/>
+      </Section>
+    </Section>
+
+
+    <Section Match="NavisecCli.exe -np port -messner -list -failovermode\s*$" KeepUnsectionedSource="1">
+      <TreeLink Composite="Ports"/>
+      <Highlight Priority="200" Background="LightCoral" Match="Status(:|$)"  Pattern="Down"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Status(:|$)"  Pattern="\b(UP|Online)\b"/>
+      <Highlight Priority="49"  Background="#C9C8CF"    Match="Status(:|$)"  Pattern="Disabled"/>
+      <Highlight Priority="0"   Background="LightBlue"  Match="Present(:|$)" Pattern="\bYES\b"/>
+      <Highlight Priority="0"   Background="LightBlue"                       Pattern="\s*\bA\b"/>
+      <Highlight Priority="0"   Background="Wheat"                           Pattern="\s*\bB\b"/>
+
+      <SplitAt Match="Information about each" Exclude="o[fn] this"/>
+      <Section Match="Information about each HBA" KeepUnsectionedSource="1" TrimStartLines="1">
+        <Pre_Clean Find="Information about each HBA.*"/>
+        <TreeLink Composite="HBA"/>
+        <ValueSeparator Key_Exclude="Server" IsTag="1"/>
+        <ValueSeparator Exclude="^" Key="HBA UID"/>
+        <ValueSeparator Exclude="^" Key="Server Name"/>
+        <ValueSeparator Exclude="^" Key="Server IP Address"/>
+        <ValueSeparator Exclude="^" Key="SP Name"/>
+        <ValueSeparator Exclude="^" Key="SP Port ID"/>
+
+        <SplitAt Match="^\s*$" Offset="1"/>
+        <Section Match="\w" Exclude="\bHBA">
+          <ValueSeparator />
+        </Section>
+      </Section>
+      <Section Match="Information about each" Exclude="\bHBA" KeepUnsectionedSource="1" Hide="1">
+        <TreeLink Composite="{Type}"/>
+        <ValueSeparator Key="Type" Separator="about each" Exclude="o[fn] this" Value_Find=":" Hide="1"/>
+        <ValueSeparator Exclude="^" Key="SP Name"/>
+        <ValueSeparator Exclude="^" Key="SP Port ID"/>
+        <ValueSeparator />
+
+        <SplitAt Match="^\s*$" Offset="1"/>
+        <Section Match="\w" Exclude="Information about each"/>
+      </Section>
+    </Section>
+
+
+    <Section Match="NavisecCli.exe -np ioportconfig -list" KeepUnsectionedSource="1">
+      <TreeLink Composite="IO ports config"/>
+      <ValueSeparator Exclude="^" Key="Type"/>
+      <ValueSeparator Exclude="^" Key="Side"/>
+      <ValueSeparator Exclude="^" Key="ID"/>
+      <ValueSeparator Exclude="^" Key="Slot"/>
+      <ValueSeparator Exclude="^" Key="Logical ID"/>
+      <ValueSeparator Exclude="^" Key="Role"/>
+      <ValueSeparator Exclude="^" Key="State"/>
+      <ValueSeparator Exclude="^" Key="Substate"/>
+      <ValueSeparator Exclude="^" Key="Usage"/>
+      <ValueSeparator Exclude="^" Key="Power state"/>
+
+      <SplitAt Match="Information about each" Exclude="on this"/>
+      <Section Match="Information about each" KeepUnsectionedSource="1" Hide="1">
+
+        <SplitAt Match="\bSP ID:"/>
+        <Section Match="\bSP ID:" KeepUnsectionedSource="1">
+          <Highlight Priority="150" Background="#F2D463"   Match="State(:|$)" Pattern="(?&lt;=:\s*|^)\S.*" Exclude="Present|Enabled|Good|\bON\b|Empty" Comment="Undefined state. Please check."/>
+          <Highlight Priority="100" Background="#90D58D"   Match="State(:|$)" Pattern="Present|Enabled|Good|\bON\b"/>
+          <Highlight Priority="49"  Background="#C9C8CF"   Match="Usage" Pattern="Special"/>
+          <Highlight Priority="0"   Background="LightBlue" Match="Role" Pattern="\b(FE)\b"/>
+          <Highlight Priority="0"   Background="Wheat"     Match="Role" Pattern="\b(BE)\b"/>
+          <ValueSeparator Separator=":" Exclude="naviseccli" Key_Find="Physical |Port |SP |I.?O Module |\/"/>
+          <ValuePattern Key="Type" PatternValue="^I.?O Module|Port"/>
+
+          <SplitAt Match="Physical Port ID:"/>
+          <Section Match="Physical Port ID:"/>
+        </Section>
+      </Section>
+    </Section>
+
+
+    <Section Match="!ioports info" KeepUnsectionedSource="1">
+      <TreeLink Composite="IO ports info"/>
+      <Highlight Priority="150" Background="#F2D463"   Pattern="\b(MISSING|MISS_SFP)\b"/>
+      <Highlight Priority="100" Background="#90D58D"   Pattern="\b(ON|ENABLED|GOOD)\b"/>
+      <Highlight Priority="49"  Background="#C9C8CF"   Pattern="\b(EMPTY|UNKNO(WN)?|SPEC)\b"/>
+      <Highlight Priority="0"   Background="LightBlue" Pattern="\b(FE)\b"/>
+      <Highlight Priority="0"   Background="Wheat"     Pattern="\b(BE)\b"/>
+      <ValueSeparator Key="IOM#" Match="^LOCAL |^PEER " Separator="^" Hide="1"/>
+
+      <SplitAt Match="^LOCAL |^PEER |\*{9,}"/>
+      <Section Match="^LOCAL |^PEER " Hide="1">
+        <TreeLink Composite="{IOM#}"/>
+      </Section>
+    </Section>
+
+
+    <Section Match="!ioports -iomenv" KeepUnsectionedSource="1">
+      <TreeLink Composite="IO ports IOM env"/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="\b(UNKNO(WN)?)\b"/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="I wish I wish.*"/>
+      <Highlight Priority="100" Background="#90D58D" Pattern="\b(OK)\b"/>
+      <ValueSeparator Key="IOM#" Match="^LOCAL |^PEER " Separator="^" Hide="1"/>
+
+      <SplitAt Match="^LOCAL |^PEER |\*{9,}"/>
+      <Section Match="^LOCAL |^PEER " Hide="1">
+        <TreeLink Composite="{IOM#}"/>
+      </Section>
+    </Section>
+
+
+    <Section Match="NavisecCli.exe -np getresume -messner">
+      <TreeLink Composite="Enclosures components"/>
+      <Highlight Priority="0" Background="LightBlue" Match="^\s|Side" Exclude=":" Pattern="\s*\bA\b"/>
+      <Highlight Priority="0" Background="Wheat"     Match="^\s|Side" Exclude=":" Pattern="\s*\bB\b"/>
+      <ValueSeparator Key="Location" Separator="^" Match="^\S"/>
+      <ValueSeparator Key="Type"     Separator="^" Match="^\s" Exclude=":" Value_Find="(\b[AB]\b|\d+|Base module)\s*$" Hide="1"/>
+      <ValueSeparator Key="Unit"     Separator="^" Match="^\s" Exclude=":"/>
+      <ValuePattern   Key="Side"                   Match="^\s" Exclude=":" PatternValue="\b[AB]\b"/>
+      <ValueSeparator                Separator=":"             Exclude="naviseccli|\(" Key_Find="\/" Value_Exclude="\bN.A\b"/>
+
+      <SplitAt Match="-{9}|^\s*$" Offset="1"/>
+      <Section Match="\w" Exclude="naviseccli" Rename="[{Location}][ ({Unit})][ - {Assembly Name}]">
+        <TreeLink Composite="{Type}"/>
+      </Section>
+    </Section>
+
+    <!-- Empty section to ensure we keep everything -->
+    <Section Match="\w" Exclude="#spcollect|from getspids|from naviseccli|information from" InheritValues="0"/>
+  </File>
+
+  <File Match="SP[AB]_navi_getlog.txt" KeepUnsectionedSource="1">
+    <Highlight Priority="200" Background="LightCoral" Pattern="powered down|taken offline|unit shutdown|shutting down|(?&lt;=(to|is) )down"/>
+    <Highlight Priority="200" Background="LightCoral" Pattern="\bfault(?&lt;!not fault)\w*"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="loop down|removed|bus error|suspect BE components|corrupt"/>
+    <Highlight Priority="100" Background="#90D58D"    Pattern="\brestore\w*|inserted|not faulted|rebuild completed|\bAll .* have completed"/>
+    <Highlight Priority="49"  Background="#C9C8CF"    Pattern="media error|fail testing"/>
+    <ValueSeparator Exclude="^" Key="Timestamp"/>
+    <ValuePattern Key="Timestamp" PatternValue="^[ :\d\/]+" Value_Find="(\d{2})\/(\d{2})\/(\d{2,}) (\d{2}):(\d{2}):(\d{2})" Value_Replacement="$3/$1/$2 $4:$5:$6"/>
+    <ValueSeparator Key="Location" Separator="\d:\d{2}:\d{2}" Value_Find="\(.*"/>
+    <ValueSeparator Key="LocationPath" Separator="\d:\d{2}:\d{2}" Hide="1">
+      <Value_Clean Find="\(.*"/>
+      <Value_Clean Find="\s+$"/>
+      <Value_Clean Find="(?&lt;=\b\w+\s+\d+)\s+"         Replacement="\\"/>
+      <Value_Clean Find="(?&lt;=^Bus[^\\]+\\{2}[^\\]+)$" Replacement="\\-"/>
+      <Value_Clean Find="(?&lt;=^Bus[^\\]+)$"            Replacement="\\-"/>
+    </ValueSeparator>
+    <ValuePattern Key="LocationPath" Match="\d:\d{2}:\d{2} N.A" PatternValue="Bus \d+( Encl(osure)? \d+( (Disk|Slot) \d+)?)?" Hide="1" AddMode="2">
+      <Value_Clean Find="\bEncl\b"                    Replacement="Enclosure"/>
+      <Value_Clean Find="\bSlot (\d+)"                Replacement="Disk $1"/>
+      <Value_Clean Find="(?&lt;=\b\w+\s+\d+)\s+"      Replacement="\\"/>
+      <Value_Clean Find="(?&lt;=^[^\\]+\\{2}[^\\]+)$" Replacement="\\-"/>
+      <Value_Clean Find="(?&lt;=^[^\\]+)$"            Replacement="\\-"/>
+    </ValuePattern>
+    <ValuePattern Key="LocationPath" Match="\d:\d{2}:\d{2} N.A" PatternValue="\)Storage Array" Hide="1" AddMode="2" Value_Find="^\)"/>
+    <ValuePattern Key="Reporter"     Match="\d:\d{2}:\d{2} N.A" PatternValue="(?&lt;=\s{9})\w+(\s\w+){0,2}(?=\s*$)"/>
+    <ValueSeparator Key="Message"  Separator="\d:\d{2}:\d{2}" Value_Find="^[^(]*"/>
+
+    <SplitAt Match="\d:\d{2}:\d"/>
+    <Section Match="\d:\d{2}:\d" Hide="1">
+      <TreeLink Composite="{LocationPath}[\\{Reporter}]"/>
+    </Section>
+  </File>
+
+</Template>

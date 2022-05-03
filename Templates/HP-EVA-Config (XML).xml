@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP EVA Config (XML) [2]">
+	<File>
+		<Detect Match="^&lt;eva&gt;\s*$"/>
+
+		<Pre_Clean Find="^\s{2,4}"/>
+
+		<SplitAt Match="\&lt;object\&gt;"/>
+		<Section Match="object" Rename="{Name}" KeepUnsectionedSource="1">
+			<!-- Remove root xml element formatting -->
+			<Pre_Clean Find="^\&lt;(\/)?[a-z]+\&gt;\s*$"/>
+			<!-- Replace xml closing bracket with " = " for elements containing value-->
+			<Pre_Clean Find="\&gt;(?=.*&lt;\/)" Replacement=" = "/>
+			<!-- Remove xml element closing tag for lines with " = " -->
+			<Pre_Clean Find="(?&lt;= = .*)\&lt;\/.*?\&gt;\s*$"/>
+			<!-- Remove empty xml elements -->
+			<Pre_Clean Find="^\s*\&lt;[^\/&gt;]+\/\&gt;\s*$"/>
+			<!-- Remove XML element opening bracket for lines with " =" -->
+			<Pre_Clean Find="\&lt;(?=.* = )"/>
+			<!-- Remove 1 level of indentation -->
+			<Pre_Clean Find="^\s{2}"/>
+
+			<!-- Find values -->
+			<ValueSeparator Key="Name" Match="objectname" Separator="="/>
+			<ValueSeparator Key="Path" Match="objectname" Separator="=" Hide="1">
+				<!-- Remove backslash from beginning and ending -->
+				<Value_Clean Find="^\\|\\$"/>
+				<!-- Replace single backslash with double backslash -->
+				<Value_Clean Find="\\" Replacement="\\"/>
+			</ValueSeparator>
+			<ValueSeparator Key="Model" Match="modelnumber" Separator="="/>
+			<ValueSeparator Key="FW" Match="firmwareversion" Separator="="/>
+			<ValueSeparator Key="Switch" Match="switchtype" Separator="="/>
+			<ValueSeparator Key="Total Space (GB)" Match="totalstoragespacegb" Separator="="/>
+			<ValueSeparator Key="Total Disks" Match="totaldisks" Separator="="/>
+			<ValueSeparator Key="Capacity req (GB)" Match="requestedcapacity" Separator="="/>
+			<ValueSeparator Key="Capacity alloc (GB)" Match="allocatedcapacity" Separator="="/>
+			<ValueSeparator Key="vRAID" Match="redundancy" Separator="=" Value_Find="vraid"/>
+			<ValueSeparator Key="Name" Match="name" Separator="=" Value_Find="n\/a" IsTag="1"/>
+			<ValueSeparator Key="DG" Match="diskgroupname" Separator="=" IsTag="1"/>
+
+			<ValueSeparator Key="State" Match="operationalstate" Separator="="/>
+			<ValueSeparator Key="Size (512B blocks)" Match="formattedcapacity" Separator="="/>
+			<ValueSeparator Key="Size used" Match="occupancy " Separator="="/>
+			<ValueSeparator Key="Type" Match="diskdrivetype|objecttype" Separator="="/>
+			<ValueSeparator Key="RSS" Match="rssid" Separator="="/>
+			<ValueSeparator Key="RSSi" Match="rssindex" Separator="="/>
+			<ValueSeparator Key="ShelfBay" Match="diskbaynumber" Separator="="/>
+			<ValueSeparator Key="Shelf" Match="shelfnumber" Separator="="/>
+
+			<!-- Highlight keywords -->
+			<Highlight Priority="200" Background="LightCoral" Match="state" Exclude="detail" Pattern="failed"/>
+			<Highlight Priority="200" Background="LightCoral" Match="datalostcondition" Pattern="yes" Comment="Element is marked as degraded with data loss"/>
+			<Highlight Priority="200" Background="LightCoral" Match="vraid0storagespacegb" Pattern="(?&lt;== )0\.[0-9]*" Comment="There's no free space in disk group. On disk failure this might prevent leveling from completion."/>
+			<Highlight Priority="150" Background="#F2D463" Match="levelingprogress" Exclude="100" Pattern="[0-9]+" Comment="Leveling is in progress. See if % changes over time if required."/>
+			<Highlight Priority="150" Background="#F2D463" Match="requestedsparepolicy" Pattern="none" Comment="None - provides no spare protection. Can result in stuck leveling."/>
+			<Highlight Priority="150" Background="#F2D463" Match="currentsparepolicy" Pattern="none" Comment="Check if differs from Requested spare policy. None - provides no further spare protection."/>
+			<Highlight Priority="150" Background="#F2D463" Match="writecacheactual" Exclude="back" Pattern="(?&lt;== ).*" Comment="Cache is not in writeback mode. Huge performance drop. Cache batteries failed? Or is it intentional?"/>
+			<Highlight Priority="150" Background="#F2D463" Match="readcache" Exclude="enable" Pattern="(?&lt;== ).*" Comment="Read cache is not enabled. Huge performance drop."/>
+			<Highlight Priority="150" Background="#F2D463" Match="bypassed" Pattern="\b1\b"/>
+			<Highlight Priority="150" Background="#F2D463" Match="state\b"  Pattern="attention|in_progress|unsupported"/>
+			<Highlight Priority="150" Background="#F2D463" Match="status\b" Pattern="(?&lt;==\s*)\w.*$|(?&lt;=^)\w[^=]*$" Exclude="\b(normal|no_alarm|0)\b" Comment="Status is not OK or 0."/>
+			<Highlight Priority="150" Background="#F2D463" Match="condition\b" Pattern="(?&lt;==\s*)\w.*$|(?&lt;=^)\w[^=]*$" Exclude="\b(good|fabric_login)\b|datalostcondition" Comment="Condition is not GOOD or fabric_login."/>
+			<Highlight Priority="150" Background="#F2D463" Match="datalostcondition\b" Pattern="(?&lt;==\s*)\w.*$|(?&lt;=^)\w[^=]*$" Exclude="\b(no)\b" Comment="Data lost condition is not NO."/>
+			<Highlight Priority="100" Background="#90D58D" Match="state\b"  Pattern="\b(installed_good|good|normal)\b"/>
+			<Highlight Priority="100" Background="#90D58D" Match="status\b" Pattern="\b(normal|no_alarm)\b"/>
+			<Highlight Priority="100" Background="#90D58D" Match="condition\b" Pattern="\b(good|fabric_login)\b" Exclude="datalostcondition"/>
+			<Highlight Priority="100" Background="#90D58D" Match="datalostcondition\b" Pattern="\b(no)\b"/>
+			<Highlight Priority="50"  Background="#C9C8CF" Match="state\b"  Pattern="not_present|notinstalled"/>
+			<Highlight Priority="50"  Background="#C9C8CF" Match="totalungroupeddisks" Exclude =" 0" Pattern="[0-9]+" Comment="There are some ungrouped disks"/>
+			<Highlight Priority="50"  Background="#C9C8CF" Match="vraid0storagespacegb" Pattern="(?&lt;== )([0-9]{1,2}|[0-4][0-9]{2})\.[0-9]*" Comment="Less then 500 GB space available to DG. On disk failure this might prevent leveling from completion."/>
+
+			<!-- Create tree links for objects -->
+			<TreeLink Composite="{Path}"/>
+
+			<!-- Split remaining XML recursively, each time reducing indentation to get root xml elements of that level -->
+			<SplitAt Match="^\&lt;[^\/]"/>
+			<SplitAt Offset="1" Match="^\&lt;\/"/>
+			<Section Match="^\&lt;" Recursive="1" KeepUnsectionedSource="1">
+				<!-- Remove this level XML root element closure -->
+				<Pre_Clean Find="^\&lt;\/.*"/>
+				<!-- Remove brackets around XML root element opening -->
+				<Pre_Clean Find="(?&lt;=^\&lt;.*)\&gt;\s*$" Replacement=":"/>
+				<Pre_Clean Find="^\&lt;" Replacement="&gt; "/>
+				<!-- Remove 1 level of indentation to allow recursive parsing -->
+				<Pre_Clean Find="^\s{2}"/>
+				<!-- Define next level parsing by next root element -->
+				<SplitAt Match="^\&lt;[^\/]"/>
+				<!-- Explicitely define section without any matches to prevent default rule to match everything, which would cause duplicates -->
+				<Section Exclude="^"/>
+			</Section>
+		</Section>
+	</File>
+
+</Template>

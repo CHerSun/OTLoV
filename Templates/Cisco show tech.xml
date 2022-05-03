@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="Cisco show tech [2]">
+  <File KeepUnsectionedSource="1">
+    <Detect Match="^-{5,} show running-config"/>
+    <SplitAt Match="^-{5,} [A-Z]{2}"/>
+
+    <ValuePattern Key="Section" Match="^-{5,} [A-Z]{2}" PatternValue="--\s*\w.*?--" Value_Find="^--|--$" Hide="1"/>
+    <Section Match="show interfaces\s*-" Rename="{Section}" KeepUnsectionedSource="1">
+      <TreeLink/>
+      <ValuePattern Key="Name"   PatternValue="^\w[^ ]*"/>
+      <ValuePattern Key="MTU"    PatternValue="MTU.*?bytes" Value_Find="MTU"/>
+      <ValuePattern Key="BW"     PatternValue="BW \d+[^,]*" Value_Find="BW"/>
+      <ValuePattern Key="Type"   PatternValue="^\w[^\d]*" Hide="1" Exclude="Ethernet|Gigabit"/>
+      <ValuePattern Key="Type"   PatternValue="^\w[^\d]*" Hide="1" Match="Ethernet|Gigabit" Value_Find="^.*$" Value_Replacement="Ethernet"/>
+      <ValuePattern Key="Duplex" PatternValue="\b\w*duplex"/>
+      <ValueSeparator Key="Input rate"      Separator="input rate" Value_Find=",.*"/>
+      <ValueSeparator Key="Input pps"       Separator="input rate" Value_Find="^.*,"/>
+      <ValueSeparator Key="Input interval"  Separator="input rate" Order="1"/>
+      <ValueSeparator Key="Output rate"     Separator="output rate" Value_Find=",.*"/>
+      <ValueSeparator Key="Output pps"      Separator="output rate" Value_Find="^.*,"/>
+      <ValueSeparator Key="Output interval" Separator="output rate" Order="1"/>
+      <ValueSeparator Pattern="\w[^,]*" Separator=" " Order="1" Key_Match="input errors|CRC|output errors"/>
+
+      <Highlight Priority="150" Background="#F2D463" Match="input errors|output errors|CRC" Pattern="\b([1-9]|[0-9]{2,})( (input errors|CRC|output errors)|$)"/>
+      <SplitAt Match="line protocol"/>
+      <Section Exclude="show interfaces\s*-">
+        <TreeLink Composite="{Type}"/>
+      </Section>
+    </Section>
+
+    <Section Match="show version\s*-" Rename="{Section}" KeepUnsectionedSource="1">
+      <TreeLink />
+      <Highlight Priority="50" Background="LightBlue" Pattern="(?&lt;=Last reload reason:\s*)\w.*"/>
+      <Highlight Priority="50" Background="LightBlue" Pattern="(?&lt;=Uptime.* is\s*)\w.*"/>
+    </Section>
+
+    <Section Match="show inventory" Rename="{Section}" KeepUnsectionedSource="1">
+      <TreeLink />
+      <SplitAt Match="NAME: "/>
+      <ValueSeparator Key="Name"        Separator="NAME: "  Value_Find="^&quot;|&quot;\s*, .*$"/>
+      <ValueSeparator Key="Description" Separator="DESCR: " Value_Find="^&quot;|&quot;$"/>
+      <ValueSeparator Key="Model"       Separator="PID: "   Value_Find=", .*$"/>
+      <ValueSeparator Key="SN"          Separator="SN: "    Value_Find="^&quot;|&quot;$"/>
+      <Section Match="NAME: " Hide="1"/>
+    </Section>
+
+    <Section Match="show module\s*-" Rename="{Section}" KeepUnsectionedSource="1">
+      <TreeLink />
+      <!-- do a hidden splitting so that we can apply status highlights to tables containing Status last column -->
+      <SplitAt Match="^[-+ ]+[-+][-+ ]+$" Offset="-1"/>
+      <SplitAt Match="^\s*$"/>
+      <Section Match="\s{2,}status\s*$" Hide="1" InheritValues="0">
+        <Highlight Priority="150" Background="#F2D463" Exclude="\bok\b|status" Pattern="\w+(?=\s*$)" Comment="Status is not OK"/>
+        <Highlight Priority="100" Background="#90D58D" Pattern="\bok\b(?=\s*$)"/>
+      </Section>
+      <Section Exclude="show module" Hide="1" InheritValues="0"/>
+    </Section>
+
+    <Section Match="spanning-tree active" Rename="{Section}" KeepUnsectionedSource="1">
+      <SplitAt Match="^\s*VLAN\d+"/>
+      <Section Match="^\s*VLAN\d+">
+        <Highlight Priority="0" Background="#F2D463" Pattern="\bBLK\b"/>
+      </Section>
+    </Section>
+
+    <Section Match="show logging\s*-" Rename="{Section}" KeepUnsectionedSource="1">
+      <TreeLink />
+      <SplitAt Match="\d:\d{2}:\d.*\s%\w[^:]*: "/>
+      <Section Match="\d:\d{2}:\d.*\s%\w[^:]*: " Hide="1" TrimEndLines="1">
+        <ValuePattern Key="Logger" PatternValue="(?&lt;=\d:\d{2}:\d.*\s%)\w[^:]*(?=: )" Value_Find="-.*" Hide="1"/>
+        <ValuePattern Key="Event"  PatternValue="(?&lt;=\d:\d{2}:\d.*\s%)\w[^:]*(?=: )" Value_Find=".*-" Hide="1"/>
+        <TreeLink Composite="{Logger}"/>
+        <Highlight Priority="200" Background="LightCoral" Pattern="(?&lt;!-)\b(disable\w*)\b" Exclude="config_change"/>
+        <Highlight Priority="200" Background="LightCoral" Pattern="\b(exception)\b" Exclude="user request"/>
+        <Highlight Priority="200" Background="LightCoral" Pattern="\b(off)\b" Exclude="user request"/>
+        <Highlight Priority="150" Background="#F2D463"    Pattern="(?&lt;!-)\b(restart\w*)\b"/>
+        <Highlight Priority="150" Background="#F2D463"    Pattern="(?&lt;=to )down"/>
+        <Highlight Priority="0"   Background="LightBlue"  Pattern="(?&lt;=SYS-)[^ ]+(?=-RESTART)"/>
+      </Section>
+    </Section>
+    
+    <!-- Other sections, but ones processed above: rename, but no further processing -->
+    <Section Match="^-{5,} [A-Z]{2}" Exclude="show interfaces\s*-|show version\s*-|show inventory|show module\s*-|spanning-tree active|show logging\s*-" Rename="{Section}"/>
+  </File>
+</Template>

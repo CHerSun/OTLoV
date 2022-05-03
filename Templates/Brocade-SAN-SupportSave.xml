@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="Brocade SAN SupportSave [1]" ScanDepth="0">
+  <!-- Detect by the presence of '*.SSHOW_*' files in the root of the folder (expecting everything being unpacked into 1 folder) -->
+  <Detect Match="\.SSHOW_"/>
+
+  <!-- Highlights
+    <Highlight Priority="200" Background="LightCoral" Pattern="Critical|overtemp\w*|\bnode.*died"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="switched from|switched to\b|(?&lt;=switched\b.*)\bTO\b" Comment="A resource was switched to another one. Could indicate a problem with original resource."/>
+    <Highlight Priority="100" Background="#90D58D"    Match="Status" Pattern="^OK$"/>
+    <Highlight Priority="50"  Background="#C9C8CF"    Pattern="\b(SKIPPED|NOTICE)\b"/>
+    <Highlight Priority="0"   Background="LightBlue"  Pattern="(?&lt;=switched from\W*)\S*|(?&lt;=switched.*\bTO\b\W*)\S*|\b\S*(?=\W*switched to)" Comment="A resource was switched to another one. Could indicate a problem with original resource."/>
+  -->
+
+  <!-- SSHOW_SYS file with ^(SWITCH|CHASSIS)CMD\s formatting inside - system status like: switchshow -->
+  <File Match="SSHOW_SYS" KeepUnsectionedSource="1">
+    <Detect Match="^(SWITCH|CHASSIS)CMD\s"/>
+    <Pre_Clean Find="^\*{10,}$"/>
+    <Pre_Clean Find="\*\* SS CMD END \*\*"/>
+    <Pre_Clean Find="^(Real|User|Sys)\s+0m.*$"/>
+    <Pre_Clean Find="\n{3,}" Replacement="&#xa;&#xa;" AsSingleLine="1"/>>
+    <SplitAt Match="^(SWITCH|CHASSIS)CMD\s"/>
+
+    <Highlight Priority="200" Background="LightCoral" Pattern="^Non-VF$" Comment="Non-VF enabled switch"/>
+    <Highlight Priority="100" Background="#90D58D"    Pattern="^VF$" Comment="VF enabled"/>
+
+    <Section Match="^(SWITCH|CHASSIS)CMD\s" Rename="[{CHASSIS} ]{NAME}[ ({CONTEXT})]" Exclude="sfpshow">
+      <ValueSeparator Key="NAME" Separator="^(SWITCH|CHASSIS)CMD\s(.*/)?" Value_Find=":$"/>
+      <ValueSeparator Key="CONTEXT" Separator=" -- " Match="CURRENT CONTEXT"/>
+      <ValuePattern Key="CHASSIS" PatternValue="CHASSISCMD" Value_Find="^.*$" Value_Replacement="*"/>
+    </Section>
+    <Section Match="switchshow" InheritValues="0">
+      <TreeLink Composite="[{CHASSIS} ]{NAME}[\\{CONTEXT}]"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="In_Sync|No_Sync" Exclude="Disabled"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="No_Light" Exclude="Disabled"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="Online"/>
+      <Highlight Priority="50"  Background="#C9C8CF"    Pattern="In_Sync|No_Sync|No_Light|Disabled.*" Match="Disabled" Exclude="No_module"/>
+      <Highlight Priority="50"  Foreground="#C9C8CF"    Pattern="^.*$" Match="No_module"/>
+      <Highlight Priority="0"   Background="LightBlue"  Pattern="(?&lt;=\s)LD\s"/>
+      <Highlight Priority="0"   Background="Wheat"      Pattern="L?E-port"/>
+    </Section>
+    <Section Match="uptime" InheritValues="0">
+      <TreeLink Composite="[{CHASSIS} ]{NAME}[\\{CONTEXT}]"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="\b[0-9] days?,\s*[0-9]+:[0-9]+"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="\b[1-2][0-9] days,\s*[0-9]+:[0-9]+"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\b([3-9][0-9]|[0-9]{3,}) days,\s*[0-9]+:[0-9]+"/>
+    </Section>
+    <Section Match="sensorshow" InheritValues="0">
+      <TreeLink Composite="[{CHASSIS} ]{NAME}[\\{CONTEXT}]"/>
+      <Highlight Priority="150" Background="#F2D463" Match="Sensor" Pattern="(?&lt;=is )\w+" Exclude="is (ok|absent)"/>
+      <Highlight Priority="100" Background="#90D58D" Match="Sensor" Pattern="(?&lt;=is )Ok"/>
+      <Highlight Priority="50"  Foreground="#C9C8CF" Match="is Absent" Pattern="^.*$"/>
+    </Section>
+    <Section Match="porterrshow" InheritValues="0">
+      <TreeLink Composite="[{CHASSIS} ]{NAME}[\\{CONTEXT}]"/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="(?&lt;=.{18})\s[0-9]*[1-9][.0-9]*[kmg]?\s" Match=":" Exclude=":[0-9]+:"/>
+    </Section>
+
+    <Section Match="sfpshow" Rename="[{CHASSIS} ]{NAME}[ ({CONTEXT})]" KeepUnsectionedSource="1">
+      <ValueSeparator Key="NAME" Separator="^(SWITCH|CHASSIS)CMD\s(.*/)?" Value_Find=":$"/>
+      <ValueSeparator Key="CONTEXT" Separator=" -- " Match="Current CONTEXT"/>
+      <ValuePattern Key="CHASSIS" PatternValue="CHASSISCMD" Value_Find="^.*$" Value_Replacement="*"/>
+      <TreeLink Composite="[{CHASSIS} ]{NAME}[\\{CONTEXT}]"/>
+      <Pre_Clean Find="^={5,}\n(?=Port|Slot)" Replacement="## " AsSingleLine="1" RO="3"/>
+      <Pre_Clean Find="^={5,}$"/>
+      <SplitAt Match="^## "/>
+      <Highlight Priority="50"  Foreground="#C9C8CF"    Pattern="^.*$" Match="Not supported|no .* install"/>
+      <Section Match="^## ">
+        <ValueSeparator Separator=":\s" Value_Find="\(.*" Value_Exclude="Not available"/>
+      </Section>
+    </Section>
+
+    <Section Match="^(SWITCH|CHASSIS)CMD\s" InheritValues="0">
+    </Section>
+  </File>
+
+
+  <!-- SSHOW_EX file with SWITCHCMD formatting inside - errdump -->
+  <File Match="SSHOW_EX" KeepUnsectionedSource="1">
+    <Detect Match="^(SWITCH|CHASSIS)CMD\s"/>
+    <Pre_Clean Find="^\*{10,}$"/>
+    <Pre_Clean Find="\*\* SS CMD END \*\*"/>
+    <Pre_Clean Find="^(Real|User|Sys)\s+0m.*$"/>
+    <Pre_Clean Find="\n{3,}" Replacement="&#xa;&#xa;" AsSingleLine="1"/>>
+    <SplitAt Match="^(SWITCH|CHASSIS)CMD\s"/>
+
+    <Section Match="errdump" Rename="[{CHASSIS} ]{NAME}[ ({CONTEXT})]">
+      <Pre_Clean Find="\n{2,}" Replacement="&#xa;" AsSingleLine="1"/>>
+      <ValueSeparator Key="NAME" Separator="^(SWITCH|CHASSIS)CMD\s(.*/)?" Value_Find=":$"/>
+      <ValueSeparator Key="CONTEXT" Separator=" -- " Match="Current CONTEXT"/>
+      <ValuePattern Key="CHASSIS" PatternValue="CHASSISCMD" Value_Find="^.*$" Value_Replacement="*"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="(?-i)ERROR"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="(?-i)WARNING"/>
+
+      <SplitAt Match="^(20|19)[0-9]{2}"/>
+      <Section Match="^(20|19)[0-9]{2}" Hide="1">
+        <ValuePattern Key="Tree" PatternValue="\[[^\]]+\]" Value_Find="^\[|-.*"/>
+        <TreeLink Composite="{Tree}"/>
+      </Section>
+      
+    </Section>
+    <Section Match="^(SWITCH|CHASSIS)CMD\s" Exclude="errdump">
+    </Section>
+  </File>
+
+</Template>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="SUN ILOM Snapshot [2]" ScanDepth="1">
+  <!-- Setting scan depth to 0, because all files we expect to detect are in root nickel directory -->
+  <Detect Match="ilom\\.*versions"/>
+
+
+  <File Match="fma\\.*fmadm_faulty.out" KeepUnsectionedSource="1">
+    <Highlight Priority="200" Background="LightCoral" Match="\b\d{4}(?:-\d{2}){2}.\d{2}(?::\d{2}){2}|^Sev$" Pattern="Critical"/>
+    <Highlight Priority="150" Background="#F2D463"    Match="\b\d{4}(?:-\d{2}){2}.\d{2}(?::\d{2}){2}|^Sev$" Pattern="Major"/>
+    <Highlight Priority="150" Background="#F2D463"      Pattern="(?&lt;=Fault class :\s*)\S.*"/>
+    <Highlight Priority="100" Background="#90D58D" Pattern="No faults found.*"/>
+    <Highlight Priority="0"   Background="LightBlue" Pattern="(?&lt;=Part number:\s*)\S+"/>
+    <SplitAt Match="\bmsgid\b" Offset="-1"/>
+    <Section Match="-----" Rename="{Time} {UUID} {msgid} ({Sev}) - {FRU}: {Description}">
+      <ValueSeparator Key="Time"  Match="\b\d{4}(?:-\d{2}){2}.\d{2}(?::\d{2}){2}" Separator="^" Value_Find=" .*"/>
+      <ValueSeparator Key="msgid" Match="\b\d{4}(?:-\d{2}){2}.\d{2}(?::\d{2}){2}" Separator=" " Value_Find=" .*" SeparatorPosition="1"/>
+      <ValueSeparator Key="Sev"   Match="\b\d{4}(?:-\d{2}){2}.\d{2}(?::\d{2}){2}" Separator=" " Value_Find=" .*" SeparatorPosition="2"/>
+      <ValueSeparator Key="UUID"  Match="\b\d{4}(?:-\d{2}){2}.\d{2}(?::\d{2}){2}" Separator=" " Value_Find=" .*" SeparatorPosition="0"/>
+      <ValueSeparator Key="FRU"         Match="^FRU"         Exclude="\b\d{4}(?:-\d{2}):2.\d{2}(?::\d{2})" Separator=" : "/>
+      <ValueSeparator Key="Class"       Match="^Fault class" Exclude="\b\d{4}(?:-\d{2}):2.\d{2}(?::\d{2})" Separator=" : "/>
+      <ValueSeparator Key="Description" Match="^Description" Exclude="\b\d{4}(?:-\d{2}):2.\d{2}(?::\d{2})" Separator=" : "/>
+      <ValueSeparator Key="PN"          Match="Part number"  Exclude="\b\d{4}(?:-\d{2}):2.\d{2}(?::\d{2})" Separator=": " Value_Find="\)"/>
+    </Section>
+  </File>
+
+
+  <File Match="fma\\.*faults.log" KeepUnsectionedSource="1">
+    <Highlight Priority="150" Background="#F2D463" Match="fru_|manufacturer" Pattern="UNKNOWN"/>
+    <Highlight Priority="150" Background="#F2D463" Pattern="(?&lt;=fault = )[^@\s]+"/>
+    <Highlight Priority="150" Background="#F2D463" Pattern="(?&lt;=fault = [^@\s]+@)\S+"/>
+    <ValuePattern Key="Timestamp" PatternValue="^\d+-\d+-\d\S+"/>
+    <ValueSeparator Key="MSG"   Separator="\s+" Match="^\s*\d+-\d+-\d" SeparatorPosition="1" Value_Find="@.*"/>
+    <ValueSeparator Key="Fault" Separator=" = " Match="\bfault\b" Value_Find="@.*"/>
+    <ValueSeparator             Separator=" = " Key_Match="FRU(_[a-ln-z]|$)|detector"/>
+    <SplitAt Match="^\d+-\d+-\d"/>
+    <Section Match="^\d+-\d+-\d"/>
+  </File>
+
+
+  <File Match="collect_properties.out" KeepUnsectionedSource="1">
+    <Highlight Priority="0" Background="LightBlue" Pattern="(?&lt;=^Hostname: )\S+"/>
+    <Highlight Priority="0" Background="LightBlue" Pattern="(?&lt;=^Version )\d.*"/>
+
+    <SplitAt Match="^\s*\/[A-Z]"/>
+    <SplitAt Match="^\s*$" Offset="1"/>
+    <Section Match="^\s*\/[A-Z]">
+        <ValueSeparator Key="Path" Separator="^" Match="^\s*/" Hide="1">
+            <Value_Clean Find="^/"/>
+            <Value_Clean Find="/" Replacement="\\"/>
+        </ValueSeparator>
+        <TreeLink Composite="{Path}"/>
+
+        <ValueSeparator Key="Loc" Separator="^" Match="^\s*\/[A-Z]"/>
+        <ValueSeparator Key="Health" Exclude="^"/>
+        <ValueSeparator Separator=" = " Key_Exclude="\d:\d+:\d"/>
+        <Highlight Priority="150" Background="#F2D463" Match="fru_|manufacturer" Pattern="UNKNOWN"/>
+        <Highlight Priority="150" Background="#F2D463" Match="\bhealth\b" Pattern="(?&lt;= =\s+|^)\S.*?(?=\s*$)" Exclude="\bOK\b" Comment="Status is not OK"/>
+        <Highlight Priority="100" Background="#90D58D" Match="\bhealth\b" Pattern="\bOK\b"/>
+    </Section>
+  </File>
+
+
+  <File Match="spshexec_version.out">
+    <Highlight Priority="0"  Background="LightBlue" Pattern="(?&lt;=^Hostname: )\S+"/>
+    <Highlight Priority="0"  Background="LightBlue" Pattern="(?&lt;=^Version )\d.*"/>
+
+    <Highlight Priority="50" Background="LightBlue" Pattern="(?&lt;=^SP f.*: )\S.*"/>
+    <Highlight Priority="50" Background="LightBlue" Pattern="(?&lt;=^SP f[^:]* )\d.*"/>
+  </File>
+
+
+  <File Match="logs@event@list.out">
+    <Highlight Priority="0" Background="LightBlue" Pattern="(?&lt;=^Hostname: )\S+"/>
+    <Highlight Priority="0" Background="LightBlue" Pattern="(?&lt;=^Version )\d.*"/>
+
+    <Highlight Priority="200" Background="LightCoral" Match="\d{2}(?::\d{2}){2}" Pattern="Critical"/>
+    <Highlight Priority="150" Background="#F2D463"    Match="\d{2}(?::\d{2}){2}" Pattern="Major"/>
+    <Highlight Priority="100" Background="#90D58D"    Match="\d{2}(?::\d{2}){2}" Pattern="\bRepair\b"/>
+    <Highlight Priority="0"   Background="LightBlue"  Pattern="(?&lt;=\s)\/\S+"/>
+  </File>
+  
+
+  <File Match="spshexec_show_faulty.out">
+    <Highlight Priority="150" Background="#F2D463" Match="fru_|manufacturer" Pattern="UNKNOWN"/>
+    <Highlight Priority="0" Background="LightBlue" Pattern="(?&lt;=^Hostname: )\S+"/>
+    <Highlight Priority="0" Background="LightBlue" Pattern="(?&lt;=^Version )\d.*"/>
+  </File>
+  
+
+  <File Match="hostconsole.log">
+    <Pre_Clean Find="\n+(?=\n)" AsSingleLine="1"/>
+    <SplitAt Match="\d:\d{2}:\d{2}\s\S+\s\S+?:" Exclude="scsi:.*(Requested block|Vendor|Sense key|ASC):"/>
+    <Section Match="\d:\d{2}:\d{2}\s\S+\s\S+?:" Hide="1">
+      <ValuePattern Key="Reporter" PatternValue="(?&lt;=\d:\d{2}:\d{2}\s\S+\s)\S+?(?=:)" Hide="1" Value_Find="\[.*"/>
+      <TreeLink Composite="{Reporter}"/>
+
+      <Highlight Priority="200" Background="LightCoral" Pattern="critical"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="fatal"    Exclude="sshd"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="WARNING"  Exclude="vxconfigd"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="\bdown\b"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="failure(?= detected)"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="bus reset"/>
+    </Section>
+  </File>
+
+
+  <File Match="vbsc.log">
+    <Highlight Priority="200" Background="LightCoral" Pattern="Critical(?=:)"/>
+    <Highlight Priority="150" Background="#F2D463"    Pattern="WARNING(?=:)"/>
+
+    <SplitAt Match="\d:\d{2}:\d{2}\s\S+:"/>
+    <Section Match="\d:\d{2}:\d{2}\s\S+:" Hide="1">
+      <ValuePattern Key="Severity" PatternValue="(?&lt;=\d:\d{2}:\d{2}\s)\S+(?=:)" Hide="1"/>
+      <TreeLink Composite="{Severity}"/>
+    </Section>
+  </File>
+
+</Template>

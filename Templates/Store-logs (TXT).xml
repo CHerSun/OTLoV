@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="Store.logs (TXT) [3]">
+  <File KeepUnsectionedSource="1">
+    <Detect Match="(Storage|management) controller"/>
+    <Detect Match="This ControllerId:"/>
+
+    <!-- There are several types of headings. Bring them all to the same formatting - "= Header" -->
+    <Pre_Clean Find="=+\n(.*?)\n=+" Replacement="= $1" AsSingleLine="1"/>
+    <Pre_Clean Find="-+\n\s+(show.*?)\n-+" Replacement="= $1" AsSingleLine="1"/>
+    <Pre_Clean Find="##\*+##\n(.*?)\n" Replacement="= $1&#10;" AsSingleLine="1"/>
+
+    <SplitAt Match="^= "/>
+
+    <!-- Base sections (all but show configuration and event logs) -->
+    <Section Match="^= " Exclude="show configuration|configuration section|\s(Log|trace|debug)($|[\s,])" Rename="{Section}">
+      <Pre_Clean Find="^= "/>
+      <ValueSeparator Separator="^" Key="Section" Value_Find="\s*Controller\s*[A|B].*Controller.*" Hide="1"/>
+
+      <Highlight Key="status" Priority="200" Background="LightCoral" Match="status" Pattern="\bdown\b"/>
+      <Highlight              Priority="200" Background="LightCoral" Pattern="\b(down|NOT UP)\b"/>
+      <Highlight Key="status" Priority="150" Background="#F2D463"    Match="status" Pattern="\bwarning\b"/>
+      <Highlight Key="status" Priority="150" Background="#F2D463"    Match="status" Pattern="not redundant"/>
+      <Highlight Key="status" Priority="100" Background="#90D58D"    Match="status" Pattern="redundant" Exclude="not redundant"/>
+      <Highlight              Priority="100" Background="#90D58D"    Pattern="\b(UP|FTOL|OK)\b" Exclude="\bNOT UP\b"/>
+      <Highlight              Priority="50"  Background="#C9C8CF"    Pattern="Not applicable|not present" Comment="Module not installed or missing?"/>
+      
+      <TreeLink Composite="Base"/>
+    </Section>
+
+    <!-- Configuration Section has lots of data in it - needs further processing - work it up separately -->
+    <Section Match="Configuration Section|Show configuration" Rename="{Section}" KeepUnsectionedSource="1">
+      <Pre_Clean Find="^= "/>
+      <ValueSeparator Separator="^" Key="Section" Value_Find="\s*Controller\s*[A|B].*Controller.*" Hide="1"/>
+
+      <Highlight Key="status" Priority="200" Background="LightCoral" Match="status" Pattern="\bdown\b"/>
+      <Highlight              Priority="200" Background="LightCoral" Pattern="\bdown\b"/>
+      <Highlight Key="status" Priority="150" Background="#F2D463"    Match="status" Pattern="\bwarning\b"/>
+      <Highlight Key="status" Priority="150" Background="#F2D463"    Match="status" Pattern="\babsent\b"/>
+      <Highlight Key="status" Priority="150" Background="#F2D463"    Match="status" Pattern="not redundant"/>
+      <Highlight Key="status" Priority="100" Background="#90D58D"    Match="status" Pattern="redundant" Exclude="not redundant"/>
+      <Highlight              Priority="100" Background="#90D58D"    Pattern="\b(UP|FTOL|OK)\b"/>
+      <Highlight              Priority="50"  Background="#C9C8CF"    Pattern="Not applicable|not present" Comment="Module not installed or missing?"/>
+      
+      <!-- Remove FRU understroked lines - useless to formatting -->
+      <Pre_Clean Find="FRU\n---" AsSingleLine="1"/>
+      <!-- Change SKU understroked lines to a header "- SKU" -->
+      <Pre_Clean Find="(Schedule details|SKU|Tasks)\n-{3,}" Replacement="&#10;- $1" AsSingleLine="1"/>
+      <!-- Some tables are stacked together, need to split them apart -->
+      <Pre_Clean Find="\n(-{5,}\n(status|name|encl|cli|license|schedule|vdisk|volume|vc |sensor))" Replacement="&#10;&#10;$1" AsSingleLine="1"/>
+      <!-- Remove trailing separators (full line of minuses followed by empty line) -->
+      <Pre_Clean Find="-{5,}\n\n" Replacement="&#10;&#10;" AsSingleLine="1"/>
+      <!-- Remove heading separators (empty line, full line of minuses) -->
+      <Pre_Clean Find="\n\n-{5,}\n" Replacement="&#10;&#10;" AsSingleLine="1"/>
+      <!-- Finally change lines into headers - text, underscored by full minuses line - to "- " -->
+      <Pre_Clean Find="\n(.*?)\n-{5,}" Replacement="&#10;- $1" AsSingleLine="1"/>
+
+      <!-- split into subsections -->
+      <SplitAt Match="^- |^Name:|^License key:|^Vdisk serial number|^VC volume name|^Volume view|^Host view|^Controller date:"/>
+
+      <Section Match="^- |^License key:|^Vdisk serial number|^VC volume name|^Controller date:" Exclude="FRUs" Rename="{SubSection}">
+        <Pre_Clean Find="^- "/>
+
+        <ValuePattern Key="SubSection" Match="^Ctlr" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Ports status" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^vdisk name" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="VDisks settings" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Sensor" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Sensors" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Status" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Drives status" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Location" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Drives serials" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Encl Encl" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Enclosure" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Encl Ctlr" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Expanders" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Host ID" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Hosts" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Sensor name" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Sensors" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^License key" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="License" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Type" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Sensors" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Name" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="VDisks" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="^Chassis" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Chassis" Hide="1"/>
+        <ValuePattern Key="SubSection" Match="Serial#" PatternValue="." AddMode="1" Value_Find="." Value_Replacement="Drives serials and models" Hide="1"/>
+        <ValuePattern Key="SubSection" PatternValue=".*" Exclude="^$" AddMode="1" Hide="1"/>
+
+        <TreeLink Composite="Configuration\\{SubSection}"/>
+      </Section>
+
+      <Section Match="^Name:" Rename="FRU: {Name}[ - {FRU Locations}]">
+        <TreeLink Composite="Configuration\\FRUs\\{Name}[\\{FRU Location}]"/>
+        <ValueSeparator Separator=": "/>
+      </Section>
+
+      <Section Match="Host view"> 
+        <Pre_Clean Find="^- "/>
+        <TreeLink Composite="Configuration\\Host mapping"/> 
+      </Section>
+
+      <Section Match="Volume view"> 
+        <Pre_Clean Find="^- "/>
+        <TreeLink Composite="Configuration\\Volume mapping"/> 
+      </Section>
+    </Section>
+
+    <!-- Event logs -->
+    <Section Match=" log($|[\s,])" Exclude=" (trace|debug)">
+      <Pre_Clean Find="^= "/>
+      <ValueSeparator Separator="^" Key="Section" Hide="1"/>
+      <TreeLink Composite="- Event logs\\{Section}"/>
+
+      <Highlight Priority="200" Background="LightCoral" Match="(?-i: [CE] (?= [AB]))|\bERROR(?=\s{2})"/>
+      <Highlight Priority="200" Background="LightCoral" Match="\bNMI\b" Comment="Non-Maskable Interrupt - usually a critical hardware issue."/>
+      <Highlight Priority="200" Background="LightCoral" Match="critical error|critical|offline|\bdown|\bfault\w*|\bfail\w*|problem|errors?" Exclude="(?-i: I )|\sINFORMATIONAL\s{2}|Critical Error Log|has cleared|ErrorString|Error.Warning Log|no errors|condition.*cleared|failover|criticality"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="(?-i: W (?= [AB]))|\bWARNING(?=\s{2})"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="warning|invalid" Exclude="has cleared|Error.Warning Log|condition.*cleared|INFORMATIONAL"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="Unwritable.*?cache data" Comment="Cache is partially filled with unwritable data.&#xA;If no volume is specified in the message - consider clearing cache with 'clear cache'.&#xA;If volume is specified - try to restore access to the volume."/>
+      <Highlight Priority="150" Background="#F2D463"    Match="restart\w*|booted up"/>
+      <Highlight Priority="50"  Background="#C9C8CF"    Match="Key,Code,Qual=.*?(?= )|\(Key,Code,Qual.*?\)|(?&lt;=(?-i: I ).*)(error|warning)" Exclude="\bno error"/>
+
+      <Highlight Priority="0"   Background="LightBlue"  Match="(?-i:\b[AB][0-9]*\s{2})" Pattern="(?-i:(?&lt;= [IWEC] ) A |\bA[0-9]*(?=\s{2}))" Comment="Message is from controller A"/>
+      <Highlight Priority="0"   Background="Wheat"      Match="(?-i:\b[AB][0-9]*\s{2})" Pattern="(?-i:(?&lt;= [IWEC] ) B |\bB[0-9]*(?=\s{2}))" Comment="Message is from controller B"/>
+    </Section>
+
+    <!-- Debug logs -->
+    <Section Match=" (trace|debug)($|[\s,])" Exclude="parameters">
+      <Pre_Clean Find="^= "/>
+      <ValueSeparator Separator="^" Key="Section" Hide="1"/>
+      <TreeLink Composite="- Debug logs\\{Section}"/>
+    </Section>
+  </File>
+</Template>

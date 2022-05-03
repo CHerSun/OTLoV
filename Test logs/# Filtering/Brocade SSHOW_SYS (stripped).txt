@@ -1,0 +1,3911 @@
+VF
+======================
+Date:
+Thu Apr 12 02:35:56 GMT+4 2018
+
+Time Zone:
+Time Zone Hour Offset: 4
+Time Zone Minute Offset: 0
+
+Version:
+Kernel:     2.6.14.2
+Fabric OS:  v7.4.2b
+Made on:    Tue Dec 12 02:05:49 2017
+Flash:	    Sat Jan 13 08:11:14 2018
+BootProm:   1.0.16
+
+supportshow groups enabled
+supportShowCfgShow        :
+Unknown key pm:0
+ os         enabled
+ exception  enabled
+ port       enabled
+ fabric     enabled
+ services   enabled
+ security   enabled
+ network    enabled
+ portlog    enabled
+ system     enabled
+ extend     disabled
+ filter     disabled
+ ficon      disabled
+ iswitch    enabled
+ asic_db    enabled
+ fcip       disabled (not applicable to this platform)
+ ag         enabled
+ dce_hsl    enabled
+
+real	0m0.592s
+user	0m0.360s
+sys	0m0.230s
+
+
+myid        :
+CURRENT CONTEXT -- 0 , 128
+
+	Current Switch:  test_san_switch
+	Session Detail:  Unknown (tty returned 'not a tty') N/A  HA-Status-N/A
+
+real	0m0.158s
+user	0m0.150s
+sys	0m0.010s
+
+chkconfig        :
+	Flag                 State               
+	====                 =====               
+
+	agd                  on
+	asd                  off
+	authd                on
+	bmd                  on
+	cald                 on
+	crond                on
+	diag                 on
+	emd                  on
+	essd                 on
+	evmd                 on
+	fabos                on
+	fabosSetDbg          off
+	fabricd              on
+	fcpd                 on
+	fdmid                on
+	ficud                on
+	fspfd                on
+	hamd                 on
+	hmond                on
+	ipc                  on
+	ipsec                off
+	iswitchd             on
+	lfmd                 on
+	mdd                  on
+	msd                  on
+	mtracer              on
+	network              on
+	npd                  on
+	nsd                  on
+	panicdump            on
+	pdmd                 on
+	psd                  on
+	pttest               on
+	raslogd              on
+	rcsd                 on
+	rmd                  on
+	rrd                  on
+	secd                 on
+	setmodem             on
+	snmpd                on
+	sshd                 on
+	superd               on
+	suppress_asserts     off
+	suppress_panic_mode  off
+	suppress_verify      off
+	swdd                 on
+	syslog               on
+	trafd                on
+	tsd                  on
+	vsd                  on
+	wdtd                 on
+	webd                 on
+	zoned                on
+
+real	0m0.003s
+user	0m0.000s
+sys	0m0.000s
+
+firmwareshow -v       :
+CURRENT CONTEXT -- 0 , 128
+Appl     Primary/Secondary Versions 
+------------------------------------------
+FOS      v7.4.2b
+         v7.4.2b
+
+real	0m0.107s
+user	0m0.070s
+sys	0m0.040s
+
+firmwareshow --history       :
+Firmware version history
+
+Sno   Date & Time                      Switch Name                      Slot PID    FOS Version
+1     Sat Jan 13 11:53:36 2018         test_san_switch                          0    1699   Fabos Version 7.1.1c
+
+2     Sat Jan 13 12:13:59 2018         test_san_switch                          0    1881   Fabos Version 7.2.1g
+3     Sat Jan 13 12:31:35 2018         test_san_switch                          0    1905   Fabos Version 7.3.1d
+4     Sat Jan 13 12:45:41 2018         test_san_switch                          0    1920   Fabos Version 7.4.1d
+5     Sat Jan 13 16:11:14 2018         test_san_switch                          0    1916   Fabos Version 7.4.2b
+
+real	0m0.056s
+user	0m0.050s
+sys	0m0.010s
+
+firmwaredownloadstatus        :
+[1]: Sat Jan 13 08:09:14 2018
+Firmware is being downloaded to the switch. This step may take up to 30 minutes.
+
+[2]: Sat Jan 13 08:13:32 2018
+Firmware has been downloaded to the secondary partition of the switch.
+
+[3]: Sat Jan 13 08:15:30 2018
+The firmware commit operation has started. This may take up to 10 minutes.
+
+[4]: Sat Jan 13 08:17:44 2018
+The commit operation has completed successfully.
+
+[5]: Sat Jan 13 08:17:45 2018
+Firmwaredownload command has completed successfully. Use firmwareshow to verify the firmware versions.
+
+
+real	0m0.095s
+user	0m0.090s
+sys	0m0.010s
+
+clihistory --showall       :
+CLI history
+
+Date & Time                      Message
+[stripped]
+
+real	0m0.072s
+user	0m0.060s
+sys	0m0.010s
+
+dbgshow        :
+Module         EM,	debug level = 0, verbose level = 0
+Module      DIAGD,	debug level = 0, verbose level = 0
+Module       WEBD,	debug level = 0, verbose level = 0
+Module        ARR,	debug level = 0, verbose level = 0
+Module         MD,	debug level = 0, verbose level = 0
+Module       CALD,	debug level = 0, verbose level = 0
+Module     CALLIB,	debug level = 0, verbose level = 0
+Module         MS,	debug level = 0, verbose level = 0
+Module       EVMD,	debug level = 0, verbose level = 0
+Module       uESS,	debug level = 0, verbose level = 0
+Module   ESS_RTWR,	debug level = 0, verbose level = 0
+Module     FABRIC,	debug level = 0, verbose level = 0
+Module       FCLS,	debug level = 0, verbose level = 0
+Module   FC_ASYNC,	debug level = 0, verbose level = 0
+Module        IOT,	debug level = 0, verbose level = 0
+Module     FABTRC,	debug level = 0, verbose level = 0
+Module        RCS,	debug level = 0, verbose level = 0
+Module   RCS_RTWR,	debug level = 0, verbose level = 0
+Module         MQ,	debug level = 0, verbose level = 0
+Module   FKIO_LIB,	debug level = 0, verbose level = 0
+Module     SECLIB,	debug level = 0, verbose level = 0
+Module      TSLIB,	debug level = 0, verbose level = 0
+Module    MS_RTWR,	debug level = 0, verbose level = 0
+Module     MS_ARF,	debug level = 0, verbose level = 0
+Module    MSFICON,	debug level = 0, verbose level = 0
+Module   PATHINFO,	debug level = 0, verbose level = 0
+Module       FSPF,	debug level = 0, verbose level = 0
+Module      FLOOD,	debug level = 0, verbose level = 0
+Module        HLO,	debug level = 0, verbose level = 0
+Module      MPATH,	debug level = 0, verbose level = 0
+Module      UPATH,	debug level = 0, verbose level = 0
+Module      MCAST,	debug level = 0, verbose level = 0
+Module      UCAST,	debug level = 0, verbose level = 0
+Module      NBFSM,	debug level = 0, verbose level = 0
+Module       LSDB,	debug level = 0, verbose level = 0
+Module    FSPF_HA,	debug level = 0, verbose level = 0
+Module        SYS,	debug level = 0, verbose level = 0
+Module      PANIC,	debug level = 0, verbose level = 0
+Module    FAB_IPC,	debug level = 0, verbose level = 0
+Module   FSPF_IPC,	debug level = 0, verbose level = 0
+Module        FCR,	debug level = 0, verbose level = 0
+Module       FICU,	debug level = 0, verbose level = 0
+Module     FICUHA,	debug level = 0, verbose level = 0
+Module FICU_PROCLOCK,	debug level = 0, verbose level = 0
+Module IPADMLIBRARY,	debug level = 0, verbose level = 0
+Module       FCPD,	debug level = 0, verbose level = 0
+Module        SES,	debug level = 0, verbose level = 0
+Module         NS,	debug level = 0, verbose level = 0
+Module      NSCAM,	debug level = 0, verbose level = 0
+Module    NSZNCHK,	debug level = 0, verbose level = 0
+Module     NSPDCM,	debug level = 0, verbose level = 0
+Module     NSPERF,	debug level = 0, verbose level = 0
+Module      NSLIB,	debug level = 0, verbose level = 0
+Module    FCP_IPC,	debug level = 0, verbose level = 0
+Module    NS_RTWR,	debug level = 0, verbose level = 0
+Module   CONDBLIB,	debug level = 0, verbose level = 0
+Module       FDMI,	debug level = 0, verbose level = 0
+Module        SEC,	debug level = 0, verbose level = 0
+Module        PKI,	debug level = 0, verbose level = 0
+Module        FSS,	debug level = 0, verbose level = 0
+Module       AUTH,	debug level = 0, verbose level = 0
+Module     DHCHAP,	debug level = 0, verbose level = 0
+Module         PS,	debug level = 0, verbose level = 0
+Module        PSH,	debug level = 0, verbose level = 0
+Module        PSR,	debug level = 0, verbose level = 0
+Module       PSHA,	debug level = 0, verbose level = 0
+Module PS_PROCLOCK,	debug level = 0, verbose level = 0
+Module    PS_RTWR,	debug level = 0, verbose level = 0
+Module         TS,	debug level = 0, verbose level = 0
+Module       ZONE,	debug level = 0, verbose level = 0
+Module         ZS,	debug level = 0, verbose level = 0
+Module  ZONE_RTWR,	debug level = 0, verbose level = 0
+Module  ZONE_PERF,	debug level = 0, verbose level = 0
+Module    ZONE_SM,	debug level = 0, verbose level = 0
+Module    ZONE_MR,	debug level = 0, verbose level = 0
+Module  ZONE_PROG,	debug level = 0, verbModule   PLATFORM,	debug level = 0, verbose level = 0
+Module     FABSYS,	debug level = 0, verbose level = 0
+Module     SYSDRV,	debug level = 0, verbose level = 0
+Module      PANIC,	debug level = 0, verbose level = 0
+Module     SWITCH,	debug level = 0, verbose level = 0
+Module        CER,	debug level = 0, verbose level = 0
+Module      CERHA,	debug level = 0, verbose level = 0
+Module        SCN,	debug level = 0, verbose level = 0
+Module       PORT,	debug level = 0, verbose level = 0
+Module    GE_PORT,	debug level = 0, verbose level = 0
+Module       FCIU,	debug level = 0, verbose level = 0
+Module       FCPH,	debug level = 0, verbose level = 0
+Module       EXCH,	debug level = 0, verbose level = 0
+Module        SEQ,	debug level = 0, verbose level = 0
+Module       FCLS,	debug level = 0, verbose level = 0
+Module       FCSW,	debug level = 0, verbose level = 0
+Module       FCRT,	debug level = 0, verbose level = 0
+Module       FCCT,	debug level = 0, verbose level = 0
+Module       FCSB,	debug level = 0, verbose level = 0
+Module        FCP,	debug level = 0, verbose level = 0
+Module       IPFC,	debug level = 0, verbose level = 0
+Module       LOGI,	debug level = 0, verbose level = 0
+Module        FCR,	debug level = 0, verbose level = 0
+Module      ISCSI,	debug level = 0, verbose level = 0
+Module        FGS,	debug level = 0, verbose level = 0
+Module       MCDT,	debug level = 0, verbose level = 0
+Module      BLADE,	debug level = 0, verbose level = 0
+Module        PIC,	debug level = 0, verbose level = 0
+Module      BPORT,	debug level = 0, verbose level = 0
+Module      CHIPS,	debug level = 0, verbose level = 0
+Module      MINIS,	debug level = 0, verbose level = 0
+Module      ANVIL,	debug level = 0, verbose level = 0
+Module       ZEUS,	debug level = 0, verbose level = 0
+Module      BLOOM,	debug level = 0, verbose level = 0
+Module     CONDOR,	debug level = 0, verbose level = 0
+Module      EGRET,	debug level = 0, verbose level = 0
+Module    PINBALL,	debug level = 0, verbose level = 0
+Module       FCIP,	debug level = 0, verbose level = 0
+Module         C2,	debug level = 0, verbose level = 0
+Module         C3,	debug level = 0, verbose level = 0
+Module       INTR,	debug level = 0, verbose level = 0
+Module       PHAN,	debug level = 0, verbose level = 0
+Module       LOOP,	debug level = 0, verbose level = 0
+Module      SPEED,	debug level = 0, verbose level = 0
+Module        RCV,	debug level = 0, verbose level = 0
+Module        XMT,	debug level = 0, verbose level = 0
+Module       PTSM,	debug level = 0, verbose level = 0
+Module    ASICLIB,	debug level = 0, verbose level = 0
+Module      CPSAS,	debug level = 0, verbose level = 0
+Module      CPCDC,	debug level = 0, verbose level = 0
+Module     MEMBLK,	debug level = 0, verbose level = 0
+Module       DIAG,	debug level = 0, verbose level = 0
+Module       FLTR,	debug level = 0, verbose level = 0
+Module         HA,	debug level = 0, verbose level = 0
+Module      TRUNK,	debug level = 0, verbose level = 0
+Module        DMA,	debug level = 0, verbose level = 0
+Module        FMF,	debug level = 0, verbose level = 0
+Module     ERRLOG,	debug level = 0, verbose level = 0
+Module    PORTLOG,	debug level = 0, verbose level = 0
+Module      DIAGD,	debug level = 0, verbose level = 0
+Module     DBGLOG,	debug level = 0, verbose level = 0
+Module       kSWD,	debug level = 0, verbose level = 0
+Module       uSWD,	debug level = 0, verbose level = 0
+Module     FCMISC,	debug level = 0, verbose level = 0
+Module  HAMKERNEL,	debug level = 0, verbose level = 0
+Module        BLS,	debug level = 0, verbose level = 0
+Module   SYNC_SWC,	debug level = 0, verbose level = 0
+Module   RCVY_SWC,	debug level = 0, verbose level = 0
+Module       FSSK,	debug level = 0, verbose level = 0
+Module   PORTSWAP,	debug level = 0, verbose level = 0
+Module   DYN_AREA,	debug level = 0, verbose level = 0
+Module        RTE,	debug level = 0, verbose level = 0
+Module      IDMGR,	debug level = 0, verbose level = 0
+Module      IFMGR,	debug level = 0, verbose level = 0
+Module    ESWITCH,	debug level = 0, verbose level = 0
+Module   DCE_PORT,	debug level = 0, verbose level = 0
+Module     RASLOG,	debug level = 0, verbose level = 0
+Module       VFRM,	debug level = 0, verbose level = 0
+Module      FCOEK,	debug level = 0, verbose level = 0
+Module       ISCK,	debug level = 0, verbose level = 0
+Module LANCEBLADE,	debug level = 0, verbose level = 0
+Module        SMD,	debug level = 0, verbose level = 0
+Module       SMDP,	debug level = 0, verbose level = 0
+Module DRAWBRIDGE,	debug level = 0, verbose level = 0
+Module THUNDERBALL,	debug level = 0, verbose level = 0
+Module         KI,	debug level = 0, verbose level = 0
+Module        BCM,	debug level = 0, verbose level = 0
+Module       FPGA,	debug level = 0, verbose level = 0
+Module       XPRT,	debug level = 0, verbose level = 0
+Module  TESTPOINT,	debug level = 0, verbose level = 0
+Module       MBLK,	debug level = 0, verbose level = 0
+ose level = 0
+Module    ZONE_HA,	debug level = 0, verbose level = 0
+Module    ZONE_MZ,	debug level = 0, verbose level = 0
+Module         NP,	debug level = 0, verbose level = 0
+Module      NPGEN,	debug level = 0, verbose level = 0
+Module    NPSTATS,	debug level = 0, verbose level = 0
+Module      NPLAT,	debug level = 0, verbose level = 0
+Module      NPMIR,	debug level = 0, verbose level = 0
+Module      NPLIB,	debug level = 0, verbose level = 0
+Module       SNMP,	debug level = 0, verbose level = 0
+Module      HTTPD,	debug level = 9, verbose level = 0
+Module     ERRLOG,	debug level = 0, verbose level = 0
+Module  FOS_REDIR,	debug level = 0, verbose level = 0
+
+real	0m0.050s
+user	0m0.040s
+sys	0m0.010s
+
+uptime        :
+ 02:35:59 up 88 days, 18:22, 0 users, load average: 1.13, 0.42, 0.14
+
+real	0m0.021s
+user	0m0.000s
+sys	0m0.020s
+
+switchshow:
+switchshow        :
+CURRENT CONTEXT -- 0 , 128
+switchName:	test_san_switch
+switchType:	64.3
+switchState:	Online   
+switchMode:	Native
+switchRole:	Subordinate
+switchDomain:	37
+switchId:	[stripped]
+switchWwn:	[stripped]
+zoning:		ON [stripped]
+switchBeacon:	OFF
+FC Router:	OFF
+HIF Mode:	OFF
+Allow XISL Use:	OFF
+LS Attributes:	[FID: 128, Base Switch: No, Default Switch: Yes, Address Mode 0]
+
+Index Port Address Media Speed       State   Proto
+==================================================
+[stripped]
+
+real	0m0.068s
+user	0m0.050s
+sys	0m0.020s
+
+tempshow        :
+Sensor	State	     Centigrade	     Fahrenheit
+  ID	
+====================================================
+  1	Ok               27		   80
+  2	Ok               16		   60
+  3	Ok               13		   55
+
+real	0m0.046s
+user	0m0.040s
+sys	0m0.010s
+
+sensorshow        :
+sensor  1: (Temperature) is Ok, value is 27 C
+sensor  2: (Temperature) is Ok, value is 16 C
+sensor  3: (Temperature) is Ok, value is 13 C
+sensor  4: (Fan        ) is Ok,speed is 4753 RPM
+sensor  5: (Fan        ) is Ok,speed is 4720 RPM
+sensor  6: (Fan        ) is Ok,speed is 4720 RPM
+sensor  7: (Power Supply) is Ok
+sensor  8: (Power Supply) is Ok
+
+real	0m0.060s
+user	0m0.040s
+sys	0m0.010s
+
+psshow        :
+
+Power Supply #1 is OK
+[stripped]
+Power Supply #2 is OK
+[stripped]
+
+real	0m0.066s
+user	0m0.040s
+sys	0m0.010s
+
+fanshow        :
+Fan 1 is Ok, speed is 4753 RPM
+Fan 2 is Ok, speed is 4720 RPM
+Fan 3 is Ok, speed is 4720 RPM
+
+real	0m0.051s
+user	0m0.050s
+sys	0m0.000s
+
+licenseshow:
+licenseshow        :
+[stripped]
+
+
+portcfgshow        :
+CURRENT CONTEXT -- 0 , 128
+
+Ports of Slot 0         0   1   2   3     4   5   6   7     8   9  10  11    12  13  14  15 
+----------------------+---+---+---+---+-----+---+---+---+-----+---+---+---+-----+---+---+---
+Speed                  AN  AN  AN  AN    AN  AN  AN  AN    AN  AN  AN  AN    4G  4G  AN  AN 
+Fill Word(On Active)    3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3 
+Fill Word(Current)      3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3  
+AL_PA Offset 13        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Trunk Port             ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Long Distance          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+VC Link Init           ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked L_Port           -   -   -   -     -   -   -   -     -   -   -   -     -   -   -   - 
+Locked G_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Disabled E_Port        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked E_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+ISL R_RDY Mode         ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+RSCN Suppressed        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Persistent Disable     ..  ..  ..  ..    ON  ON  ON  ON    ON  ..  ..  ON    ..  ..  ..  ON 
+LOS TOV mode            0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+NPIV capability        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+NPIV PP Limit          126 126 126 126   126 126 126 126   126 126 126 126   126 126 126 126 
+NPIV FLOGI Logout      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..  
+QOS Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+EX Port                ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Mirror Port            ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Rate Limit             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Credit Recovery        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Fport Buffers          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Eport Credits          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Port Auto Disable      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+CSCTL mode             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Fault Delay             0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+SIM Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+TDZ mode               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+
+Ports of Slot 0        16  17  18  19    20  21  22  23    24  25  26  27    28  29  30  31 
+----------------------+---+---+---+---+-----+---+---+---+-----+---+---+---+-----+---+---+---
+Speed                  AN  AN  AN  AN    AN  AN  AN  AN    AN  AN  AN  AN    AN  AN  AN  AN 
+Fill Word(On Active)    3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3 
+Fill Word(Current)      3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3  
+AL_PA Offset 13        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Trunk Port             ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Long Distance          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+VC Link Init           ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked L_Port           -   -   -   -     -   -   -   -     -   -   -   -     -   -   -   - 
+Locked G_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Disabled E_Port        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked E_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+ISL R_RDY Mode         ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+RSCN Suppressed        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Persistent Disable     ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ON  ON  ON  ON 
+LOS TOV mode            0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+NPIV capability        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+NPIV PP Limit          126 126 126 126   126 126 126 126   126 126 126 126   126 126 126 126 
+NPIV FLOGI Logout      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..  
+QOS Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+EX Port                ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Mirror Port            ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Rate Limit             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Credit Recovery        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Fport Buffers          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Eport Credits          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Port Auto Disable      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+CSCTL mode             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Fault Delay             0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+SIM Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+TDZ mode               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+
+Ports of Slot 0        32  33  34  35    36  37  38  39    40  41  42  43    44  45  46  47 
+----------------------+---+---+---+---+-----+---+---+---+-----+---+---+---+-----+---+---+---
+Speed                  AN  AN  AN  AN    AN  AN  AN  AN    8G  8G  8G  8G    AN  AN  AN  AN 
+Fill Word(On Active)    3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3 
+Fill Word(Current)      3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3  
+AL_PA Offset 13        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Trunk Port             ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Long Distance          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+VC Link Init           ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked L_Port           -   -   -   -     -   -   -   -     -   -   -   -     -   -   -   - 
+Locked G_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Disabled E_Port        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked E_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+ISL R_RDY Mode         ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+RSCN Suppressed        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Persistent Disable     ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+LOS TOV mode            0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+NPIV capability        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+NPIV PP Limit          126 126 126 126   126 126 126 126   126 126 126 126   126 126 126 126 
+NPIV FLOGI Logout      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..  
+QOS Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+EX Port                ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Mirror Port            ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Rate Limit             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Credit Recovery        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Fport Buffers          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Eport Credits          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Port Auto Disable      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+CSCTL mode             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Fault Delay             0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+SIM Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+TDZ mode               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+
+Ports of Slot 0        48  49  50  51    52  53  54  55    56  57  58  59    60  61  62  63 
+----------------------+---+---+---+---+-----+---+---+---+-----+---+---+---+-----+---+---+---
+Speed                  AN  AN  AN  AN    AN  AN  AN  AN    AN  AN  AN  AN    AN  AN  AN  AN 
+Fill Word(On Active)    3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3 
+Fill Word(Current)      3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3  
+AL_PA Offset 13        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Trunk Port             ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Long Distance          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+VC Link Init           ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked L_Port           -   -   -   -     -   -   -   -     -   -   -   -     -   -   -   - 
+Locked G_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Disabled E_Port        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked E_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+ISL R_RDY Mode         ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+RSCN Suppressed        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Persistent Disable     ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ON  .. 
+LOS TOV mode            0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+NPIV capability        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+NPIV PP Limit          126 126 126 126   126 126 126 126   126 126 126 126   126 126 126 126 
+NPIV FLOGI Logout      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..  
+QOS Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+EX Port                ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Mirror Port            ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Rate Limit             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Credit Recovery        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Fport Buffers          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Eport Credits          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Port Auto Disable      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+CSCTL mode             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Fault Delay             0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+SIM Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+TDZ mode               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+
+Ports of Slot 0        64  65  66  67    68  69  70  71    72  73  74  75    76  77  78  79 
+----------------------+---+---+---+---+-----+---+---+---+-----+---+---+---+-----+---+---+---
+Speed                  AN  AN  AN  8G    8G  AN  AN  AN    AN  AN  AN  AN    AN  AN  AN  AN 
+Fill Word(On Active)    3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3 
+Fill Word(Current)      3   3   3   3     3   3   3   3     3   3   3   3     3   3   3   3  
+AL_PA Offset 13        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Trunk Port             ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Long Distance          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    LE  LE  ..  .. 
+VC Link Init           ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ON  ON  ..  .. 
+Locked L_Port           -   -   -   -     -   -   -   -     -   -   -   -     -   -   -   - 
+Locked G_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Disabled E_Port        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Locked E_Port          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+ISL R_RDY Mode         ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+RSCN Suppressed        ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Persistent Disable     ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ON    ..  ..  ON  ON 
+LOS TOV mode            0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+NPIV capability        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+NPIV PP Limit          126 126 126 126   126 126 126 126   126 126 126 126   126 126 126 126 
+NPIV FLOGI Logout      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..  
+QOS Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+EX Port                ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Mirror Port            ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Rate Limit             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Credit Recovery        ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON    ON  ON  ON  ON 
+Fport Buffers          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Eport Credits          ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Port Auto Disable      ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+CSCTL mode             ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+Fault Delay             0   0   0   0     0   0   0   0     0   0   0   0     0   0   0   0 
+SIM Port               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+TDZ mode               ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  ..    ..  ..  ..  .. 
+                  where AE:QoSAutoEnable, AN:AutoNegotiate, ..:OFF, -:NotApplicable, ??:INVALID
+
+
+real	0m0.307s
+user	0m0.110s
+sys	0m0.170s
+
+sfpshow -all       :
+CURRENT CONTEXT -- 0 , 128
+
+=============
+Port  0:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 38      Centigrade      -10        90         -5          85
+Current:     8.500   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3298.7  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.2    dBm (477.6uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (469.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:23
+
+=============
+Port  1:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -10        90         -5          85
+Current:     8.310   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3292.9  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.8    dBm (519.0uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (465.9 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:31
+
+=============
+Port  2:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -10        90         -5          85
+Current:     7.536   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3291.5  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.8    dBm (524.0uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.0 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:25
+
+=============
+Port  3:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -10        90         -5          85
+Current:     8.410   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.4  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.4    dBm (581.3uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (468.0 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:33
+
+=============
+Port  4:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     7.874   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -25.9   dBm (2.6  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.4 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 03-14-2018 GMT+4 Wed 08:45:18
+
+=============
+Port  5:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     8.034   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3301.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -26.8   dBm (2.1  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (467.9 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 03-14-2018 GMT+4 Wed 08:48:31
+
+=============
+Port  6:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 36      Centigrade      -10        90         -5          85
+Current:     7.824   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.4  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -26.6   dBm (2.2  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.6 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 03-14-2018 GMT+4 Wed 08:47:24
+
+=============
+Port  7:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 36      Centigrade      -10        90         -5          85
+Current:     7.664   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3288.5  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -25.5   dBm (2.8  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (467.8 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 03-14-2018 GMT+4 Wed 08:44:52
+
+=============
+Port  8:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature :   Not Available
+Current     :   Not Available
+Voltage     :   Not Available
+RX Power    :   Not Available
+TX Power    :   Not Available
+
+State transitions: 2
+Last poll time  :   Polling has not started
+
+=============
+Port  9:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     8.798   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3298.9  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.8    dBm (525.9uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.6 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:00
+
+=============
+Port 10:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     7.538   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.6    dBm (554.1uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (473.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:22
+
+=============
+Port 11:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature :   Not Available
+Current     :   Not Available
+Voltage     :   Not Available
+RX Power    :   Not Available
+TX Power    :   Not Available
+
+State transitions: 1
+Last poll time  :   Polling has not started
+
+=============
+Port 12:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0x90
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 35      Centigrade      -10        90         -5          85
+Current:     7.396   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3298.6  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -6.1    dBm (246.5uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (472.5 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:33
+
+=============
+Port 13:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0x90
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 36      Centigrade      -10        90         -5          85
+Current:     6.360   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3285.5  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -4.4    dBm (359.9uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (469.0 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:33:09
+
+=============
+Port 14:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111204  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     8.270   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3293.0  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.3    dBm (584.3uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (472.5 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:35
+
+=============
+Port 15:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature :   Not Available
+Current     :   Not Available
+Voltage     :   Not Available
+RX Power    :   Not Available
+TX Power    :   Not Available
+
+State transitions: 2
+Last poll time  :   Polling has not started
+
+=============
+Port 16:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 38      Centigrade      -10        90         -5          85
+Current:     8.122   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3292.1  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.5    dBm (562.4uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (470.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:37
+
+=============
+Port 17:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 38      Centigrade      -10        90         -5          85
+Current:     8.088   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.1    dBm (620.6uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (470.8 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:33:11
+
+=============
+Port 18:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -10        90         -5          85
+Current:     7.638   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3291.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -4.1    dBm (391.9uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:41
+
+=============
+Port 19:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -10        90         -5          85
+Current:     8.360   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.5    dBm (564.5uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (470.9 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:33:13
+
+=============
+Port 20:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111217  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 36      Centigrade      -10        90         -5          85
+Current:     7.898   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3303.6  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.2    dBm (483.4uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:43
+
+=============
+Port 21:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111217  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 34      Centigrade      -10        90         -5          85
+Current:     7.962   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3296.0  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.2    dBm (599.0uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (472.8 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:23
+
+=============
+Port 22:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111217  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     7.918   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3291.4  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.9    dBm (507.7uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (468.7 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:45
+
+=============
+Port 23:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111217  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     7.860   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3293.1  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.1    dBm (609.7uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:25
+
+=============
+Port 24:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 35      Centigrade      -10        90         -5          85
+Current:     7.442   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3296.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.6    dBm (555.0uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.5 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:47
+
+=============
+Port 25:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 35      Centigrade      -10        90         -5          85
+Current:     7.188   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3292.1  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.3    dBm (471.1uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.2    dBm (475.0 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:29
+
+=============
+Port 26:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111210  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 33      Centigrade      -10        90         -5          85
+Current:     7.674   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3295.3  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.1    dBm (611.3uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.2    dBm (477.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:49
+
+=============
+Port 27:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c402000000000 2,4,8_Gbps M5,M6 sw Inter_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:3    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111127  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -15        100        -10         95
+Current:     7.100   mAmps           2.000      10.500     2.000       10.500 
+Voltage:     3300.1  mVolts          2800.0     3800.0     2970.0      3630.0 
+RX Power:    -3.6    dBm (437.1uW)   0.0    uW  6550.0 uW  49.0   uW   1100.0 uW
+TX Power:    -2.6    dBm (552.7 uW)  50.0   uW  800.0  uW  100.0  uW   700.0  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:31
+
+=============
+Port 28:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111217  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 35      Centigrade      -10        90         -5          85
+Current:     8.082   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3293.9  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -26.2   dBm (2.4  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.2    dBm (474.3 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 03-14-2018 GMT+4 Wed 08:46:22
+
+=============
+Port 29:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111217  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 31      Centigrade      -10        90         -5          85
+Current:     6.898   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.0  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -25.7   dBm (2.7  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.6 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 03-14-2018 GMT+4 Wed 08:50:04
+
+=============
+Port 30:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111217  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 33      Centigrade      -10        90         -5          85
+Current:     7.116   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3297.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -26.8   dBm (2.1  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.2    dBm (475.3 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 03-14-2018 GMT+4 Wed 08:47:06
+
+=============
+Port 31:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111217  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 28      Centigrade      -10        90         -5          85
+Current:     7.476   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3301.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -26.8   dBm (2.1  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.2    dBm (478.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 03-14-2018 GMT+4 Wed 08:49:37
+
+=============
+Port 32:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111209  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     7.244   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.1  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.5    dBm (567.8uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (472.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:55
+
+=============
+Port 33:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111209  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 38      Centigrade      -10        90         -5          85
+Current:     6.478   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3291.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -5.7    dBm (269.9uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (468.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:34:57
+
+=============
+Port 34:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111209  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 36      Centigrade      -10        90         -5          85
+Current:     7.846   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3289.7  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.0    dBm (504.4uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.9 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:57
+
+=============
+Port 35:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111209  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -10        90         -5          85
+Current:     8.010   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3288.5  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.2    dBm (597.1uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.8 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:34:59
+
+=============
+Port 36:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111209  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     7.774   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3285.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.8    dBm (527.8uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (472.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:59
+
+=============
+Port 37:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111209  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -10        90         -5          85
+Current:     7.238   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3288.6  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.0    dBm (505.5uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.8 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:01
+
+=============
+Port 38:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111209  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 38      Centigrade      -10        90         -5          85
+Current:     9.140   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3288.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.7    dBm (542.8uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (470.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:01
+
+=============
+Port 39:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111209  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 37      Centigrade      -10        90         -5          85
+Current:     8.070   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3289.4  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.4    dBm (572.7uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (471.5 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:03
+
+=============
+Port 40:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111204  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 41      Centigrade      -10        90         -5          85
+Current:     8.394   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3284.7  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.0    dBm (498.9uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (469.0 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:03
+
+=============
+Port 41:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111204  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 42      Centigrade      -10        90         -5          85
+Current:     8.432   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3286.0  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.6    dBm (547.7uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (465.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:35
+
+=============
+Port 42:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111204  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 43      Centigrade      -10        90         -5          85
+Current:     7.892   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3280.6  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.6    dBm (547.3uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.4    dBm (462.0 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:05
+
+=============
+Port 43:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111204  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 44      Centigrade      -10        90         -5          85
+Current:     7.746   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3280.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.8    dBm (526.1uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.4    dBm (461.0 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:36
+
+=============
+Port 44:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 41      Centigrade      -10        90         -5          85
+Current:     7.684   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3289.3  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.8    dBm (521.7uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.4 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:07
+
+=============
+Port 45:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111204  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 41      Centigrade      -10        90         -5          85
+Current:     7.330   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3285.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.3    dBm (471.6uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (464.9 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:34
+
+=============
+Port 46:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 42      Centigrade      -10        90         -5          85
+Current:     7.780   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3281.7  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.1    dBm (493.3uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (465.7 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:09
+
+=============
+Port 47:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111204  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 41      Centigrade      -10        90         -5          85
+Current:     8.302   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3285.1  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.8    dBm (418.1uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (464.6 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:37
+
+=============
+Port 48:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 43      Centigrade      -10        90         -5          85
+Current:     7.982   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3280.6  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.2    dBm (477.2uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (463.9 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:11
+
+=============
+Port 49:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 41      Centigrade      -10        90         -5          85
+Current:     8.116   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3279.5  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.8    dBm (520.2uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.4    dBm (462.3 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:39
+
+=============
+Port 50:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111204  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 45      Centigrade      -10        90         -5          85
+Current:     7.842   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3283.2  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -1.6    dBm (699.2uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (465.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:13
+
+=============
+Port 51:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -10        90         -5          85
+Current:     8.444   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3284.9  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -4.7    dBm (342.3uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.9 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:41
+
+=============
+Port 52:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x5, 0x0
+Warn Flags[0,1] = 0x5, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 38      Centigrade      -10        90         -5          85
+Current:     8.224   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3284.1  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.7    dBm (538.8uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (470.3 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 2
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:15
+
+=============
+Port 53:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 43      Centigrade      -10        90         -5          85
+Current:     8.248   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3280.1  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.1    dBm (494.2uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (464.3 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 2
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:39
+
+=============
+Port 54:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 44      Centigrade      -10        90         -5          85
+Current:     8.304   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3275.7  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.8    dBm (528.2uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (462.6 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 2
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:17
+
+=============
+Port 55:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 42      Centigrade      -10        90         -5          85
+Current:     7.828   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3280.0  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.3    dBm (586.2uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (467.4 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 2
+Last poll time: 04-12-2018 GMT+4 Thu 02:34:56
+
+=============
+Port 56:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111211  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 42      Centigrade      -10        90         -5          85
+Current:     7.084   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3280.4  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.6    dBm (550.9uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (464.7 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:15
+
+=============
+Port 57:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111211  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 42      Centigrade      -10        90         -5          85
+Current:     6.158   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3281.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.0    dBm (499.9uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.6 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:43
+
+=============
+Port 58:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111211  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 41      Centigrade      -10        90         -5          85
+Current:     8.146   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3281.6  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.7    dBm (541.5uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (464.8 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:19
+
+=============
+Port 59:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111211  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -10        90         -5          85
+Current:     8.808   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3286.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.6    dBm (436.1uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (467.0 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:45
+
+=============
+Port 60:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111211  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -10        90         -5          85
+Current:     7.740   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3284.7  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.9    dBm (403.1uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:27
+
+=============
+Port 61:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111211  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 42      Centigrade      -10        90         -5          85
+Current:     7.886   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.4  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.5    dBm (446.1uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (465.9 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:49
+
+=============
+Port 62:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111211  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature :   Not Available
+Current     :   Not Available
+Voltage     :   Not Available
+RX Power    :   Not Available
+TX Power    :   Not Available
+
+State transitions: 2
+Last poll time  :   Polling has not started
+
+=============
+Port 63:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111211  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -10        90         -5          85
+Current:     7.468   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3287.4  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.4    dBm (576.2uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (465.8 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:07
+
+=============
+Port 64:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  15   (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xa2
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 38      Centigrade      -10        90         -5          85
+Current:     7.446   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3286.4  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -26.2   dBm (2.4  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (470.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 2
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:38
+
+=============
+Port 65:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -10        90         -5          85
+Current:     7.972   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3282.7  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.3    dBm (462.7uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (470.5 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:09
+
+=============
+Port 66:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  15   (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xa2
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 42      Centigrade      -10        90         -5          85
+Current:     8.120   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3288.5  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -25.5   dBm (2.8  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (464.6 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 2
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:24
+
+=============
+Port 67:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 41      Centigrade      -10        90         -5          85
+Current:     7.226   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3285.8  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.5    dBm (444.5uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (469.2 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:11
+
+=============
+Port 68:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -10        90         -5          85
+Current:     7.324   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3294.5  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.8    dBm (420.6uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (466.3 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:19
+
+=============
+Port 69:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  15   (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xa2
+Alarm flags[0,1] = 0x5, 0x40
+Warn Flags[0,1] = 0x5, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -10        90         -5          85
+Current:     7.206   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3291.9  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -26.4   dBm (2.3  uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (468.3 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 2
+Last poll time: 04-12-2018 GMT+4 Thu 02:31:26
+
+=============
+Port 70:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -10        90         -5          85
+Current:     9.014   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3289.6  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -3.4    dBm (459.8uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (468.1 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:21
+
+=============
+Port 71:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c404000000000 2,4,8_Gbps M5,M6 sw Short_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:2    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     003a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111205  
+DD Type:     0x68
+Enh Options: 0xfa
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 36      Centigrade      -10        90         -5          85
+Current:     7.722   mAmps           1.000      17.000     2.000       14.000 
+Voltage:     3285.0  mVolts          2900.0     3700.0     3000.0      3600.0 
+RX Power:    -2.6    dBm (552.2uW)   10.0   uW  1258.9 uW  15.8   uW   1000.0 uW
+TX Power:    -3.3    dBm (470.6 uW)  125.9  uW  631.0  uW  158.5  uW   562.3  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:13
+
+=============
+Port 72:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c402000000000 2,4,8_Gbps M5,M6 sw Inter_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:3    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111012  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0x90
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 39      Centigrade      -15        100        -10         95
+Current:     8.186   mAmps           2.000      10.500     2.000       10.500 
+Voltage:     3281.3  mVolts          2800.0     3800.0     2970.0      3630.0 
+RX Power:    -4.0    dBm (400.3uW)   0.0    uW  6550.0 uW  49.0   uW   1100.0 uW
+TX Power:    -4.0    dBm (395.8 uW)  50.0   uW  800.0  uW  100.0  uW   700.0  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:23
+
+=============
+Port 73:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c402000000000 2,4,8_Gbps M5,M6 sw Inter_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:3    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111012  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0x90
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -15        100        -10         95
+Current:     7.552   mAmps           2.000      10.500     2.000       10.500 
+Voltage:     3295.9  mVolts          2800.0     3800.0     2970.0      3630.0 
+RX Power:    -3.7    dBm (424.7uW)   0.0    uW  6550.0 uW  49.0   uW   1100.0 uW
+TX Power:    -2.5    dBm (565.9 uW)  50.0   uW  800.0  uW  100.0  uW   700.0  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:21
+
+=============
+Port 74:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c402000000000 2,4,8_Gbps M5,M6 sw Inter_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:3    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111012  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0x90
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 40      Centigrade      -15        100        -10         95
+Current:     7.272   mAmps           2.000      10.500     2.000       10.500 
+Voltage:     3284.1  mVolts          2800.0     3800.0     2970.0      3630.0 
+RX Power:    -3.8    dBm (414.5uW)   0.0    uW  6550.0 uW  49.0   uW   1100.0 uW
+TX Power:    -2.4    dBm (573.0 uW)  50.0   uW  800.0  uW  100.0  uW   700.0  uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:27
+
+=============
+Port 75:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c402000000000 2,4,8_Gbps M5,M6 sw Inter_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:3    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111012  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0x92
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature :   Not Available
+Current     :   Not Available
+Voltage     :   Not Available
+RX Power    :   Not Available
+TX Power    :   Not Available
+
+State transitions: 1
+Last poll time  :   Polling has not started
+
+=============
+Port 76:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 5401001200000000 2,4,8_Gbps SM lw Long_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   10   (units km)
+Length 9u:   100  (units 100 meters)
+Length 50u (OM2):  0    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:0    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000027-01   
+Vendor Rev:  A   
+Wavelength:  1310 (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   101217  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 43      Centigrade      -40        90         -10         85
+Current:     30.028  mAmps           2.000      95.000     2.000       80.000 
+Voltage:     3296.9  mVolts          2700.0     3800.0     2970.0      3630.0 
+RX Power:    -5.6    dBm (275.8uW)   4.4    uW  2240.0 uW  11.2   uW   1122.0 uW
+TX Power:    -1.8    dBm (664.6 uW)  27.0   uW  2240.0 uW  67.0   uW   1122.0 uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:32:29
+
+=============
+Port 77:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 5401001200000000 2,4,8_Gbps SM lw Long_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   10   (units km)
+Length 9u:   100  (units 100 meters)
+Length 50u (OM2):  0    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:0    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000027-01   
+Vendor Rev:  A   
+Wavelength:  1310 (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   110216  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0xb0
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x0
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature: 46      Centigrade      -40        90         -10         85
+Current:     35.774  mAmps           2.000      95.000     2.000       80.000 
+Voltage:     3286.5  mVolts          2700.0     3800.0     2970.0      3630.0 
+RX Power:    -4.6    dBm (348.8uW)   4.4    uW  2240.0 uW  11.2   uW   1122.0 uW
+TX Power:    -2.1    dBm (618.9 uW)  27.0   uW  2240.0 uW  67.0   uW   1122.0 uW
+
+State transitions: 1
+Last poll time: 04-12-2018 GMT+4 Thu 02:35:53
+
+=============
+Port 78:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c402000000000 2,4,8_Gbps M5,M6 sw Inter_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:3    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111012  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature :   Not Available
+Current     :   Not Available
+Voltage     :   Not Available
+RX Power    :   Not Available
+TX Power    :   Not Available
+
+State transitions: 1
+Last poll time  :   Polling has not started
+
+=============
+Port 79:
+=============
+Identifier:  3    SFP
+Connector:   7    LC
+Transceiver: 540c402000000000 2,4,8_Gbps M5,M6 sw Inter_dist
+Encoding:    1    8B10B
+Baud Rate:   85   (units 100 megabaud)
+Length 9u:   0    (units km)
+Length 9u:   0    (units 100 meters)
+Length 50u (OM2):  5    (units 10 meters)
+Length 50u (OM3):  0    (units 10 meters)
+Length 62.5u:3    (units 10 meters)
+Length Cu:   0    (units 1 meter)
+Vendor Name: BROCADE         
+Vendor OUI:  00:05:1e
+Vendor PN:   57-1000117-01   
+Vendor Rev:  A   
+Wavelength:  850  (units nm)
+Options:     001a Loss_of_Sig,Tx_Fault,Tx_Disable
+BR Max:      0   
+BR Min:      0   
+Serial No:   [stripped]
+Date Code:   111012  
+DD Type:     0x68
+Enh Options: 0xf0
+Status/Ctrl: 0xb2
+Alarm flags[0,1] = 0x0, 0x0
+Warn Flags[0,1] = 0x0, 0x40
+                                           Alarm                  Warn
+                                    low         high       low         high
+Temperature :   Not Available
+Current     :   Not Available
+Voltage     :   Not Available
+RX Power    :   Not Available
+TX Power    :   Not Available
+
+State transitions: 1
+Last poll time  :   Polling has not started
+
+real	0m0.110s
+user	0m0.090s
+sys	0m0.020s
+
+porterrshow        :
+CURRENT CONTEXT -- 0 , 128
+          frames      enc    crc    crc    too    too    bad    enc   disc   link   loss   loss   frjt   fbsy  c3timeout    pcs
+       tx     rx      in    err    g_eof  shrt   long   eof     out   c3    fail    sync   sig                  tx    rx     err
+  0:  144.1m 218.0m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  1:  145.4m 217.9m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  2:  148.1m 217.9m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  3:  145.4m 217.1m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  4:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  5:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  6:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  7:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  8:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+  9:  951.1k   1.0m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 10:  193.6k 109.2k   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 11:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 12:  759      2.9k   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 13:    2.8k 631      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 14:   10.7m  10.3m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 15:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 16:   57.3m  31.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 17:   20.6m  25.1m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 18:   58.5m  16.4m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 19:   71.5m  55.5m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 20:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 21:   12.4m   2.3m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 22:   15.6m   8.9m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 23:  199.2m   2.7m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 24:   26.1m  16.2m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 25:   26.0m  16.2m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 26:   24.6m  15.7m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 27:   24.6m  15.7m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 28:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 29:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 30:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 31:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 32:    1.2m   5.9m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 33:  197.7m  84.7m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 34:  155.4m  93.0m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 35:   30.9m  62.4m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 36:   28.8m  51.5m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 37:    2.3m  21.3m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 38:    1.4m  11.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 39:    2.5m  15.3m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 40:   58.2m  64.9m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 41:    2.7m  19.9m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 42:   41.0m  56.3m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 43:   21.8m  17.0m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 44:  228.2m  79.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 45:  119.5m  84.9m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 46:   12.1m  13.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 47:   12.0m  13.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 48:   25.2m  19.5m   0      7      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 49:   25.3m  19.4m   0      5      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 50:   27.7k  14.4k   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 51:   27.7k  14.4k   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 52:  795.9k   2.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 53:  332.3k   1.2m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 54:  245.0k 278.9k   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 55:  519.7k   1.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 56:  147.5m 217.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 57:  151.5m 218.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 58:  144.8m 219.3m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 59:  127.3m 218.0m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 60:  775    937      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 61:  729    633      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 62:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 63:    1.1m 388.6k   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 64:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 65:   97.0m  51.3m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 66:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 67:    9.5m   9.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 68:    9.5m   9.6m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 69:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 70:   32.7m  27.5m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 71:   32.7m  27.5m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 72:   37.4m  30.4m   0     11      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 73:   37.3m  30.4m   0      4      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 74:   37.1m  30.4m   0      8      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 75:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 76:   84.1m  95.9m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 77:   61.7m  95.3m   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 78:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+ 79:    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0   
+
+real	0m0.095s
+user	0m0.050s
+sys	0m0.040s
+
+[stripped till the end]

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP OA [3]">
+  <File>
+    <Detect Match="Onboard Administrator|SET ENCLOSURE ASSET TAG "/>
+
+    <!-- Global values definitions -->
+    <ValuePattern Key="Slot" PatternValue="(Fan|blade) #[0-9]+"/>
+    <ValuePattern Key="Slot" PatternValue="power supply #[0-9]+"/>
+    <ValuePattern Key="Slot" PatternValue="onboard administrator #[0-9]+"/>
+    <ValuePattern Key="Slot" PatternValue="module #[0-9]+"        Value_Find="module"        Value_Replacement="Interconnect"/>
+    <ValueSeparator Key="Description" Match="Product name"/>
+    <ValueSeparator Key="SN" Match="Serial number"/>
+    <ValueSeparator Key="PN" Match="part number" AddMode="0"/>
+    <ValueSeparator Match="Status\s*:" Exclude="Account|PowerDelay"/>
+    <ValueSeparator Key="FW" Match="(firmware|fw)\sver"/>
+
+    <Highlight Key="status" Priority="200" Background="LightCoral" Match="Status\s*(:|$)" Pattern="Fail\w*|degraded"/>
+    <Highlight Key="status" Priority="100" Background="#90D58D"    Match="\b(Status|State|Mode)\s*(:|$)" Pattern="\bOK\b|Redundant"/>
+
+    <!-- Split by lines starting with greater-than sign -->
+    <SplitAt Match="^\&gt;"/>
+
+    <Section Match="ENCLOSURE INFO" KeepUnsectionedSource="1">
+      <SplitAt Match="MidPlane|Power Distribution Unit|Onboard Administrator Tray.*:"/>
+      <SplitAt Offset="1" Match="Midplane"/>
+      <Clean Find="^\&gt;.*" RemoveEmptyLines="1"/>
+      <TreeLink />
+      <ValuePattern Key="Description" PatternValue="Midplane" Value_Find="^" Value_Replacement="Enclosure "/>
+      <ValueSeparator Key="Description" Match="Type"/>
+      <Section Match="Power Distribution Unit|Onboard Administrator Tray.*:"/>
+      <Section Match="midplane" Hide="1"/>
+    </Section>
+
+    <Section Match="ENCLOSURE (POWERSUPPLY|FAN)">
+      <SplitAt Match="(SUPPLY|Fan) #[0-9]"/>
+      <TreeLink />
+      <Highlight Priority="150" Background="#F2D463" Pattern="(100|[8-9][0-9]).* of maximum speed" Comment="High fan speed - could indicate a problem with one of fans or with air intake temperature."/>
+    </Section>
+
+    <Section Match="OA INFO">
+      <SplitAt Match="ONBOARD ADMINISTRATOR #[0-9]"/>
+      <TreeLink />
+    </Section>
+
+    <Section Match="OA STATUS">
+      <SplitAt Match="ONBOARD ADMINISTRATOR #[0-9]"/>
+      <TreeLink />
+      <ValueSeparator Exclude="Status"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="Role" Pattern="Active"/>
+      <Highlight Priority="50"  Background="#C9C8CF"    Match="Role" Pattern="Standby"/>
+    </Section>
+
+    <Section Match="INTERCONNECT INFO">
+      <SplitAt Match="^\s*[0-9]{1,2}\.|Interconnect Module #[0-9]"/>
+      <TreeLink />
+      <ValuePattern Key="Slot" PatternValue="^\s*[0-9]{1,2}(?=\.)" Value_Find="^" Value_Replacement="Interconnect #"/>
+    </Section>
+
+    <Section Match="INTERCONNECT STATUS">
+      <SplitAt Match="^\s*[0-9]{1,2}\.|Interconnect Module #[0-9]"/>
+      <TreeLink />
+      <ValuePattern Key="Slot" PatternValue="^\s*[0-9]{1,2}(?=\.)" Value_Find="^" Value_Replacement="Interconnect #"/>
+      <ValueSeparator Exclude="Status|\bNO\b"/>
+    </Section>
+
+    <Section Match="ENCLOSURE LCD">
+      <TreeLink />
+      <ValueSeparator Match="Name\s+:" Key="Description"/>
+      <ValueSeparator Match="Spare Part" Key="PN"/>
+    </Section>
+
+    <Section Match="SHOW (UPDATE|POWER$|TOPOLOGY)">
+      <TreeLink />
+    </Section>
+
+    <Section Match="SERVER INFO">
+      <SplitAt Match="Blade #[0-9]{1,2}"/>
+      <TreeLink />
+      <Section Match="Blade #" KeepUnsectionedSource="1">
+        <SplitAt Match="System board|Embedded|for .*c-class|Management Processor|CPU|Mezzanine|FLB Adapter"/>
+        <SplitAt Offset="1" Match="System board|CPU|^\s*$"/>
+        <ValuePattern Key="Slot" PatternValue="Blade #[0-9]+" IsTag="1"/>
+        <ValueSeparator Key="Type" Match="^\s*Type\s*:"/>
+        <!-- A separator-based value to get model of interconnect -->
+        <ValueSeparator Key="Description" Separator=" for " Order="1" SeparatorPosition="1" Match="for .*c-class" Value_Find="Mezzanine.*?:\s*"/>
+        <ValueSeparator Key="Description" Separator=": " Match="Mezzanine|FLB Adapter" AddMode="1"/>
+        <ValueSeparator Match="Manufacturer|Memory|server name"/>
+        <Section Match="System board" Hide="1">
+          <ValuePattern Key="Description" PatternValue="System Board"/>
+        </Section>
+        <Section Match="CPU" Exclude = "Not Present" Hide="1">
+          <ValuePattern Key="Type" PatternValue="CPU" IsTag="1"/>
+          <ValueSeparator Key="Description" Match="CPU"/>
+        </Section>
+        <Section Match="for .*c-class|Mezzanine" Name="Mezzanines" Find="Mezzanine [1-4]:">
+          <ValuePattern Key="Type" PatternValue=" for |mezzanine" Value_Find="for|mezzanine" Value_Replacement="Mezzanine" IsTag="1"/>
+        </Section>
+        <Section Match="FLB Adapter">
+          <ValuePattern Key="Type" PatternValue="FLB adapter" IsTag="1"/>
+        </Section>
+      </Section>
+    </Section>
+
+    <Section Match="SYSLOG (SERVER|ILO)" InheritValues="0" InheritFiltering="0">
+      <SplitAt Match="^Server.*(syslog|event log):"/>
+
+      <ValuePattern Key="Slot" Match="^Server.*(syslog|event log):" PatternValue="Server\s*\d+" IsTag="1"/>
+
+      <TreeLink />
+      <Section Match="Syslog|event log" Exclude="SHOW" KeepUnsectionedSource="1">
+        <SplitAt Match="&lt;EVENT"/>
+        <TreeLink />
+        <Section Match="&lt;EVENT" Exclude="EVENT_LOG" Rename="{INITIAL_UPDATE}-{LAST_UPDATE} {CLASS} ({SEVERITY}) - {DESCRIPTION}">
+          <ValueSeparator Separator="=" Value_Find="^&quot;|&quot;$"/>
+          <Highlight Priority="200" Background="LightCoral" Pattern="Critical" Match="SEVERITY"/>
+          <Highlight Priority="150" Background="#F2D463"    Pattern="Caution"  Match="SEVERITY"/>
+          <Highlight Priority="100" Background="#90D58D"    Pattern="Repaired" Match="SEVERITY"/>
+          <Highlight Priority="50"  Background="#C9C8CF"    Pattern="Info\w*"  Match="SEVERITY"/>
+          <TreeLink Composite="By SEV\\{SEVERITY}"/>
+          <TreeLink Composite="By Class\\{CLASS}"/>
+        </Section>
+      </Section>
+    </Section>
+
+    <Section Match="ENCLOSURE STATUS">
+      <SplitAt Match="^\s*\w.*:\s*$"/>
+      <ValueSeparator Key="Description" Match=":\s*$" Exclude="Diagnostic" Separator="^" Value_Find=":"/>
+      <TreeLink />
+      <Section Match="^\s*\w.*:\s*$" Hide="1"/>
+    </Section>
+
+    <Section Match="SHOW FRU">
+      <SplitAt Offset="1" Match="^\s*$"/>
+      <TreeLink />
+      <ValueSeparator Key="Slot" Exclude=":" Separator="^" Value_Find="\s+(\d+)" Value_Replacement=" #$1"/>
+      <ValueSeparator Match=":" Exclude="(Serial|part) number|version"/>
+      <Section Exclude="^\&gt;"/>
+    </Section>
+
+    <Section Match="SERVER DVD">
+      <TreeLink />
+      <Highlight Priority="100" Background="#90D58D"    Match="Drive:" Pattern="Present" />
+      <Highlight Priority="50"  Background="#C9C8CF"    Match="Drive:" Pattern="Absent"/>
+    </Section>
+
+    <Section Match="SERVER NAME">
+      <TreeLink />
+    </Section>
+
+    <Section Match="SERVER STATUS">
+      <TreeLink />
+      <SplitAt Match="Blade #\d"/>
+      <ValueSeparator Key="Status"  Match="Health:" AddMode="0"/>
+      <ValueSeparator               Match="Power:" Exclude="\bNO\b"/>
+      <ValueSeparator Key="Wattage" Match="Wattage"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\bOK\b" Match="Health:|^Status$"/>
+    </Section>
+
+    <Section Match="SYSLOG OA">
+      <TreeLink />
+      <Highlight Priority="150" Background="#F2D463"    Pattern="WARNING|down|degraded|fail\w*|not avail\w*" Exclude="\bTO:?\s*OK\b"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="(?&lt;=\bTO:?\s*)OK\b"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="\bUP\b"/>
+    </Section>
+
+    <Section Match="^\&gt;" Exclude="ENCLOSURE (INFO|STATUS|POWERSUPPLY|FAN|LCD)|OA (INFO|STATUS)|INTERCONNECT (INFO|STATUS)|SERVER (INFO|STATUS|DVD|NAME)|SYSLOG (SERVER|ILO|OA)|SHOW (UPDATE|POWER$|FRU|TOPOLOGY)">
+      <TreeLink Composite="-"/>
+    </Section>
+  </File>
+</Template>

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="Riverbed Sysdump [2]" ScanDepth="0" DetectPercent="60">
+  <!-- Setting scan depth to 0, because all files we expect to detect are in root directory -->
+  <Detect Match="hardwareinfo.txt"/>
+  <Detect Match="show-info-output.txt"/>
+  <Detect Match="show-scc-output.txt"/>
+
+  <File Match="hardwareinfo.txt">
+    <!-- Split into individual log sections -->
+    <SplitAt Match="^={20}|^output of"/>
+    <SplitAt Offset="1" Match="^={20}"/>
+    
+    <Section Match="dmidecode" KeepUnsectionedSource="1">
+      <SplitAt Match="^Handle 0x"/>
+      <Section Match="^Handle 0x" Rename="{Handle} - {Name}">
+        <ValueSeparator Key="Handle"     Separator="^"  Match="^Handle 0x"/>
+        <ValueSeparator Key="Name"       Separator="^"  Match="^\w" Exclude="^Handle 0x"/>
+        <ValueSeparator                  Separator=": " Match="^Bank |current speed|manufacturer|operational mode|part |date |serial |connector type:|thread count|voltage" Exclude="empty|O\.E\.M"/>
+        <ValueSeparator Key="Location"   Separator=": " Match="designat|locator"                           Exclude="O\.E\.M|not specif"     AddMode="0"/>
+        <ValueSeparator Key="Type"       Separator=": " Match="type:|signature|revision|version|product "  Exclude="connector type|empty"   AddMode="0"/>
+        <ValueSeparator Key="Size"       Separator=": " Match="size:|core count"                           Exclude="maximum |rom |runtime " AddMode="0"/>
+        <ValueSeparator Key="Max Size"   Separator=": " Match="Max(imum)? (size|capacity)"                                                  AddMode="0"/>
+        <ValueSeparator Key="Speed"      Separator=": " Match="speed:"                                     Exclude="current" AddMode="0"/>
+        <TreeLink Composite="dmidecode\\{Name}"/>
+      </Section>
+    </Section>
+
+    <Section Match="--get-led-status'" KeepUnsectionedSource="1">
+      <TreeLink Composite="LED status"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="(?&lt;=Fault LED is )\w+" Exclude="is off\b" Comment="Fault LED status is not OFF"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="(?&lt;=Fault LED is )off\b"/>
+    </Section>
+
+    <Section Match="--get-raid-configuration" KeepUnsectionedSource="1">
+      <Pre_Clean Find="^-{5,}"/>
+      <SplitAt Match="^-- "/>
+      <Section Match="^-- ">
+        <ValueSeparator Separator="^-- " Key="Name"/>
+        <TreeLink Composite="RAID configuration\\{Name}"/>
+        <Highlight Priority="200" Background="LightCoral" Pattern="(?&lt;=^\s*\S+\s+)\S+" Exclude="^--|\bonline\b" Comment="Status is not online"/>
+        <Highlight Priority="100" Background="#90D58D"    Pattern="\bonline\b"/>
+      </Section>
+    </Section>
+
+    <Section Match="-d /disk'"> <TreeLink Composite="Disk"/> </Section>
+    <Section Match="-q disk=map'"> <TreeLink Composite="Disk map"/> </Section>
+    <Section Match="-d /raid'"> <TreeLink Composite="RAID"/> </Section>
+    <Section Match="--raid-info'"> <TreeLink Composite="RAID info"/> </Section>
+    <Section Match="cat /proc/scsi/scsi'"> <TreeLink Composite="Disk - SCSI"/> </Section>
+
+    <Section Match="--get-physical" KeepUnsectionedSource="1">
+      <Pre_Clean Find="^\s+-{2,}|^\s+(?=\S)"/>
+      <SplitAt Match="^\s*Physical "/>
+      <Section Match="^\s*Physical ">
+        <ValueSeparator Separator="^\s*Physical " Key="Drive"/>
+        <ValueSeparator Pattern="(?&lt;=^\s*|\s{2})\S.*?:.*?(?=\s*$|\s{2})"/>
+        <TreeLink Composite="Disk - Physical\\{Drive}"/>
+        <Highlight Priority="200" Background="LightCoral" Match="status" Pattern="(?&lt;=status[: ]*)\S+|^\S+$" Exclude="online" Comment="Status is not online"/>
+        <Highlight Priority="100" Background="#90D58D"    Match="status" Pattern="online"/>
+      </Section>
+    </Section>
+
+    <Section Match="show_ipmi_info" KeepUnsectionedSource="1">
+      <TreeLink Composite="Event logs - IPMI"/>
+      <SplitAt Match="^\s*SEL Record"/>
+      <Section Match="^\s*SEL Record ">
+        <ValueSeparator Key="SEL Record ID" Exclude="^"/>
+        <ValueSeparator Key="Timestamp" Exclude="^"/>
+        <ValueSeparator />
+        <Highlight Priority="150" Background="#F2D463" Match="direction" Pattern="Assertion Event" Exclude="Deassertion"/>
+        <Highlight Priority="100" Background="#90D58D" Match="direction" Pattern="Deassertion Event"/>
+      </Section>
+    </Section>
+
+    <Section Match="show_hardware_err_log()" KeepUnsectionedSource="1">
+      <TreeLink Composite="Event logs - Hardware"/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="Assert\w*" Exclude="Deassert"/>
+      <Highlight Priority="100" Background="#90D58D" Pattern="Deassert\w*"/>
+    </Section>
+
+    <Section Match="ipmitool sdr list" KeepUnsectionedSource="1">
+      <TreeLink Composite="Sensors - IPMI"/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="(?&lt;=\|\s*)\S[^\|]+?(?=\s*$)" Exclude="\bok\b" Comment="Status is not ok"/>
+      <Highlight Priority="100" Background="#90D58D" Pattern="\bok\b"/>
+    </Section>
+
+    <!-- Generic match for all subsections - ensure that we keep all data for now -->
+    <Section Match="\w"/>
+  </File>
+
+
+  <File Match="show-info-output.txt">
+      <Highlight Priority="200" Background="LightCoral" Match="status" Pattern="(?&lt;=status[: ]+)\S.*?(?=\s*$)" Exclude="Healthy" Comment="Status is not healthy"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="status" Pattern="Needs attention"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="status" Pattern="Healthy"/>
+  </File>
+
+  <File Match="show-scc-output.txt">
+      <Highlight Priority="200" Background="LightCoral" Match="status" Pattern="(?&lt;=status[: ]+)\S.*?(?=\s*$)" Exclude="Connected|auto conf" Comment="Status is not connected"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="status" Pattern="Needs attention"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="auto conf.*status" Pattern="(?&lt;=status[: ]+)\S.*?(?=\s*$)" Exclude="\bactive\b" Comment="Status is not active"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="status" Pattern="Connected|\bactive\b"/>
+  </File>
+
+  <File Match="sysinfo.txt" KeepUnsectionedSource="1" TrimStartLines="1">
+    <Pre_Clean Find="[\s=\n]*(?=\n(Output of|System information))" Replacement="&#xA;" AsSingleLine="1"/>
+    <SplitAt Match="^\s*Output of"/>
+    <Section Match="Output of">
+    </Section>
+  </File>
+
+  <File Match="alarm-brief.txt">
+    <Pre_Clean Find="/alarm/state/alarm/|\s*\([^\(\)]*?\)*\s*$"/>
+    <SplitAt Match="/triggered " Offset="1"/>
+    <Section Match="^" Rename="{ID}: {display_name}[ - {trigger_reason}]">
+      <TreeLink Composite="{severity_str}"/>
+      <ValueSeparator Separator="\s=\s" Key="ID"/>
+      <ValueSeparator Separator="\s=\s" Match="/" Key_Exclude=":|aggregates" Key_Find="^.*\/(?=[^\/]+$)"/>
+      <!-- Dummy values definitions to set display order -->
+      <ValueSeparator                   Key="display_name" Exclude="^"/>
+      <ValueSeparator                   Key="severity" Exclude="^"/>
+      <ValueSeparator                   Key="severity_str" Exclude="^"/>
+      <ValueSeparator                   Key="suppressed" Exclude="^"/>
+      <ValueSeparator                   Key="triggered" Exclude="^"/>
+      <ValueSeparator                   Key="last_trigger_time" Exclude="^"/>
+      <ValueSeparator                   Key="last_clear_time" Exclude="^"/>
+      <ValueSeparator                   Key="last_check_time" Exclude="^"/>
+      <ValueSeparator                   Key="description" Exclude="^"/>
+      <!-- Highlights -->
+      <Highlight Priority="200" Background="LightCoral" Match="triggered"  Pattern="true" Comment="Alarm is in triggered state. Check triggered reason."/>
+      <Highlight Priority="100" Background="#90D58D"    Match="triggered"  Pattern="false"/>
+      <Highlight Priority="0"   Background="#C9C8CF"    Match="triggered_reason" Pattern="(?&lt;=\s+=\s+)\S.*?(?=\s*$)"/>
+      <Highlight Priority="0"   Background="#F2D463"    Match="suppressed" Pattern="true"  Comment="Alarm is suppressed."/>
+      <Highlight Priority="0"   Background="#F2D463"    Match="hidden"     Pattern="true"  Comment="Alarm is hidden."/>
+      <Highlight Priority="0"   Background="#F2D463"    Match="enabled"    Pattern="false" Comment="Alarm is disabled."/>
+    </Section>
+  </File>
+
+  <File Match="alarmd_info.txt">
+    <SplitAt Match="^----\s\w"/>
+
+    <Section Match="Hierarch">
+      <Pre_Clean Find="^--{2,}\s*(?=\w)"/>
+      <Pre_Clean Find="(?&lt;=\w)\s*-{2,}" Replacement="&#xA;"/>
+      <TreeLink />
+      <Highlight Priority="200" Background="LightCoral" Match="\[TRIG\]" Comment="Alarm is in triggered state."/>
+      <Highlight Priority="150" Background="#F2D463"    Match="\[HIDDEN\]" Comment="Alarm is hidden."/>
+      <Highlight Priority="150" Background="#F2D463"    Match="\[SUPP\]" Comment="Alarm is suppressed."/>
+    </Section>
+
+    <Section Match="Config">
+      <Pre_Clean Find="^--{2,}\s*(?=\w)"/>
+      <Pre_Clean Find="(?&lt;=\w)\s*-{2,}" Replacement="&#xA;"/>
+      <TreeLink />
+      <Highlight Priority="150" Background="#F2D463"    Match="enabled:"   Pattern="false" Comment="Alarm is disabled."/>
+      <Highlight Priority="50"  Background="#C9C8CF"    Exclude="enabled:" Pattern="(?&lt;=\|\s+)\S[^:]*(?=:)" Comment="Default value override."/>
+    </Section>
+
+    <Section Match="Statistics">
+      <Pre_Clean Find="^--{2,}\s*(?=\w)"/>
+      <Pre_Clean Find="(?&lt;=\w)\s*-{2,}" Replacement="&#xA;"/>
+      <TreeLink />
+    </Section>
+
+    <Section Match="Table" KeepUnsectionedSource="1">
+      <Pre_Clean Find="^--{2,}\s*(?=\w)"/>
+      <Pre_Clean Find="(?&lt;=\w)\s*-{2,}" Replacement="&#xA;"/>
+      <TreeLink />
+      <SplitAt Match="^\s*-{3,}"/>
+      <Section Match="^\s*-{3,}">
+        <Pre_Clean Find="^\s*-{3,}\s*$" RemoveEmptyLines="1"/>
+        <ValuePattern   Key="ID"       Match="^\s*Alarm:" PatternValue="'[^']*'"     Value_Find="'"/>
+        <ValuePattern   Key="Status"   Match="^\s*Alarm:" PatternValue="Triggered"/>
+        <ValueSeparator Separator=": " Match="Aggregated"                            Value_Find="'"/>
+        <ValueSeparator Separator=": " Match="Last "                                 Value_Find="^.*?\(|\).*$"/>
+        <Highlight Priority="200" Background="LightCoral" Match="Alarm:|status" Pattern="(^|\[)Triggered($|\])" Comment="Alarm is in triggered state."/>
+      </Section>
+    </Section>
+  </File>
+</Template>

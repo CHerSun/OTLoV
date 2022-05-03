@@ -1,0 +1,509 @@
+Log Entry 0: 23 Apr 2018 08:47:33
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADD9DA5020010 FFFF0103FDC00300
+
+
+Log Entry 1: 23 Apr 2018 08:57:36
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDA000020020 FFFF0103FDC00300
+
+
+Log Entry 2: 23 Apr 2018 09:07:35
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDA257020030 FFFF0103FDC00300
+
+
+Log Entry 3: 23 Apr 2018 09:17:35
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDA4AF020040 FFFF0103FDC00300
+
+
+Log Entry 4: 23 Apr 2018 09:27:35
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDA707020050 FFFF0103FDC00300
+
+
+Log Entry 5: 23 Apr 2018 09:37:34
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDA95E020060 FFFF0103FDC00300
+
+
+Log Entry 6: 23 Apr 2018 09:47:34
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDABB6020070 FFFF0103FDC00300
+
+
+Log Entry 7: 23 Apr 2018 09:57:34
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDAE0E020080 FFFF0103FDC00300
+
+
+Log Entry 8: 23 Apr 2018 10:07:34
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDB066020090 FFFF0103FDC00300
+
+
+Log Entry 9: 23 Apr 2018 10:17:34
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDB2BE0200A0 FFFF0103FDC00300
+
+
+Log Entry 10: 23 Apr 2018 10:27:35
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDB5170200B0 FFFF0103FDC00300
+
+
+Log Entry 11: 23 Apr 2018 10:37:35
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDB76F0200C0 FFFF0103FDC00300
+
+
+Log Entry 12: 23 Apr 2018 10:42:47
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDB8A70200D0 FFFF0103FDC00300
+
+
+Log Entry 13: 23 Apr 2018 10:42:47
+Alert Level 2: Informational
+Keyword: HP-UX_OS_NORMAL_SHUTDOWN
+HP-UX OS normal shutdown.
+Logged by: HP-UX Kernel 0
+Data: Major change in system state - State Change
+0x54801C3000E000E0 00000000001A100C
+
+
+Log Entry 14: 23 Apr 2018 10:42:55
+Alert Level 2: Informational
+Keyword: Type-02 127002 1208322
+Soft Reset
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+0x205ADDB8AF020100 FFFF027000120300
+
+
+Log Entry 15: 23 Apr 2018 10:42:55
+Alert Level 2: Informational
+Keyword: Type-02 1d0a00 1903104
+CPU starting boot
+Logged by: Redundant w/ an E0 code;
+Sensor: System Boot Initiated
+Data1: transition to Running
+0xC15ADDB8AF020110 FFFF000A001D0300
+
+
+Log Entry 16: 23 Apr 2018 10:42:55
+Alert Level 1: Major Forward Progress
+Keyword: BOOT_START
+CPU starting boot
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680006300E00120 0000000000000000
+
+
+Log Entry 17: 23 Apr 2018 10:43:02
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDB8B6020140 FFFF0103FDC00300
+
+
+Log Entry 18: 23 Apr 2018 10:43:27
+Alert Level 2: Informational
+Keyword: Type-02 126f01 1208065
+Launching boot manager
+Logged by: Redundant w/ an E0 code;
+Sensor: System Event
+Data1: OEM System Boot Event
+Data2: PRV State: 0x8F
+0xC15ADDB8CF020150 FF8F416F00120300
+
+
+Log Entry 19: 23 Apr 2018 10:43:27
+Alert Level 1: Major Forward Progress
+Keyword: EFI_LAUNCH_BOOT_MANAGER
+Launching EFI boot manager
+Logged by: System Firmware  0
+Data: Major change in system state - BCH or EFI
+0x5480020B00E00160 0000000000000006
+
+
+Log Entry 20: 23 Apr 2018 11:55:28
+Alert Level 2: Informational
+Keyword: Type-02 127003 1208323
+Chassis Control request to BMC via IPMI or sensor
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+Data2: OEM Code2: 0x07
+0x205ADDC9B0020180 0783A37000120300
+
+
+Log Entry 21: 23 Apr 2018 11:55:29
+Alert Level 2: Informational
+Keyword: Type-02 127002 1208322
+Soft Reset
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+0x205ADDC9B1020190 FFFF027000120300
+
+
+Log Entry 22: 23 Apr 2018 11:55:29
+Alert Level 2: Informational
+Keyword: Type-02 1d0a00 1903104
+CPU starting boot
+Logged by: Redundant w/ an E0 code;
+Sensor: System Boot Initiated
+Data1: transition to Running
+0xC15ADDC9B10201A0 FFFF000A001D0300
+
+
+Log Entry 23: 23 Apr 2018 11:55:30
+Alert Level 1: Major Forward Progress
+Keyword: BOOT_START
+CPU starting boot
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680006300E001B0 0000000000000000
+
+
+Log Entry 24: 23 Apr 2018 11:55:31
+Alert Level 2: Informational
+Keyword: Type-02 127002 1208322
+Soft Reset
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+0x205ADDC9B30201D0 FFFF027000120300
+
+
+Log Entry 25: 23 Apr 2018 11:55:38
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDC9BA0201E0 FFFF0103FDC00300
+
+
+Log Entry 26: 23 Apr 2018 11:56:03
+Alert Level 2: Informational
+Keyword: Type-02 126f01 1208065
+Launching boot manager
+Logged by: Redundant w/ an E0 code;
+Sensor: System Event
+Data1: OEM System Boot Event
+Data2: PRV State: 0x8F
+0xC15ADDC9D30201F0 FF8F416F00120300
+
+
+Log Entry 27: 23 Apr 2018 11:56:03
+Alert Level 1: Major Forward Progress
+Keyword: EFI_LAUNCH_BOOT_MANAGER
+Launching EFI boot manager
+Logged by: System Firmware  0
+Data: Major change in system state - BCH or EFI
+0x5480020B00E00200 0000000000000006
+
+
+Log Entry 28: 23 Apr 2018 13:22:54
+Alert Level 2: Informational
+Keyword: Type-02 127003 1208323
+Chassis Control request to BMC via IPMI or sensor
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+Data2: OEM Code2: 0x07
+0x205ADDDE2E020220 0783A37000120300
+
+
+Log Entry 29: 23 Apr 2018 13:22:55
+Alert Level 2: Informational
+Keyword: Type-02 127002 1208322
+Soft Reset
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+0x205ADDDE2F020230 FFFF027000120300
+
+
+Log Entry 30: 23 Apr 2018 13:22:56
+Alert Level 2: Informational
+Keyword: Type-02 1d0a00 1903104
+CPU starting boot
+Logged by: Redundant w/ an E0 code;
+Sensor: System Boot Initiated
+Data1: transition to Running
+0xC15ADDDE30020240 FFFF000A001D0300
+
+
+Log Entry 31: 23 Apr 2018 13:22:56
+Alert Level 1: Major Forward Progress
+Keyword: BOOT_START
+CPU starting boot
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680006300E00250 0000000000000000
+
+
+Log Entry 32: 23 Apr 2018 13:22:57
+Alert Level 2: Informational
+Keyword: Type-02 127002 1208322
+Soft Reset
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+0x205ADDDE31020270 FFFF027000120300
+
+
+Log Entry 33: 23 Apr 2018 13:23:03
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDDE37020280 FFFF0103FDC00300
+
+
+Log Entry 34: 23 Apr 2018 13:23:06
+Alert Level 3: Warning
+Keyword: BOOT_PLAT_CONSOLE_DEV_FAILED
+Console device failure
+Logged by: System Firmware  0
+Data: Physical address
+0x6180005000E00290 00000000F4050000
+
+
+Log Entry 35: 23 Apr 2018 13:26:22
+Alert Level 2: Informational
+Keyword: Type-02 127003 1208323
+Chassis Control request to BMC via IPMI or sensor
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+Data2: OEM Code2: 0x07
+0x205ADDDEFE0202B0 0784A37000120300
+
+
+Log Entry 36: 23 Apr 2018 13:26:22
+Alert Level 2: Informational
+Keyword: INIT_INITIALIZED_RSE
+SAL_INIT initialized store
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680027900E002C0 0000000000000000
+
+
+Log Entry 37: 23 Apr 2018 13:26:22
+Alert Level 5: Critical
+Keyword: Type-02 136f00 1273600
+TOC interrupt (crash dump)
+Logged by: Baseboard Management Controller;
+Sensor: Critical Interrupt - TOC Interrupt
+Data1: Front Panel NMI/Diagnostic Interrupt
+Data2: OEM Code2: 0x02
+0x205ADDDEFE0202E0 02FF206FFB130300
+
+
+Log Entry 38: 23 Apr 2018 13:26:22
+Alert Level 7: Fatal
+Keyword: Type-02 136f03 1273603
+INIT Initiated
+Logged by: Redundant w/ an E0 code;
+Sensor: Critical Interrupt
+Data1: Software NMI
+Data2: OEM Code1: 0x3FOEM Code2: 0x00
+0xC15ADDDEFE0202F0 003FA36F00130300
+
+
+Log Entry 39: 23 Apr 2018 13:26:22
+Alert Level 7: Fatal
+Keyword: INIT_INITIATED
+INIT initiated
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0xF680007900E00300 0000000000000000
+
+
+Log Entry 40: 23 Apr 2018 13:26:23
+Alert Level 2: Informational
+Keyword: MC_PSP
+Processor PSP
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x568002A100E00320 00000000FFE301A0
+
+
+Log Entry 41: 23 Apr 2018 13:26:23
+Alert Level 2: Informational
+Keyword: INIT_TIMESTAMP
+INIT: INIT timestamp
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680028000E00340 2018042300132623
+
+
+Log Entry 42: 23 Apr 2018 13:26:23
+Alert Level 2: Informational
+Keyword: INIT_LOG_PROC
+INIT:  Logging Processor State
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680027A00E00360 0000000000000000
+
+
+Log Entry 43: 23 Apr 2018 13:26:23
+Alert Level 2: Informational
+Keyword: MC_IIP
+Processor IIP
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680028400E00380 00000040FFD99EA0
+
+
+Log Entry 44: 23 Apr 2018 13:26:23
+Alert Level 2: Informational
+Keyword: MC_IPSR
+Processor IPSR
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680028700E003A0 0000100000006018
+
+
+Log Entry 45: 23 Apr 2018 13:26:23
+Alert Level 3: Warning
+Keyword: OS_INIT_NOT_REGISTERED
+OS INIT address not registered
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x7680010400E003C0 0000000000000000
+
+
+Log Entry 46: 23 Apr 2018 13:26:23
+Alert Level 2: Informational
+Keyword: Type-02 127002 1208322
+Soft Reset
+Logged by: Baseboard Management Controller;
+Sensor: System Event
+0x205ADDDEFF0203E0 FFFF027000120300
+
+
+Log Entry 47: 23 Apr 2018 13:26:24
+Alert Level 2: Informational
+Keyword: Type-02 1d0a00 1903104
+CPU starting boot
+Logged by: Redundant w/ an E0 code;
+Sensor: System Boot Initiated
+Data1: transition to Running
+0xC15ADDDF000203F0 FFFF000A001D0300
+
+
+Log Entry 48: 23 Apr 2018 13:26:24
+Alert Level 1: Major Forward Progress
+Keyword: BOOT_START
+CPU starting boot
+Logged by: System Firmware  0
+Data: Implementation dependent data field
+0x5680006300E00400 0000000000000000
+
+
+Log Entry 49: 23 Apr 2018 13:26:31
+Alert Level 2: Informational
+Keyword: Type-02 c00301 12583681
+Time Set
+Logged by: Baseboard Management Controller;
+Sensor: SEL Time Set
+Data1: State Asserted
+0x205ADDDF07020420 FFFF0103FDC00300
+
+
+Log Entry 50: 23 Apr 2018 13:26:33
+Alert Level 3: Warning
+Keyword: BOOT_PLAT_CONSOLE_DEV_FAILED
+Console device failure
+Logged by: System Firmware  0
+Data: Physical address
+0x6180005000E00430 00000000F4050000
+
+
+Log Entry 51: 23 Apr 2018 13:30:13
+Alert Level 2: Informational
+Keyword: Type-02 126f01 1208065
+Launching boot manager
+Logged by: Redundant w/ an E0 code;
+Sensor: System Event
+Data1: OEM System Boot Event
+Data2: PRV State: 0x8F
+0xC15ADDDFE5020450 FF8F416F00120300
+
+
+Log Entry 52: 23 Apr 2018 13:30:14
+Alert Level 1: Major Forward Progress
+Keyword: EFI_LAUNCH_BOOT_MANAGER
+Launching EFI boot manager
+Logged by: System Firmware  0
+Data: Major change in system state - BCH or EFI
+0x5480020B00E00460 0000000000000006

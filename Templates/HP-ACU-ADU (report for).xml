@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="HP ACU-ADU (report for) [3]">
+  <!-- ADU Template that is based on REPORT FOR pattern. Detect file by 2 patterns - both must match. -->
+  <File KeepUnsectionedSource="1">
+    <Detect Match="ADU Version|ACU Version"/>
+    <Detect Match="^Consolidated Error Report|^Report for"/>
+
+    <!-- Split full file into big sections by 2 general (expected) titles & by per device (Report for...) -->
+    <SplitAt Match="^Consolidated Error Report|^Device Summary|^Report for"/>
+
+    <!-- For consolidated file sections - highlight using keywords -->
+    <Section Match="^Consolidated|^Device " Hide="1">
+      <Highlight Priority="200" Background="LightCoral" Pattern="Error|Critical|Disable\w*" Exclude="^Consolidated "/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="Warning|Attention"/>
+      <Highlight Priority="50"  Background="#C9C8CF" Pattern="Initialization|Not configured"/>
+      <TreeLink />
+    </Section>
+
+    <!-- Per-device sections -->
+    <Section Match="^Report for" KeepUnsectionedSource="1">
+      <!-- Preclean excessive spaces on line start - this simplifies working with values later -->
+      <Pre_Clean Find="^\s{2,6}" Replacement=" "/>
+
+      <Highlight Priority="200" Background="LightCoral" Pattern="Critical"/>
+      <Highlight Priority="200" Background="LightCoral" Match="status.*fail" Pattern="(?&lt;=\s{2})\w.*fail\w*"/>
+      <Highlight Priority="150" Background="#F2D463" Pattern="Warning" Exclude="\b(0x0+|0xf+)\b"/>
+      <Highlight Priority="150" Background="#F2D463" Match="drive.failure.map.*0x[0-9a-f]{4+}" Pattern="0x[0-9a-f]*[1-9a-f][0-9a-f]*\b" Exclude="offset" Comment="Non-empty drive failure map"/>
+      <Highlight Priority="150" Background="#F2D463" Match="Unit status"                Pattern="(?&lt;=\s{2})\d.*" Exclude="\b(0x0+|0xf+)\b" Comment="Non-empty unit status"/>
+      <Highlight Priority="100" Background="#90D58D" Match="Unit status"                Pattern="\b(0|0x0+)\b"/>
+      <Highlight Priority="50"  Background="#C9C8CF" Match="failure map.*0x[0-9a-f]"    Pattern="0x[0-9a-f]+" Exclude="offset|\b(0x0+|0xf+)\b" Comment="Non-empty failure map"/>
+      <Highlight Priority="50"  Background="#C9C8CF" Match="disable\w* map.*0x[0-9a-f]" Pattern="0x[0-9a-f]+" Exclude="offset|\b(0x0+|0xf+)\b" Comment="Non-empty disabled map"/>
+      <Highlight Priority="50"  Background="#C9C8CF" Match="last failure reason" Exclude="\b(0x0+|0xf+)\b" Pattern="0x[0-9a-f]+"/>
+
+      <TreeLink />
+
+      <!-- Find header values, keep them hidden. Headers look like "T1 : T2 : T3 .... TN". We are interested in first 4 for navigation tree -->
+      <ValueSeparator Key="T1" Match="^\S.* : "      Separator=" : " Order="1"             Hide="1"/>
+      <ValueSeparator Key="T2" Match="^\S(.* : ){2}" Separator=" : " SeparatorPosition="0" Hide="1" Value_Find=" : .*"/>
+      <ValueSeparator Key="T3" Match="^\S(.* : ){3}" Separator=" : " SeparatorPosition="1" Hide="1" Value_Find=" : .*"/>
+      <ValueSeparator Key="T4" Match="^\S(.* : ){4}" Separator=" : " SeparatorPosition="2" Hide="1" Value_Find=" : .*"/>
+
+      <!-- Split device section into smaller one by lines, starting on very left + containing " : ", exclude device section start and table starts. -->
+      <SplitAt Match="^\S.* : " Exclude="^Report for|^------"/>
+
+      <!-- Per-component info sections -->
+      <Section Match=":" Exclude="Physical Drive Status|Since">
+        <TreeLink Composite="[By Components\\{T2}[\\{T4}]|Controller]"/>
+      </Section>
+      <Section Match="Physical Drive Status">
+        <TreeLink Composite="[By Components\\{T2}[\\{T4}]|Controller]"/>
+        <TreeLink Composite="Disks"/>
+        <ValuePattern Key="ID" PatternValue="\S+:\S+"/>
+        <ValuePattern Key="Type" PatternValue="Tape Drive"/>
+        <ValueSeparator Separator="  " Key="Type" Match="Type" Value_Find="\S*0x\S*"/>
+        <ValueSeparator Separator="  " Key="Model" Match="Drive model"/>
+        <ValueSeparator Separator="  " Key="Size" Match="Total" Value_Find="\S*0x\S*"/>
+        <ValueSeparator Separator="  " Key="Firmware" Match="Firmware"/>
+        <ValueSeparator Separator="  " Match="Physical " Exclude="Block|\b0x0+\b" Value_Find="\S*0x\S*"/>
+      </Section>
+      <Section Match="Since">
+        <TreeLink Composite="[By Components\\{T2}[\\{T4}]|Controller]"/>
+        <TreeLink Composite="Stats since {Since}"/>
+        <Highlight Priority="50" Background="#C9C8CF" Match="(fail|error|realloc)" Pattern="0x[0-9a-f]+" Exclude="\b(0x0+|0xf+)\b" Comment="Non-0 counter"/>
+        <ValueSeparator Separator="  " />
+        <ValuePattern Key="ID" PatternValue="\S+:\S+"/>
+        <ValuePattern Key="Since" PatternValue="Since \w+" Value_Find="Since"/>
+      </Section>
+    </Section>
+  </File>
+</Template>
