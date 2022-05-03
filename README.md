@@ -87,4 +87,4 @@ I've included a few stripped sample logs in the package. To test OTLoV:
 
 ## License
 
-See [LICENSE-EN.md]() for English license text or [LICENSE-RU.md]() for Russian text.
+See [LICENSE-EN.md](LICENSE-EN.md) for English license text or [LICENSE-RU.md](LICENSE-RU.md) for Russian text.
