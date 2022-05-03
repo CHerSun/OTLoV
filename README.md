@@ -70,6 +70,7 @@ Some of changes that I do have on my radar currently:
 * Rework to a more streamlined templates,
 * Scripted calculator to be able to add metrics in-place,
 * Filtering / searching on all tabs,
+* Relations and automatic schemes,
 * Web-based version.
 
 ## System requirements
