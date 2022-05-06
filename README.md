@@ -44,11 +44,11 @@ OTLoV is not collecting any data. You can completely block any traffic from the 
 
 ## Templates development
 
-If you need a new template or adjust one of existing templates - you are free to do so. Welcomed, if you are willing to contribute your work to the project and include it into base package.
+If you need a new template or adjust one of existing templates - you are free to do so yourself. Welcomed, if you are willing to contribute your work to the project and include it into base package.
 
 If you need my help with that - there are 2 ways:
 
-* Create an issue. If I have time & consider request worth the effort - I will do it.
+* Create an issue. If I consider the request beneficial for the project and its users - I will do it.
 * Contact me directly to sign an agreement for development.
 
 In both cases I will need source logs (preferably - multiple samples + what exactly you wish to achieve and what's important), which you can upload somewhere and give me an encrypted access. The logs will be used only for the development. No personal information will be used / extracted even if some PI is logged there. Logs will be deleted once I no longer need those for the current task, unless you explicitly give me permission to keep the logs for future development and testing.
@@ -57,7 +57,7 @@ In both cases I will need source logs (preferably - multiple samples + what exac
 
 No support is offered for free. If you want support - contact me to sign a support agreement.
 
-Free users are welcomed to create issues and to use published documentation.
+Free users are welcomed to create issues and to use published documentation (WIP).
 
 Any contributions (documentation, templates, localization) to the project are also welcomed, if you are ok that those will be merged into the base package.
 
