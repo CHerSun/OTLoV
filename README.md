@@ -1,4 +1,6 @@
 
+<img align="left" width="64" height="64" src="https://github.com/CHerSun/OTLoV/wiki/Icon 256.png" alt="App icon">
+
 # OTLoV
 
 **O**ffline **T**emplated **Lo**gs **V**iewer - a GUI tool to help with reading diagnostic text logs. OTLoV can load a text file or a folder of text files. It creates a structured, highlighted, easy-to-navigate view, instead of just plain text. OTLoV provides extensive text filtering capability. It also aggregates and extracts data in tabular format. All of that for different types of logs in one interface.
