@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Template ID="OTLoV" Name="ddump [1]">
-  <File KeepUnsectionedSource="1">
+  <File KeepUnsectionedSource="1" DetectPercent="60">
     <!-- # File detection-->
     <Detect Match="\-{70}"/>
     <Detect Match="^batt_dump_regs$"/>
     <Detect Match="^custvpd_stats$"/>
 
+    <!-- Global highlights - command completion statuses -->
+    <Highlight Priority="0"   Foreground="#90D58D"   Match="^Command completed successfully\s*$"/>
+    <Highlight Priority="150" Background="#F2D463"   Match="^Command timeout\s*$"/>
+    <!-- Global highlight - Fault LED state -->
+    <Highlight Priority="100" Background="#90D58D"    Match="Fault.{1,10}LED" Pattern="\b(OFF|0)\s*$" Exclude=",|purpose"/>
+    <Highlight Priority="200" Background="LightCoral" Match="Fault.{1,10}LED" Pattern="\b(ON)\s*$" Exclude=",|purpose"/>
+    <Highlight Priority="150" Background="#F2D463"    Match="Fault.{1,10}LED" Pattern="(?&lt;=:\s*)\S.*|^\S.*" Exclude=",|purpose|index|\b(ON|OFF|0)\b" Comment="Status not defined in template."/>
+    <!-- Global highlight - Master / Slave role -->
+    <Highlight Priority="0"   Background="Wheat"      Match="role|mode" Pattern="\bMASTER\b"/>
+    <Highlight Priority="0"   Background="LightBlue"  Match="role|mode" Pattern="\bSLAVE\b"/>
+    <!-- Global highlight - manually added notes -->
+    <Highlight Priority="0"   Foreground="#C9C8CF"    Match="^NOTE: " Pattern=".*"/>
+    <!-- Generic value - top-level section name (hidden) -->
+    <ValueSeparator Separator="^# " Key="Sect_Name1" Hide="1"/>
+
     <!-- # Split full file into individual commands outputs. There's no direct anchors, so use 2 lines - hypens + command name (no spaces) -->
     <Pre_Clean Find="^\-{70}$\n(\S+)$" Replacement="# $1" AsSingleLine="1" RO="3"/>
     <SplitAt Match="^# \S|^Command Completed.*ddump"/>
 
-    <!-- Generic highlights - command statuses -->
-    <Highlight Priority="0"   Foreground="#90D58D"   Match="^Command completed successfully\s*$"/>
-    <Highlight Priority="150" Background="#F2D463"   Match="^Command timeout\s*$"/>
-    <!-- Generic value - top-level section name (hidden) -->
-    <ValueSeparator Separator="^# " Key="Sect_Name1" Hide="1"/>
-
     <!-- # VPD sections -->
     <Section Match="# custvpd" KeepUnsectionedSource="1">
-      <TreeLink Composite="VPD\\{Sect_Name1}"/>
+      <TreeLink Composite="...\\{Sect_Name1}"/>
       <ValueSeparator Separator="\s+(?=[0-9])"/>
       <Highlight Priority="150" Background="#F2D463"   Match="(Unsuccessful|Device not ready)" Pattern="\b([0-9]{2,}|[1-9])\b" Comment="Counter is not 0"/>
       <SplitAt Match="^\s*$" Offset="1"/>
       <Section Match="[0-9]"/>
     </Section>
     <Section Match="# getenclvpd" KeepUnsectionedSource="1">
-      <TreeLink Composite="VPD\\{Sect_Name1}"/>
+      <TreeLink/>
       <Highlight Priority="100" Background="#90D58D"   Match="mismatch status" Pattern="(?&lt;=: )valid"/>
       <Highlight Priority="150" Background="#F2D463"   Match="mismatch status" Pattern="(?&lt;=:\s+)\S[^,]*" Exclude="(?&lt;=: )valid"/>
       <Highlight Priority="100" Background="#90D58D"   Match="repair status" Pattern="no repair.*"/>
@@ -34,7 +43,7 @@
       <Section Match="VPD repair" Hide="1"/>
     </Section>
     <Section Match="# vpd" KeepUnsectionedSource="1">
-      <TreeLink Composite="VPD\\{Sect_Name1}"/>
+      <TreeLink Composite="...\\{Sect_Name1}"/>
       <Highlight Priority="100" Background="#C9C8CF"   Match="Region not configured"/>
       <Highlight Priority="150" Background="#F2D463"   Match="Could not read VPD.*"/>
       <SplitAt Match="^VPD \d"/>
@@ -60,31 +69,28 @@
         <Highlight Priority="150" Background="#F2D463"  Match="errs|loss|invalid|failed" Pattern="\s?\d+\s?" Exclude="\b0\b"/>
       </Section>
     </Section>
-    <!-- # Logs -->
-    <Section Match="log" Exclude="logdump" KeepUnsectionedSource="1">
-      <TreeLink Composite="Log\\{Sect_Name1}"/>
-    </Section>
+    <!-- # logdumps -->
     <Section Match="logdump" KeepUnsectionedSource="1">
-      <Highlight Priority="100" Background="#C9C8CF"    Match="^No failure log found in SRAM"/>
-      <Highlight Priority="100" Background="#90D58D"    Pattern="restor\w*|recovere\w*|succes\w*|\bOK\b(?! to )|link up|fault cleared"/>
-      <Highlight Priority="150" Background="#F2D463"    Pattern="\bfail\w*|timeout|critical|warning(?! to )|disconnect\w*|(?&lt;=cause\s*:\s*)\w.*|link down"/>
+      <TreeLink />
+      <Highlight Priority="0"   Background="#C9C8CF"    Match="0\+00:00:0\S+" Comment="Was there a reset?"/>
+      <Highlight Priority="50"  Background="LightBlue"  Match="flash"  Pattern="Received new.*$" Comment="Was there a reset?"/>
+      <Highlight Priority="100" Background="#90D58D"    Pattern="restor\w*|recovere\w*|succes\w*|\bOK\b(?! to )|link up|fault cleared" Exclude="successfully read"/>
+      <Highlight Priority="150" Background="#F2D463"    Pattern="\bfail\w*|timeout|critical|warning(?! to )|disconnect\w*|link down|soft reset|setting time" Exclude="cli user"/>
       <Highlight Priority="150" Background="#F2D463"    Match="PHY \d+ ERR"  Pattern="(?&lt;= - )\w\S+"/>
       <Highlight Priority="100" Background="#90D58D"    Pattern="fault update" Exclude="[\S^=]+=[1-9]"/>
       <Highlight Priority="150" Background="#F2D463"    Match="fault update" Pattern="[\S^=]+=[1-9]"/>
-      <Highlight Priority="200" Background="LightCoral" Pattern="AC fail\w*|Fault ON\b|fault detected"/>
+      <Highlight Priority="200" Background="LightCoral" Pattern="Power loss .* detected|Fault ON\b|fault detected"/>
       <SplitAt Match=";"/>
       <Section Match=";" Hide="1">
         <ValueSeparator Separator=";" Key="Reporter1" Hide="1" Value_Find=";.*$"/>
         <ValueSeparator Separator=";" Key="Reporter2" Hide="1" Value_Find=";.*$" SeparatorPosition="1"/>
-        <TreeLink Composite="Log\\{Sect_Name1}\\{Reporter1}\\{Reporter2}"/>
+        <TreeLink Composite="{Reporter1}\\{Reporter2}"/>
       </Section>
     </Section>
     <!-- # report_faults -->
     <Section Match="# report_faults" KeepUnsectionedSource="1">
       <Highlight Priority="100" Background="#90D58D"    Match="faults"     Pattern="No faults.*|None"/>
       <Highlight Priority="150" Background="#F2D463"                       Pattern="compromised|fans set to maximum"/>
-      <Highlight Priority="100" Background="#90D58D"    Match="fault.*LED" Pattern="\bOFF\b"/>
-      <Highlight Priority="200" Background="LightCoral" Match="fault.*LED" Pattern="\bON\b"/>
       <Highlight Priority="150" Background="#F2D463"    Match="state"      Pattern="(?&lt;=:\s*)\w.*" Exclude="CRITICAL"/>
       <Highlight Priority="200" Background="LightCoral" Match="state"      Pattern="\bCRITICAL\b"/>
       <TreeLink/>
@@ -95,15 +101,14 @@
     </Section>
     <!-- # sideplane raw dump -->
     <Section Match="sideplane" KeepUnsectionedSource="1">
-      <TreeLink Composite="...\\# {Sect_Name1}"/>
-      <Highlight Priority="0"   Foreground="#90D58D"   Match="^Command completed successfully\s*$"/>
-      <Highlight Priority="150" Background="#F2D463"   Match="^Command timeout\s*$"/>
+      <TreeLink/>
       <SplitAt Match="^[^:]+$" Offset="1"/>
       <Section Match=":"/>
     </Section>
     <!-- # uptime, ver, ipconfig -->
     <Section Match="# (ver|ipconfig|uptime)">
       <TreeLink/>
+      <Clean Find="uptime$" Replacement="uptime&#xa;NOTE: uptime is shown for the current controller only! It could differ from the other controller. Check both."/>
       <Highlight Priority="200" Background="LightCoral" Pattern="\b0 days" Comment="Recently power cycled"/>
       <Highlight Priority="150" Background="#F2D463"    Pattern="\b[1-9] days" Comment="Uptime is less than 10 days"/>
       <Highlight Priority="100" Background="#90D58D"    Pattern="\b[0-9]{2,} days"/>
@@ -113,14 +118,18 @@
       <TreeLink/>
       <SplitAt Match="^\*+ Drive Bay"/>
       <SplitAt Match="^\s*$" Offset="1"/>
+      <SplitAt Match="BEGIN Rsync ddump"/>
+      <SplitAt Match="END Rsync ddump" Offset="1"/>
+      <Section Match="BEGIN Rsync ddump"/>
       <Section Match="Drive Bay">
         <Pre_Clean Find="(?&lt;=(Slot\S)[\s\n]*)(\w[^:]+)" Replacement="$1 $2" AsSingleLine="1" RO="3"/>
-        <ValueSeparator Separator=": "/>
+        <ValueSeparator Separator=": " Value_Exclude="\bNONE\b"/>
         <ValueSeparator Separator=" (?=\d)" Value_Find=" .*$" Key="Bay"/>
         <Highlight Priority="0"   Foreground="#C9C8CF"                      Pattern="REMOVED|N/A|0{16}"/>
         <Highlight Priority="0"   Foreground="#C9C8CF"    Match="present"   Pattern="\bNO\b"/>
+        <Highlight Priority="0"   Foreground="#C9C8CF"    Match="faults|bypass" Pattern="0x00.*none|\bnone\b"/>
         <Highlight Priority="150" Foreground="#F2D463"    Match="bypass"    Pattern="0x[0-9a-f]+" Exclude="0x00|none"/>
-        <Highlight Priority="200" Background="LightCoral" Match="fault led" Pattern="\bON\b"/>
+        <Highlight Priority="150" Foreground="#F2D463"    Match="faults"    Pattern="(?&lt;=:\s+)\S.*|^\S*" Exclude="0x00|none"/>
         <Highlight Priority="100" Background="#90D58D"    Match="current"   Pattern="\bONLINE\b"/>
         <Highlight Priority="150" Background="#F2D463"    Match="current"   Pattern="(?&lt;=:\s*)\w.*|^\w.*" Exclude="ONLINE|REMOVED"/>
       </Section>
@@ -128,9 +137,28 @@
     <!-- # Canister manager -->
     <Section Match="canmgr" KeepUnsectionedSource="1">
       <TreeLink/>
+      <Highlight Priority="0" Background="LightBlue" Pattern=" Local "/>
+      <Highlight Priority="0" Background="Wheat" Pattern=" Remote "/>
+      <SplitAt Match="info:|component.description"/>
+      <SplitAt Match="BEGIN Rsync ddump"/>
+      <SplitAt Match="END Rsync ddump" Offset="1"/>
+      <Section Match="BEGIN Rsync ddump"/>
+      <Section Match="canister info" KeepUnsectionedSource="1">
+        <Highlight Priority="100" Background="#90D58D" Match=":.*:"      Pattern="No faults"/>
+        <Highlight Priority="100" Background="#F2D463" Match=":.*:"      Pattern="(?&lt;=:.*:\s*)\S.*" Exclude="No faults"/>
+        <ValueSeparator Separator=":\s" Exclude=":.*:|canister \d|\d canister"/>
+        <ValueSeparator Separator=":\s" Match="canister \d" Order="1" Key="Location"/>
+        <SplitAt Match="canister \d+:"/>
+        <Section Match="canister \d+:"/>
+      </Section>
+      <Section Match="info:" Exclude="canister info">
+        <ValueSeparator Separator=":\s" Exclude=":.*:"/>
+        <ValueSeparator Separator="info:" Order="1" Key="Location"/>
+      </Section>
+      <Section Match="component.description"/>
     </Section>
 
-    <Section Exclude="fwdownloader|command completed|# custvpd|# getenclvpd|# vpd|batt|metis|phy|log|# report_faults|sideplane|# (ver|ipconfig|uptime)|drvmgr|canmgr">
+    <Section Exclude="fwdownloader|command completed|# custvpd|# getenclvpd|# vpd|batt|metis|phy|logdump|# report_faults|sideplane|# (ver|ipconfig|uptime)|drvmgr|canmgr">
       <TreeLink Composite="...\\{Sect_Name1}"/>
       <Highlight Priority="100" Background="#90D58D"   Match="No faults"/>
       <Highlight Priority="100" Background="#C9C8CF"   Match="status" Pattern="disconnected|not installed"/>
