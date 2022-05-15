@@ -25,7 +25,6 @@
     <Pre_Clean Find="^\-{70}$\n(\S+)$" Replacement="# $1" AsSingleLine="1" RO="3"/>
     <SplitAt Match="^# \S|^Command Completed.*ddump"/>
 
-    <!-- # VPD sections -->
     <Section Match="# custvpd" KeepUnsectionedSource="1">
       <TreeLink Composite="...\\{Sect_Name1}"/>
       <ValueSeparator Separator="\s+(?=[0-9])"/>
@@ -49,19 +48,16 @@
       <SplitAt Match="^VPD \d"/>
       <Section Match="^VPD \d"/>
     </Section>
-    <!-- # batts -->
+    <!-- # batteries and metis -->
     <Section Match="batt" KeepUnsectionedSource="1">
       <TreeLink Composite="...\\{Sect_Name1}"/>
       <Highlight Priority="100" Background="#C9C8CF"   Match="No battery bays"/>
       <SplitAt Match="-{25}" Offset="-1"/>
       <Section Exclude="# |^$"/>
     </Section>
-    <Section Match="metis" KeepUnsectionedSource="1">
-      <TreeLink Composite="...\\{Sect_Name1}"/>
-    </Section>
     <!-- # PHYs -->
     <Section Match="phy" KeepUnsectionedSource="1">
-      <TreeLink Composite="PHY\\{Sect_Name1}"/>
+      <TreeLink Composite="PHYs\\{Sect_Name1}"/>
       <SplitAt Match="^PHY [0-9]"/>
       <Section Match="^PHY [0-9]">
         <ValueSeparator Separator=" : "/>
@@ -87,35 +83,56 @@
         <TreeLink Composite="{Reporter1}\\{Reporter2}"/>
       </Section>
     </Section>
-    <!-- # report_faults -->
     <Section Match="# report_faults" KeepUnsectionedSource="1">
+      <TreeLink Composite="Faults (report_faults)"/>
       <Highlight Priority="100" Background="#90D58D"    Match="faults"     Pattern="No faults.*|None"/>
       <Highlight Priority="150" Background="#F2D463"                       Pattern="compromised|fans set to maximum"/>
       <Highlight Priority="150" Background="#F2D463"    Match="state"      Pattern="(?&lt;=:\s*)\w.*" Exclude="CRITICAL"/>
       <Highlight Priority="200" Background="LightCoral" Match="state"      Pattern="\bCRITICAL\b"/>
-      <TreeLink/>
       <SplitAt Match="^\w.*(?&lt;!no\s*)faults$"/>
       <Section Exclude="Report">
         <Pre_Clean Find="\n-{70}$[\s\n]+-{70}" AsSingleLine="1" RO="3"/>
       </Section>
     </Section>
-    <!-- # sideplane raw dump -->
-    <Section Match="sideplane" KeepUnsectionedSource="1">
-      <TreeLink/>
+    <Section Match="# ddump_sideplane" KeepUnsectionedSource="1">
+      <TreeLink Composite="Sideplane expanders (ddump_sideplane)"/>
+      <ValueSeparator Separator="^exp:\d+:\s# " Key="Sect_Name2" Hide="1"/>
       <SplitAt Match="^[^:]+$" Offset="1"/>
-      <Section Match=":"/>
+      <Section Match=":" KeepUnsectionedSource="1">
+        <TreeLink />
+        <Pre_Clean Find="^(?&lt;exp&gt;exp:\d+:\s)-{70}\n\k&lt;exp&gt;(?&lt;name&gt;\S+)$" Replacement="$1# $2" AsSingleLine="1" RO="3"/>
+        <SplitAt Match="^exp:\d+:\s# "/>
+        <!-- # PHYs in sideplanes -->
+        <Section Match="phycounters" KeepUnsectionedSource="1">
+          <TreeLink Composite="{Sect_Name2}"/>
+          <ValueSeparator Separator=":\s" Order="1" Key="Expander" IsTag="1"/>
+          <SplitAt Match="^exp:\d+:\sPHY [0-9]"/>
+          <Section Match="^exp:\d+:\sPHY [0-9]" InheritValues="0">
+            <ValueSeparator Separator=" : " Key_Find="^exp:\d+:\s"/>
+            <ValueSeparator Separator=" " Match="^exp:\d+:\sPHY" Key="PHY"/>
+            <Highlight Priority="150" Background="#F2D463"  Match="errs|loss|invalid|failed" Pattern="(^|\s)\d+\s?" Exclude="(^|\s)0\b"/>
+          </Section>
+        </Section>
+        <Section Exclude="phycounters"/>
+      </Section>
     </Section>
-    <!-- # uptime, ver, ipconfig -->
-    <Section Match="# (ver|ipconfig|uptime)">
+    <Section Match="# ver">
+      <TreeLink Composite="Versions (ver)"/>
+    </Section>
+    <Section Match="# ipconfig">
+      <TreeLink Composite="...\\{Sect_Name1}"/>
+      <Highlight Priority="200" Background="LightCoral" Match="telnet" Pattern="enabled" Comment="Telnet is very insecure! Don't use it."/>
+      <Highlight Priority="100" Background="#90D58D"    Match="telnet" Pattern="disabled"/>
+    </Section>
+    <Section Match="# uptime">
       <TreeLink/>
       <Clean Find="uptime$" Replacement="uptime&#xa;NOTE: uptime is shown for the current controller only! It could differ from the other controller. Check both."/>
       <Highlight Priority="200" Background="LightCoral" Pattern="\b0 days" Comment="Recently power cycled"/>
       <Highlight Priority="150" Background="#F2D463"    Pattern="\b[1-9] days" Comment="Uptime is less than 10 days"/>
       <Highlight Priority="100" Background="#90D58D"    Pattern="\b[0-9]{2,} days"/>
     </Section>
-    <!-- # drive manager -->
-    <Section Match="drvmgr" KeepUnsectionedSource="1">
-      <TreeLink/>
+    <Section Match="# ddump_drvmgr" KeepUnsectionedSource="1">
+      <TreeLink Composite="Drive Manager (ddump_drvmgr)"/>
       <SplitAt Match="^\*+ Drive Bay"/>
       <SplitAt Match="^\s*$" Offset="1"/>
       <SplitAt Match="BEGIN Rsync ddump"/>
@@ -134,9 +151,8 @@
         <Highlight Priority="150" Background="#F2D463"    Match="current"   Pattern="(?&lt;=:\s*)\w.*|^\w.*" Exclude="ONLINE|REMOVED"/>
       </Section>
     </Section>
-    <!-- # Canister manager -->
-    <Section Match="canmgr" KeepUnsectionedSource="1">
-      <TreeLink/>
+    <Section Match="# ddump_canmgr" KeepUnsectionedSource="1">
+      <TreeLink Composite="Canister Manager (ddump_canmgr)"/>
       <Highlight Priority="0" Background="LightBlue" Pattern=" Local "/>
       <Highlight Priority="0" Background="Wheat" Pattern=" Remote "/>
       <SplitAt Match="info:|component.description"/>
@@ -158,7 +174,7 @@
       <Section Match="component.description"/>
     </Section>
 
-    <Section Exclude="fwdownloader|command completed|# custvpd|# getenclvpd|# vpd|batt|metis|phy|logdump|# report_faults|sideplane|# (ver|ipconfig|uptime)|drvmgr|canmgr">
+    <Section Exclude="fwdownloader|command completed|# custvpd|# getenclvpd|# vpd|batt|phy|logdump|# report_faults|sideplane|# (ver|ipconfig|uptime)|drvmgr|canmgr">
       <TreeLink Composite="...\\{Sect_Name1}"/>
       <Highlight Priority="100" Background="#90D58D"   Match="No faults"/>
       <Highlight Priority="100" Background="#C9C8CF"   Match="status" Pattern="disconnected|not installed"/>
