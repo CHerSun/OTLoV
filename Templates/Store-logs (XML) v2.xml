@@ -21,7 +21,12 @@
 
       <!-- # Unfold single-line PROPERTY XML element as "Name"="Property" + other attributes -->
       <Pre_Clean Find="^\s*&lt;PROPERTY name=&quot;([^&quot;]*?)&quot;(.*?)&gt;([^&lt;]*?)&lt;/PROPERTY&gt;" 
-                 Replacement="$1=&quot;$3&quot;$2"/>        
+                 Replacement="$1=&quot;$3&quot;$2" AsSingleLine="1" RO="19"/>
+      <!-- # Try to merge multiline PROPERTY XML elements into single line -->
+      <Pre_Clean Find="^(?&lt;key&gt;[^\s=]+)=&quot;(?&lt;l1&gt;[^&quot;\n]+)\n\s*(?&lt;l2&gt;\S.*?)&quot;"
+                 Replacement="${key}=&quot;${l1} ${l2}&quot;" AsSingleLine="1"/>
+      <Pre_Clean Find="^(?&lt;key&gt;[^\s=]+)=&quot;(?&lt;l1&gt;[^&quot;\n]+)\n\s*(?&lt;l2&gt;\S.*?)&quot;"
+                 Replacement="${key}=&quot;${l1} ${l2}&quot;" AsSingleLine="1"/>
       <!-- # Remove type="type_string" and key="..." attributes -->
       <Pre_Clean Find="\s+(type|key)=&quot;[^&quot;]*&quot;"/>
       <!-- # Remove units="..." attribute, merging the units into previous value (avoids duplicates) -->
@@ -57,7 +62,7 @@
 
       <Highlight Priority="50"  Background="#C9C8CF"    Match="^health(?=$|=)" Exclude="-numeric"    Pattern="(?&lt;=&quot;|^)N/A(?=$|&quot;)"/>
       <Highlight Priority="100" Background="#90D58D"    Match="^health(?=$|=)" Exclude="-numeric"    Pattern="(?&lt;=&quot;|^)OK(?=$|&quot;)"/>
-      <Highlight Priority="200" Background="LightCoral" Match="^health(?=$|=)" Exclude="-numeric"    Pattern="(?&lt;=&quot;|^)degraded(?=$|&quot;)"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="^health(?=$|=)" Exclude="-numeric"    Pattern="(?&lt;=&quot;|^)degraded(?=$|&quot;)"/>
       <Highlight Priority="150" Background="#F2D463"    Match="^health(?=$|=)" Exclude="-numeric|(?&lt;=&quot;|^)(N/A|OK|degraded)(?=$|&quot;)" Pattern="^.*$" Comment="Status is not defined in template"/>
 
       <Highlight Priority="0"   Background="#F2D463"   Match="^health-reason=" Exclude="-numeric|=&quot;\s*&quot;" Pattern="(?&lt;==&quot;)[^&quot;]*(?=&quot;)" Comment="Reason is not empty and not one of known minor states. Please review."/>
@@ -137,10 +142,15 @@
               If it's too generic - will need to split this and move into individual sections.
               Currently extracting all key-value pairs we can find, but those with keys matching Key_Exclude
       -->
-      <ValueSeparator Pattern="[^\s=]+=&quot;.*?&quot;"
-                      Key_Exclude="^type$|^oid$|^format$|^key$|-numeric|supported-locales|-reason|-recommendation"
-                      Value_Exclude="N/A"
+      <ValueSeparator Exclude="basetype|name=.additional-information"
+                      Pattern="[^\s=]+=&quot;.*?&quot;"
+                      Key_Exclude="^(type|oid|format|key|url|extended-status|reason-id)$|-numeric|supported-locales|-reason|-recommendation|-crc|cfg-|-format-version|lock-key|-url|fc-p\d|dsd"
+                      Value_Exclude="^(N/A|::|Not secured)$"
                       Key_Find="(?&lt;=controller|enclosure)-id"
+                      Value_Find="&quot;"/>
+      <ValueSeparator Match="basetype"
+                      Pattern="[^\s=]+=&quot;.*?&quot;"
+                      Key_Exclude="^(type|oid|format|key|name)$"
                       Value_Find="&quot;"/>
 
 
@@ -178,6 +188,12 @@
         <TreeLink />
 
         <Section Match="^~ " Rename="{basetype}[ - {SECT_NAME_2}][ - {SECT_NAME_3}]" Recursive="1" KeepUnsectionedSource="1">
+          <!-- Values order -->
+          <ValueSeparator Exclude="^" Key="basetype"/>
+          <ValueSeparator Exclude="^" Key="durable-id"/>
+          <ValueSeparator Exclude="^" Key="name"/>
+          <ValueSeparator Exclude="^" Key="health"/>
+          <ValueSeparator Exclude="^" Key="state"/>
           <!-- # Remove current level headers -->
           <Pre_Clean Find="^~ "/>
           <Pre_Clean Find="^~end~"/>
@@ -192,8 +208,7 @@
           <TreeLink Composite="{basetype}"/>
         </Section>
       </Section>
-      <!-- @ all other XML sections -->
-      <Section Match="REQUEST=&quot;[^&quot;]+&quot;" Exclude="show configuration" KeepUnsectionedSource="1" Rename="{SECT_NAME_1}">
+      <Section Match="show enclosure" KeepUnsectionedSource="1" Rename="{SECT_NAME_1}">
         <!-- # Unfold top-level RESPONSE element - this is the top-level section -->
         <Pre_Clean Find="^\s*&lt;RESPONSE (\S+.*)&gt;" Replacement="~~ $1"/>
         <Pre_Clean Find="^\s*&lt;/RESPONSE&gt;"        Replacement=""/>
@@ -214,6 +229,67 @@
         <TreeLink />
 
         <Section Match="^~ " Rename="{basetype}[ - {SECT_NAME_2}][ - {SECT_NAME_3}]" Recursive="1" KeepUnsectionedSource="1">
+          <!-- Values order -->
+          <ValueSeparator Exclude="^" Key="basetype"/>
+          <ValueSeparator Exclude="^" Key="durable-id"/>
+          <ValueSeparator Exclude="^" Key="name"/>
+          <ValueSeparator Exclude="^" Key="health"/>
+          <ValueSeparator Exclude="^" Key="state"/>
+
+          <TreeLink Composite="{basetype}"/>
+          <!-- # Remove current level headers -->
+          <Pre_Clean Find="^~ "/>
+          <Pre_Clean Find="^~end~"/>
+          <!-- # Find same-level <OBJECT.. and </OBJECT> element start/end and unfold it marking start and end -->
+          <Pre_Clean Find="^(?&lt;spaces&gt;\s*)&lt;OBJECT (?&lt;attributes&gt;[^&gt;]*)&gt;(?&lt;content&gt;[\s\S]*?)^\k&lt;spaces&gt;&lt;/OBJECT&gt;" 
+                    Replacement="~ ${attributes}${content}&#xA;~end~" 
+                    AsSingleLine="1" RO="3"/>
+
+          <SplitAt Match="^~ "/>
+          <SplitAt Match="~end~" Offset="1"/>
+        </Section>
+      </Section>
+      <!-- @ all other XML sections -->
+      <Section Match="REQUEST=&quot;[^&quot;]+&quot;" Exclude="show configuration|show enclosure" KeepUnsectionedSource="1" Rename="{SECT_NAME_1}">
+        <!-- # Unfold top-level RESPONSE element - this is the top-level section -->
+        <Pre_Clean Find="^\s*&lt;RESPONSE (\S+.*)&gt;" Replacement="~~ $1"/>
+        <Pre_Clean Find="^\s*&lt;/RESPONSE&gt;"        Replacement=""/>
+        <Pre_Clean Find="^~~ .*REQUEST=&quot;(?&lt;name&gt;[^&quot;]*)&quot;.*" Replacement="# ${name}"/>
+        <!-- # Replace <OBJECT basetype="STATUS"...</OBJECT> with just the message contained in RESPONSE -->
+        <Pre_Clean Find="^(?&lt;spaces&gt;\s*)&lt;OBJECT basetype=&quot;status&quot;[\s\S]*?response=&quot;(?&lt;status&gt;[^&quot;]*)&quot;[\s\S]*?^\k&lt;spaces&gt;&lt;/OBJECT&gt;" 
+                   Replacement="&#xA;${status}" 
+                   AsSingleLine="1" RO="3"/>
+        <!-- # Find same-level <OBJECT.. and </OBJECT> element start/end and unfold it marking start and end -->
+        <Pre_Clean Find="^(?&lt;spaces&gt;\s*)&lt;OBJECT (?&lt;attributes&gt;[^&gt;]*)&gt;(?&lt;content&gt;[\s\S]*?)^\k&lt;spaces&gt;&lt;/OBJECT&gt;" 
+                   Replacement="~ ${attributes}${content}&#xA;~end~" 
+                   AsSingleLine="1" RO="3"/>
+
+        
+        <SplitAt Match="^~ "/>
+        <SplitAt Match="~end~" Offset="1"/>
+
+        <TreeLink />
+
+        <Section Match="^~ " Rename="{basetype}[ - {SECT_NAME_2}][ - {SECT_NAME_3}]" Recursive="1" KeepUnsectionedSource="1">
+          <!-- Values order -->
+          <ValueSeparator Exclude="^" Key="basetype"/>
+          <ValueSeparator Exclude="^" Key="durable-id"/>
+          <ValueSeparator Exclude="^" Key="index"/>
+          <ValueSeparator Exclude="^" Key="name"/>
+          <ValueSeparator Exclude="^" Key="resolved"/>
+          <ValueSeparator Exclude="^" Key="severity"/>
+          <ValueSeparator Exclude="^" Key="health"/>
+          <ValueSeparator Exclude="^" Key="state"/>
+          <ValueSeparator Exclude="^" Key="status"/>
+          <ValueSeparator Exclude="^" Key="disk-group"/>
+          <ValueSeparator Exclude="^" Key="storage-tier"/>
+          <ValueSeparator Exclude="^" Key="model"/>
+          <ValueSeparator Exclude="^" Key="size"/>
+          <ValueSeparator Exclude="^" Key="rpm"/>
+          <ValueSeparator Exclude="^" Key="sector-format"/>
+          <ValueSeparator Exclude="^" Key="serial-number"/>
+          <ValueSeparator Exclude="^" Key="target-spare-capacity"/>
+          <ValueSeparator Exclude="^" Key="actual-spare-capacity"/>
           <!-- # Remove current level headers -->
           <Pre_Clean Find="^~ "/>
           <Pre_Clean Find="^~end~"/>
@@ -247,11 +323,11 @@
       </Section>
       <Section Match="event log" KeepUnsectionedSource="1">
         <ValueSeparator Key="SECT_NAME_EL" Separator="^" Match="^" Hide="1"/>
-        <TreeLink Composite="Event logs\\{SECT_NAME_EL}"/>
+        <TreeLink Composite=".Event logs\\{SECT_NAME_EL}"/>
       </Section>
       <Section Match="\w" Exclude="^##\*\*|Configuration Section|event log" KeepUnsectionedSource="1">
         <ValueSeparator Key="SECT_NAME_DL" Separator="^" Match="^" Hide="1"/>
-        <TreeLink Composite=".Debug.\\{SECT_NAME_DL}"/>
+        <TreeLink Composite=".Debug\\{SECT_NAME_DL}"/>
       </Section>
     </Section>
 

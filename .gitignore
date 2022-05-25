@@ -1,0 +1,5 @@
+# Temporary template stubs
+Templates/*\[temp\]*
+
+# Private templates
+Template/*\[private\]*
