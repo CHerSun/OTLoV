@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Template ID="OTLoV" Name="EMC Service Data [1]" ScanDepth="2">
+  <Detect Match="svc_diag_--state_spinfo.txt"/>
+  <Detect Match="fbecli_exe_ccollectall.txt"/>
+
+  <File Match="svc_diag_--state_spinfo.txt" KeepUnsectionedSource="1">
+    <Detect Match="^Displaying |^Summary of "/>
+    <SplitAt Match="^Displaying |^Summary of"/>
+    <!-- Global highlight - manually added notes -->
+    <Highlight Priority="0"   Foreground="#C9C8CF"    Match="^NOTE: " Pattern=".*"/>
+    <!-- Global highlights - know statuses -->
+    <Highlight Priority="50"  Background="#C9C8CF"  Match="status"    Pattern="\b(UNBOUND)\b"/>
+    <Highlight Priority="100" Background="#90D58D"  Match="state"     Pattern="\b(READY|RDY)\b"/>
+    <Highlight Priority="50"  Background="#C9C8CF"  Match="status"    Pattern="\b(UNBOUND)\b"/>
+    <Highlight Priority="100" Background="#90D58D"  Match="status"    Pattern="\b(BOUND)\b"/>
+    <Highlight Priority="100" Background="#90D58D"  Match="lifecycle" Pattern="\b(READY)\b"/>
+    <Highlight Priority="100" Background="#90D58D"  Match="ready"     Pattern="\b(TRUE)\b"/>
+    <Highlight Priority="150" Background="#F2D463"  Match="ready"     Pattern="\b(FALSE)\b"/>
+    <!-- Global values -->
+    <ValueSeparator Separator="^Displaying (all )?" Key="Section" Value_Find=":" Hide="1"/>
+    <ValueSeparator Separator="^Summary of " Key="Section" Value_Find=":" Hide="1"/>
+
+    <Section Match="backend status" KeepUnsectionedSource="1">
+      <Pre_Clean Find="^Displaying .*$" Replacement="$0&#xa;NOTE: Looks like this section doesn't fetch information on all enclosures and disks - ONLY FIRST FEW entries.&#xa;"/>
+      <TreeLink Composite="Back-end (enclosures)"/>
+      <SplitAt Match="^Bus |messages|dump"/>
+      <Section Match="^Bus " KeepUnsectionedSource="1">
+        <ValueSeparator Key="Location" Separator=" : " Order="1"/>
+        <ValueSeparator Key="Type"     Separator=" : "/>
+        <ValueSeparator Pattern="\w[^=]*=\s*\S+" Separator="="/>
+        <SplitAt Match="--Drive "/>
+        <SplitAt Match="^\s*$" Offset="1"/>
+        <Section Match="--Drive " InheritValues="0"/>
+      </Section>
+    </Section>
+
+    <Section Match="disk" KeepUnsectionedSource="1">
+      <TreeLink Composite="Drives"/>
+      <SplitAt Match="^-{6}|Discovered \d"/>
+      <Section Match="^-{6}" Rename="[Disk - {Disk} ({Location})]">
+        <Pre_Clean Find="^-{6,}\s+" RO="19" AsSingleLine="1"/>
+        <ValueSeparator Key="Disk" Separator=" - " Value_Find="\[.*"/>
+        <ValuePattern   Key="Location"   PatternValue="\[[^\]]+\]" Value_Find="\[|\]"/>
+        <ValueSeparator Exclude="^" Key="Status"/>
+        <ValueSeparator Separator="No luns pres" Value_Find="^.*$" Value_Replacement="no info" Key_Find="^.*$" Key_Replacement="RG number"/>
+        <Highlight Priority="50"  Background="#C9C8CF"  Pattern="No LUNs present.*"/>
+        <Highlight Priority="50"  Background="#C9C8CF"  Pattern="^no info$" Comment="No LUNs are present - can't fetch info here."/>
+        <ValueSeparator Separator=":\s+" Key_Match="vendor|drive|block|additional|product id|status|speed" Key_Exclude="drive capacity"/>
+        <ValueSeparator Separator=":\s+" Key_Match="\bRG\b"/>
+        <ValueSeparator Separator=":\s+" Key_Match="\bLUN \b" AddMode="0"/>
+      </Section>
+    </Section>
+
+    <Section Match="FRU resume" KeepUnsectionedSource="1">
+      <TreeLink Composite="FRU"/>
+      <SplitAt Match="^-{6}"/>
+      <SplitAt Match="^-{6}" Offset="1"/>
+      <Clean Find="^-{6,}.*$" RemoveEmptyLines="1"/>
+      <Section Match="Device" KeepUnsectionedSource="1">
+        <ValueSeparator Exclude="^" Key="Device"/>
+        <ValueSeparator Exclude="^" Key="TLA Assembly Name"/>
+        <ValueSeparator Exclude="^" Key="Family FRU ID"/>
+        <ValueSeparator Exclude="^" Key="EMC TLA Part Number"/>
+        <ValueSeparator Exclude="^" Key="EMC Part Number"/>
+        <ValueSeparator Separator=":\s+" Key_Exclude="manufactur|artwork|semaphor|checksum|tech/|programmabl"/>
+        <SplitAt Match="Programmable Details"/>
+        <SplitAt Match=":" Exclude="Programmable"/>
+        <Section Match="Programmable Details" InheritValues="0"/>
+      </Section>
+    </Section>
+
+    <Section Match="FRU statuses">
+      <TreeLink Composite="FRU statuses"/>
+      <Highlight Priority="50"  Background="#C9C8CF"  Pattern="\b(UNKNOWN)\b"/>
+      <Highlight Priority="100" Background="#90D58D"  Pattern="\b(OK)\b"/>
+      <Highlight Priority="150" Background="#F2D463"  Pattern="\b(REMOVED)\b"/>
+  
+    </Section>
+
+    <Section Match="^Displaying" Exclude="backend status|disk|fru resume|fru statuses">
+      <TreeLink Composite="{Section}"/>
+    </Section>
+
+    <Section Match="^summary of" KeepUnsectionedSource="1">
+      <Highlight Priority="150" Background="#F2D463"    Match="fault"          Pattern="\b(\d*[1-9]\d*)\b" Comment="Non-0 faults value, needs review."/>
+      <Highlight Priority="100" Background="#90D58D"    Match="fault|failure"  Pattern="\b(FALSE)\b"/>
+      <Highlight Priority="200" Background="LightCoral" Match="fault|failure"  Pattern="\b(TRUE)\b"/>
+      <Highlight Priority="100" Background="#90D58D"    Match="warning"        Pattern="\b(FALSE)\b"/>
+      <Highlight Priority="150" Background="#F2D463"    Match="warning"        Pattern="\b(TRUE)\b"/>
+      <TreeLink Composite="Statuses summary\\{Section}"/>
+      <SplitAt Match="(status)? __\s*$"/>
+      <ValueSeparator Separator=":\s+" Key_Find="/"/>
+      <ValueSeparator Separator="(status)? __\s*$" Order="1" Value_Find="__" Key="Location"/>
+    </Section>
+  </File>
+
+  <File Match="fbecli_exe_ccollectall.txt" KeepUnsectionedSource="1">
+    <!-- Wanted:
+           * sfpinfo,
+           * sepls - just link to the nav tree. Good table with partitioning objects overview.
+           * rginfo - check if can do anything, RG info
+           * resumeprom - same as above basically, but not just for DPE, but also for DAE!!!
+           * psmgmt - power supplies,
+           * luninfo - check. In addition to RG info.
+           * enclmgmt - some enclosures status, no PNs
+           * drivemgmt - some drive info, need to check
+           * disk info -l - just link
+           * disk info default - same as above already processed?
+           * coolingmgmt
+           * boardmgmt - cache cards?
+           * bbuinfo
+    -->
+    <Detect Match="^FBECLI&gt; sp\w+:$"/>
+    <SplitAt Match="^FBECLI&gt;"/>
+    <!-- Global highlight - manually added notes -->
+    <Highlight Priority="0"   Foreground="#C9C8CF"    Match="^NOTE: " Pattern=".*"/>
+
+    <Section Match="resumeprom" KeepUnsectionedSource="1">
+      <!-- This dumps duplicate information from SPA and SPB. Need to split between SPA and SPB first -->
+      <Pre_Clean Find="resumeprom:.*$" Replacement="$0&#xa;&#xa;NOTE: This section contains dump of parts from all SPs individually, i.e. - SP dumps DUPLICATE each other. Take 1 only.&#xa;"/>
+      <TreeLink Composite="FRU"/>
+      <SplitAt Match="^SP. resume prom:"/>
+      <Section Match="^SP. resume prom:" KeepUnsectionedSource="1">
+        <ValueSeparator Key="SP" Separator="resume prom:" Order="1" IsTag="1" Match="^SP. resume prom:"/>
+        <ValueSeparator Key="Device" Separator="resume prom:" Order="1"/>
+        <ValueSeparator Exclude="^" Key="Device"/>
+        <ValueSeparator Exclude="^" Key="TLA Assembly Name"/>
+        <ValueSeparator Exclude="^" Key="EMC TLA Part Number"/>
+        <ValueSeparator Exclude="^" Key="EMC Part Number"/>
+        <ValueSeparator Separator=":\s+" Key_Exclude="manu?factur|artwork|semaphor|checksum|programmabl" Match="^\S" Exclude="^error:"/>
+        <TreeLink Composite="{SP}"/>
+        <SplitAt Match=" prom:"/>
+        <Section Match=" prom:" Exclude="^SP. resume prom:" KeepUnsectionedSource="1">
+          <SplitAt Match="Programmable Details"/>
+          <SplitAt Match=":" Exclude="Programmable"/>
+          <Section Match="Programmable Details" InheritValues="0"/>
+        </Section>
+      </Section>
+    </Section>
+
+    <Section Match="^FBECLI&gt;" Exclude="resumeprom">
+      <TreeLink />
+    </Section>
+  </File>
+
+</Template>
