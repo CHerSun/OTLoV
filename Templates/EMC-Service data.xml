@@ -143,4 +143,32 @@
     </Section>
   </File>
 
+  <File Match="MluCli_exe_poll_" KeepUnsectionedSource="1" Rename="MLU CLI - {List}">
+    <Detect Match="count: \d" Exclude="count: 0\b"/>
+    <Detect Match="^&lt;&lt; dumping object list data &gt;&gt;"/>
+
+    <!-- Global highlights - count: 0 -->
+    <Highlight Priority="50"  Background="#C9C8CF"   Pattern="^Count: 0\b"/>
+    <Highlight Priority="100" Background="#90D58D"   Pattern="^\w[^:]+" Match="Count: \d" Exclude="^count|count: 0\b"/>
+
+    <ValueSeparator Separator="list\s*$" Order="1" Key="List" Hide="1"/>
+    <ValueSeparator Separator=" objects " Order="1" Match="^&lt;&lt; " Key="Objects" Hide="1" Value_Find="&lt;"/>
+
+    <SplitAt Match="^&lt;&lt; dumping"/>
+    <Section Match="^&lt;&lt; dumping" KeepUnsectionedSource="1">
+
+      <SplitAt Match="^&lt;&lt; "/>
+      <Section Match="^&lt;&lt; " Exclude="dumping" KeepUnsectionedSource="1">
+        <SplitAt Match="^&lt;&lt; " Offset="2"/>
+        <SplitAt Match="^(-{14,}|={14,})$" Offset="1"/>
+        <Section Match="Key|0x" Rename="{Name} [({NiceName})]" KeepUnsectionedSource="1">
+          <TreeLink Composite="{List} ({Objects})"/>
+          <ValueSeparator Separator=": " Hide="1" Key="Name" Match="Name" />
+          <ValueSeparator Separator=": " Hide="1" Key="NiceName" Match="NiceName"/>
+          <ValueSeparator Separator=": " Match="^\w"/>
+        </Section>
+      </Section>
+    </Section>
+  </File>
+
 </Template>
