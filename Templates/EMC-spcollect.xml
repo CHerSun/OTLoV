@@ -373,6 +373,7 @@
       <Value_Clean Find="(?&lt;=\b\w+\s+\d+)\s+"         Replacement="\\"/>
       <Value_Clean Find="(?&lt;=^Bus[^\\]+\\{2}[^\\]+)$" Replacement="\\-"/>
       <Value_Clean Find="(?&lt;=^Bus[^\\]+)$"            Replacement="\\-"/>
+      <Value_Clean Find="N/A"                            Replacement="Services"/>
     </ValueSeparator>
     <ValuePattern Key="LocationPath" Match="\d:\d{2}:\d{2} N.A" PatternValue="Bus \d+( Encl(osure)? \d+( (Disk|Slot) \d+)?)?" Hide="1" AddMode="2">
       <Value_Clean Find="\bEncl\b"                    Replacement="Enclosure"/>
@@ -398,8 +399,9 @@
     <Section Match="!mludisplayodb" KeepUnsectionedSource="1">
       <SplitAt Match="^Displaying "/>
       <Section Match="^Displaying " Exclude=" the " Rename="{Type}[ - {OBJECT_NAME}][ ({Obj ID}[ → {Leader Object ID}])]">
-        <TreeLink Composite="Object types\\{Type}"/>
+        <TreeLink Composite="By type\\{Type}"/>
         <TreeLink Composite="By parent\\{Leader Object ID}"/>
+        <TreeLink Composite="By id\\{Obj ID}"/>
         <ValueSeparator Exclude="^" Key="Type"/>
         <ValueSeparator Exclude="^" Key="Obj ID"/>
         <ValueSeparator Exclude="^" Key="Leader Object ID"/>
