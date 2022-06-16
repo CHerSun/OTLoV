@@ -59,9 +59,9 @@
       <Pre_Clean Find="^\s*Transfering FLARE globals\s*$"/>
       <Pre_Clean Find="(?&lt;=\n{2})\n+" AsSingleLine="1"/>
       <TreeLink Composite="- System - SP state (!spstat)"/>
-      <Highlight Priority="200" Background="#F08080"                    Pattern="(?&lt;!NO )\b(FLT)\b" Comment="Failed."/>
-      <Highlight Priority="150" Background="#F2D463"                    Pattern="\b(REM)\b" Comment="Removed or NOT installed."/>
-      <Highlight Priority="150" Background="#F2D463"                    Pattern="\b(DISABLED)\b" Comment="Failed."/>
+      <Highlight Priority="200" Background="#F08080"                    Pattern="(?&lt;!NO )\b(FLT)\b" Comment="Fault"/>
+      <Highlight Priority="150" Background="#F2D463"                    Pattern="\b(REM)\b" Comment="Removed"/>
+      <Highlight Priority="150" Background="#F2D463"                    Pattern="\b(DISABLED)\b"/>
       <Highlight Priority="100" Background="#90D58D"                    Pattern="\b(ENA|OK|No flt)\b"/>
       <Highlight Priority="100" Background="#90D58D"    Match="Peer SP" Pattern="\b(Present)\b"/>
       <Highlight Priority="100" Background="#90D58D"    Match="Cache"   Pattern="\b(Enabled)\b"/>
@@ -192,7 +192,7 @@
       <ValueSeparator Separator=":" Match="State:" Exclude="NavisecCli.exe"/>
 
       <SplitAt Match="\w" Exclude=":"/>
-      <Section Match="\w" Exclude="NavisecCli.exe" Rename="{Location}[ - {Product Id}][ ({Drive Type})]"/>
+      <Section Match="\w" Exclude="NavisecCli.exe" Rename="{Location}[ - {Product Id}][ ({Drive Type})][ - {State}]"/>
     </Section>
 
 
@@ -327,12 +327,12 @@
 
 
     <Section Match="NavisecCli.exe -np storagegroup -list" KeepUnsectionedSource="1">
-      <TreeLink Composite="Storage group (naviseccli storagegroup)"/>
       <ValueSeparator Exclude="^" Key="Storage Group Name"/>
       <ValueSeparator Exclude="^" Key="Storage Group UID"/>
       <ValueSeparator Separator=":\s"/>
       <SplitAt Match="Name:"/>
       <Section Match="Name:" KeepUnsectionedSource="1">
+        <TreeLink Composite="Storage group (naviseccli storagegroup)"/>
         <SplitAt Match=":(\s|$)"/>
         <Section Match="^HBA/SP" Hide="1">
           <ValueSeparator Key="HBA UID"  Separator="SP [AB]" Order="1" AddMode="0" Level="-1"/>
@@ -389,6 +389,43 @@
     <Section Match="\d:\d{2}:\d" Hide="1">
       <TreeLink Composite="{LocationPath}[\\{Reporter}]"/>
     </Section>
+  </File>
+
+
+
+  <File Match="SP[AB]_thinprovisioning_info.txt" KeepUnsectionedSource="1">
+    <SplitAt Match="^>\s*!\w"/>
+    <Section Match="!mludisplayodb" KeepUnsectionedSource="1">
+      <SplitAt Match="^Displaying "/>
+      <Section Match="^Displaying " Exclude=" the " Rename="{Type}[ - {OBJECT_NAME}][ ({Obj ID}[ → {Leader Object ID}])]">
+        <TreeLink Composite="Object types\\{Type}"/>
+        <TreeLink Composite="By parent\\{Leader Object ID}"/>
+        <ValueSeparator Exclude="^" Key="Type"/>
+        <ValueSeparator Exclude="^" Key="Obj ID"/>
+        <ValueSeparator Exclude="^" Key="Leader Object ID"/>
+        <ValueSeparator Exclude="^" Key="NiceName"/>
+        <ValueSeparator Exclude="^" Key="Pool OID"/>
+
+        <ValueSeparator Key="Type" Separator="^Displaying " Value_Find="the (.*):" Value_Replacement="$1"/>
+        <ValueSeparator Key="OBJECT_NAME" Separator=": " Match="Name" Hide="1"/>
+        <ValueSeparator Key="OBJECT_NAME" Separator=": " Match="Nice\s*Name" Hide="1" AddMode="2"/>
+        <ValueSeparator                   Separator=": " Match="^ {0,2}\w|^ ?\t ?\w" Key_Exclude="time|total|delay|async|metadata|vasa|recovery" Value_Exclude="^0x0$|00:00:00.000 01"/>
+        <ValueSeparator                   Separator=": " Match="Slot ID|Leader Object ID"/>
+        <ValueSeparator                   Separator="in Pool 0x\w+ is" Key_Find=".* of "/>
+
+        <!-- Object state highlights -->
+        <Highlight Priority="150" Background="#F2D463"    Pattern="Object State \w.*" Exclude="Object State (Ready|Disabled|Async Calls Complete)|Last Target State" Comment="Status is not defined in template. Please check."/>
+        <Highlight Priority="100" Background="#90D58D"    Pattern="Object State Ready|Object State Async Calls Complete" Exclude="Last Target State"/>
+        <Highlight Priority="49"  Background="#C9C8CF"    Pattern="Object State Disabled" Exclude="Last Target State"/>
+        <!-- Status highlights -->
+
+      </Section>
+      <Section Match="^Displaying the ">
+        <ValueSeparator Key="Type" Separator="^Displaying " Value_Find="the (.*):" Value_Replacement="$1"/>
+        <TreeLink Composite="_{Type}"/>
+      </Section>
+    </Section>
+    <Section Match="^>\s*!\w" Exclude="!mludisplayodb"/>
   </File>
 
 </Template>
