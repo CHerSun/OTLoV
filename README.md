@@ -15,7 +15,7 @@ Refer to [Wiki](/../../wiki) for further information (WIP). Wiki is planned to b
 
 ## Why use it?
 
-Diagnostic logs keep growing in size. Now, logs of >100 MB of plain text for a single incident are common. That's more than the full Bible. Searching for a problem there is painful and time-consuming. Search & knowledge helps, but it's still too easy to miss things or get an incomplete picture. It's like searching for a needle in a haystack. That's why questions like: when, what exactly has happened, what have you seen, etc. - are common in troubleshooting.
+Diagnostic logs keep growing in size. Now, logs of >100 MB of plain text for a single incident are common. That's more than the full Bible. Looking for a problem there is painful and time-consuming. Search & knowledge helps, but it's still too easy to miss things or get an incomplete picture. It's like searching for a needle in a haystack. That's why questions like: when, what exactly has happened, what have you seen, etc. - are common in troubleshooting.
 
 OTLoV allows you to change that. You can get an immediate picture of the current state, extract diagnostic or configuration (inventory) data, and more.
 
