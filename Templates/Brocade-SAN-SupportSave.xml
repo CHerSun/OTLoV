@@ -24,9 +24,9 @@
     <Highlight Priority="100" Background="#90D58D"    Pattern="^VF$" Comment="VF enabled"/>
 
     <Section Match="^(SWITCH|CHASSIS)CMD\s" Rename="[{CHASSIS} ]{NAME}[ ({CONTEXT})]" Exclude="sfpshow">
-      <ValueSeparator Key="NAME" Separator="^(SWITCH|CHASSIS)CMD\s(.*/)?" Value_Find=":$"/>
-      <ValueSeparator Key="CONTEXT" Separator=" -- " Match="CURRENT CONTEXT"/>
-      <ValuePattern Key="CHASSIS" PatternValue="CHASSISCMD" Value_Find="^.*$" Value_Replacement="*"/>
+      <ValueSeparator Key="NAME" Separator="^(SWITCH|CHASSIS)CMD\s(.*/)?" Value_Find=":$" IsTag="1"/>
+      <ValueSeparator Key="CONTEXT" Separator=" -- " Match="CURRENT CONTEXT" IsTag="1"/>
+      <ValuePattern Key="CHASSIS" PatternValue="CHASSISCMD" Value_Find="^.*$" Value_Replacement="*" IsTag="1"/>
     </Section>
     <Section Match="switchshow" InheritValues="0">
       <TreeLink Composite="[{CHASSIS} ]{NAME}[\\{CONTEXT}]"/>
@@ -56,16 +56,31 @@
     </Section>
 
     <Section Match="sfpshow" Rename="[{CHASSIS} ]{NAME}[ ({CONTEXT})]" KeepUnsectionedSource="1">
-      <ValueSeparator Key="NAME" Separator="^(SWITCH|CHASSIS)CMD\s(.*/)?" Value_Find=":$"/>
-      <ValueSeparator Key="CONTEXT" Separator=" -- " Match="Current CONTEXT"/>
-      <ValuePattern Key="CHASSIS" PatternValue="CHASSISCMD" Value_Find="^.*$" Value_Replacement="*"/>
+      <ValueSeparator Key="NAME" Separator="^(SWITCH|CHASSIS)CMD\s(.*/)?" Value_Find=":$" IsTag="1"/>
+      <ValueSeparator Key="CONTEXT" Separator=" -- " Match="Current CONTEXT" IsTag="1"/>
+      <ValuePattern Key="CHASSIS" PatternValue="CHASSISCMD" Value_Find="^.*$" Value_Replacement="*" IsTag="1"/>
       <TreeLink Composite="[{CHASSIS} ]{NAME}[\\{CONTEXT}]"/>
+
       <Pre_Clean Find="^={5,}\n(?=Port|Slot)" Replacement="## " AsSingleLine="1" RO="3"/>
       <Pre_Clean Find="^={5,}$"/>
       <SplitAt Match="^## "/>
       <Highlight Priority="50"  Foreground="#C9C8CF"    Pattern="^.*$" Match="Not supported|no .* install"/>
       <Section Match="^## ">
         <ValueSeparator Separator=":\s" Value_Find="\(.*" Value_Exclude="Not available"/>
+      </Section>
+    </Section>
+
+    <Section Match="chassisshow" Rename="[{CHASSIS} ]{NAME}[ ({CONTEXT})]" KeepUnsectionedSource="1">
+      <ValueSeparator Key="NAME" Separator="^(SWITCH|CHASSIS)CMD\s(.*/)?" Value_Find=":$" IsTag="1"/>
+      <ValueSeparator Key="CONTEXT" Separator=" -- " Match="Current CONTEXT" IsTag="1"/>
+      <ValuePattern Key="CHASSIS" PatternValue="CHASSISCMD" Value_Find="^.*$" Value_Replacement="*" IsTag="1"/>
+      <TreeLink Composite="[{CHASSIS} ]{NAME}[\\{CONTEXT}]"/>
+
+      <SplitAt Match="\sUnit:\s"/>
+      <Section Match="\sUnit:\s">
+        <ValueSeparator Separator="\sUnit:\s" Key="Unit" Order="1"/>
+        <ValueSeparator Separator="\sUnit:\s" Key="Unit #"/>
+        <ValueSeparator Separator=":\s" Exclude="\sUnit:\s" Value_Exclude="Not available"/>
       </Section>
     </Section>
 
